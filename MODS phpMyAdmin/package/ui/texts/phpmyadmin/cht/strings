@@ -1,0 +1,7 @@
+
+# Copyright (c) 2000-2008 Synology Inc. All rights reserved.
+
+[app]
+app_name	=	"phpMyAdmin"
+description	=	"phpMyAdmin 是免費的軟體工具，設計用來管理 MySQL 資料庫。只要安裝此套件即可在 DiskStation 上管理 MySQL 資料庫。"
+

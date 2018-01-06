@@ -1,0 +1,6 @@
+#!/bin/sh
+
+config_php=/var/services/web/phpMyAdmin/config.inc.php
+grep blowfish_secret $config_php | awk '{print $3}' | sed "s/[^A-Za-z0-9+\/=]//g" > /tmp/pMA.upgrade
+
+exit 0

@@ -1,0 +1,4 @@
+certifi
+backports.ssl-match-hostname
+tornado
+html5lib

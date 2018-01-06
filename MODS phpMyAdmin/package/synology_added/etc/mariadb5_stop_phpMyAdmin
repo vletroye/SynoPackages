@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ETC=/var/packages/phpMyAdmin/target/synology_added/etc/
+exec /usr/bin/php -d open_basedir="$ETC" "$ETC"/serverconfcommon DELM5

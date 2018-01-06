@@ -1,0 +1,120 @@
+[
+  {
+    "step_title": "Setup configuration",
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Subdirectory of /var/services/web/ where SSPKS will be installed. Defaults to \"sspks\". This directory has to be empty. If it doesn't exist, it will be created.",
+        "subitems": [
+          {
+            "key": "wizard_install_dir",
+            "desc": "Install directory",
+            "defaultValue": "sspks"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Packages directory. Defaults to /var/services/web/packages. If this directory doesn't exist, it will be created. If this directory is not in /var/services/web/, you will need to amend your PHP open_basedir value to allow this path.",
+        "subitems": [
+          {
+            "key": "wizard_packages_dir",
+            "desc": "Packages directory",
+            "defaultValue": "/var/services/web/packages"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "step_title": "Theme configuration",
+    "invalid_next_disabled": "False",
+    "items": [
+      {
+        "type": "combobox",
+        "desc": "Name of the theme to be applied",
+        "subitems": [
+          {
+            "key": "wizard_theme",
+            "defaultValue": "classic",
+            "desc": "Theme",
+            "editable": false,
+            "mode": "local",
+            "valueField": "theme",
+            "displayField": "theme",
+            "store": {
+              "data": [
+                [
+                  "beatificabytes"
+                ],
+                [
+                  "material"
+                ],
+                [
+                  "classic"
+                ]
+              ],
+              "fields": [
+                "theme"
+              ],
+              "xtype": "arraystore"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "step_title": "Package Signing configuration",
+    "invalid_next_disabled": "False",
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Fill these fields to create a Key dedicated to sign the packages",
+        "subitems": [
+          {
+            "blankText": "Your name is mandatory",
+            "validator": {
+              "vtype": "alphanum",
+              "allowBlank": false
+            },
+            "key": "wizard_name",
+            "desc": "Your name"
+          },
+          {
+            "blankText": "Your email is mandatory",
+            "validator": {
+              "vtype": "email",
+              "allowBlank": false
+            },
+            "key": "wizard_email",
+            "desc": "Your email"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Or fill these fields to use an existing Key",
+        "subitems": [
+          {
+            "defaultValue": "NOT YET SUPPORTED",
+            "disabled": true,
+            "key": "wizard_keyRingPath",
+            "desc": "Path to the key rings"
+          },
+          {
+            "defaultValue": "NOT YET SUPPORTED",
+            "disabled": true,
+            "key": "wizard_publicKeyId",
+            "desc": "Existing public key Id"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Notice: to use an existing key, the key files must be named secring.gpg and pubring.gpg",
+        "subitems": []
+      }
+    ]
+  }
+]

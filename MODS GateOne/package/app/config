@@ -1,0 +1,21 @@
+{
+  ".url": {
+    "com.synocommunity.packages.gateone": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": true,
+      "title": "GateOne",
+      "desc": "GateOne",
+      "icon": "images/gateone-{0}.png",
+      "protocol": "https",
+      "url": "/",
+      "port": 8271,
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "local",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

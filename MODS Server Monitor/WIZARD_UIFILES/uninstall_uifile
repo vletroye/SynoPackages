@@ -1,0 +1,17 @@
+[
+  {
+    "step_title": "Remove Server Monitor database",
+    "items": [
+      {
+        "type": "multiselect",
+        "desc": "If you remove Server Monitor database, all contents will be deleted.",
+        "subitems": [
+          {
+            "key": "pkgwizard_remove_database",
+            "desc": "Remove database"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+#!/bin/sh
+ConfigFile="$SYNOPKG_PKGDEST/ui/Server_Monitor/config.php"
+
+echo "<?php" > "$ConfigFile"
+echo "define('PSM_DB_PREFIX', '');" >> "$ConfigFile"
+echo "define('PSM_DB_USER', '$pkgwizard_srvmon_account');" >> "$ConfigFile"
+echo "define('PSM_DB_PASS', '$pkgwizard_srvmon_password');" >> "$ConfigFile"
+echo "define('PSM_DB_NAME', '$pkgwizard_db_Name');" >> "$ConfigFile"
+echo "define('PSM_DB_HOST', '$pkgwizard_server_name');" >> "$ConfigFile"
+echo "" >> "$ConfigFile"
+
+echo "$pkgwizard_server_name" > "$SYNOPKG_PKGDEST/p_server_name"
+echo "$pkgwizard_db_Name" > "$SYNOPKG_PKGDEST/p_database_name"
+
+exit 0

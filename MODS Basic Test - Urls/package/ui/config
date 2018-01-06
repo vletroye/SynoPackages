@@ -1,0 +1,34 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.Mods_BasicTestUrl.BeatificaBytes_ext": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": true,
+      "title": "BeatificaBytes ext!",
+      "desc": "Opens The Joys of Computing in an external browser/tab.\r\nInstalled for all users and they may open multi-instances of it.",
+      "icon": "images/BeatificaBytes_ext_{0}.png",
+      "url": "http://www.beatificabytes.be",
+      "allowMultiInstance": true,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    },
+    "SYNO.SDS._ThirdParty.App.Mods_BasicTestUrl.BeatificaBytes_int": {
+      "itemType": 0,
+      "type": "legacy",
+      "allUsers": true,
+      "title": "BeatificaBytes int!",
+      "desc": "The Joys of Computing windowed in DSM.\r\nInstalled for all users but access must be granted explicitly via the Control Panel > Privileges > Permission tab. You must also reload DSM once access granted to yourself.\r\nEach user may only open once instance of this url.",
+      "icon": "images/BeatificaBytes_int_{0}.png",
+      "url": "http://www.beatificabytes.be",
+      "allowMultiInstance": false,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "local",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

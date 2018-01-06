@@ -1,0 +1,40 @@
+#!/bin/sh
+
+#close STDERR stream and redirect errors into the standard Syno Log
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
+
+LOG="/var/log/mods_sspks.log"
+
+echo `date` "PRE UPGRADE PKG VERSION:" "$SYNOPKG_PKGVER" >> $LOG
+
+echo `date` "Pre-Upgrade ongoing" >> $LOG
+echo `date` "Reading previous /etc" >> $LOG
+
+ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
+DIR=`cat $ETC_DIR/dir`
+WEB_DIR=`cat $ETC_DIR/install_dir`
+PKG_DIR=`cat $ETC_DIR/packages_dir`
+NAME=`cat $ETC_DIR/gpg_name`
+EMAIL=`cat $ETC_DIR/gpg_email`
+
+echo `date` "ETC DIR:" "$ETC_DIR" >> $LOG 
+echo `date` "NAME:" "$DIR" >> $LOG
+echo `date` "WEB DIR:" "$WEB_DIR" >> $LOG 
+echo `date` "PACKAGE DIR:" "$PKG_DIR" >> $LOG 
+echo `date` "GPG NAME:" "$NAME" >> $LOG
+echo `date` "GPG EMAIL:" "$EMAIL" >> $LOG
+
+cp -a "$ETC_DIR/." "$SYNOPKG_TEMP_UPGRADE_FOLDER/etc"
+echo `date` "ETC copied into" "$SYNOPKG_TEMP_UPGRADE_FOLDER" >> $LOG
+
+if [ -s "$SYNOPKG_TEMP_LOGFILE" ]; then
+  echo `date` "Prettyfying the PRE UPGRADE log file" >> $LOG
+  sed -i 's/$/<br>/' "$SYNOPKG_TEMP_LOGFILE"
+  echo `date` "Here are the errors if any:-------------------------" >> $LOG
+  cat $SYNOPKG_TEMP_LOGFILE >> $LOG
+  echo `date` "----------------------------------------------------" >> $LOG
+  exit 1
+fi
+
+exit 0

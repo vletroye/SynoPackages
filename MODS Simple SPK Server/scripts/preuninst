@@ -1,0 +1,58 @@
+#!/bin/sh
+
+#close STDERR stream and redirect errors into the standard Syno Log
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
+
+LOG="/var/log/mods_sspks.log"
+
+echo `date` "PRE UNINSTALL PKG VERSION:" "$SYNOPKG_PKGVER" >> $LOG
+
+ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
+DIR=`cat $ETC_DIR/dir`
+WEB_DIR=`cat $ETC_DIR/install_dir`
+PKG_DIR=`cat $ETC_DIR/packages_dir`
+NAME=`cat $ETC_DIR/gpg_name`
+EMAIL=`cat $ETC_DIR/gpg_email`
+
+echo `date` "ETC DIR:" "$ETC_DIR" >> $LOG 
+echo `date` "NAME:" "$DIR" >> $LOG
+echo `date` "WEB DIR:" "$WEB_DIR" >> $LOG 
+echo `date` "PACKAGE DIR:" "$PKG_DIR" >> $LOG 
+echo `date` "GPG NAME:" "$NAME" >> $LOG
+echo `date` "GPG EMAIL:" "$EMAIL" >> $LOG
+
+if [[ -d "$SYNOPKG_TEMP_UPGRADE_FOLDER/etc" ]]; then
+  echo `date` "ETC available in" "$SYNOPKG_TEMP_UPGRADE_FOLDER" >> $LOG
+else
+  echo `date` "ETC not available in" "$SYNOPKG_TEMP_UPGRADE_FOLDER" >> $LOG
+fi
+
+if [ -d "$WEB_DIR" ]; then
+  if [ -f "$WEB_DIR/SSPKS" ]; then
+    rm "$WEB_DIR/packages"
+	rm -Rf "$WEB_DIR"
+  else
+    echo "Cannot delete '$DIR' as it does not contain the 'SSPKS' file !" >> $LOG
+    exist 0
+  fi
+else
+  echo "$DIR does not exist?!" >> $LOG
+fi
+
+if [ -d "$WEB_DIR" ]; then
+  echo "$DIR still exist?!" >> $LOG
+  exist 0
+fi
+
+if [ -s "$SYNOPKG_TEMP_LOGFILE" ]; then
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettyfying the PRE UNINSTALL log file" >> $LOG
+  sed -i 's/$/<br>/' "$SYNOPKG_TEMP_LOGFILE"
+  echo `date` "Here are the errors if any:-------------------------" >> $LOG
+  cat $SYNOPKG_TEMP_LOGFILE >> $LOG
+  echo `date` "----------------------------------------------------" >> $LOG
+  exit 1
+fi
+
+exit 0

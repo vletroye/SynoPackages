@@ -1,0 +1,12 @@
+#!/bin/sh
+CONFIG="/var/packages/$SYNOPKG_PKGNAME"
+if [ -f "$CONFIG/etc/pkgwizard_hello" ]; then
+  pkgwizard_hello=`cat $CONFIG/etc/pkgwizard_hello`
+fi
+
+. `dirname $0`/trace `basename $0` $*
+
+if [ "$pkgwizard_delete" = "true" ]; then
+  rm -f /var/log/SpkTracer.log
+  echo "<br>Log has been deleted...<br>" >> $SYNOPKG_TEMP_LOGFILE
+fi

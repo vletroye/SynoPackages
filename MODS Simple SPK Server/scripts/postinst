@@ -1,0 +1,180 @@
+#!/bin/sh
+
+LOG="/var/log/mods_sspks.log"
+ERRLOG="/var/log/mods_sspks_err.log"
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+#close the stream and redirect them to a custom or standard Syno Log
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+echo `date` "POST INSTALL PKG VERSION:" "$SYNOPKG_PKGVER"
+
+DIR="${wizard_install_dir:=sspks_default}"
+THEME="${wizard_theme:=material}"
+PKG_DIR="${wizard_packages_dir:=/var/services/web/packages_default}"
+NAME="$wizard_name"
+EMAIL="$wizard_email"
+KEYRING="$wizard_keyRingPath"
+KEY="$wizard_publicKeyId"
+
+WEB_DIR="/var/services/web/$DIR"
+SRC_DIR="$SYNOPKG_PKGDEST/ui/SSPKS"
+
+CFG_FILE="$SYNOPKG_PKGDEST/ui/config"
+ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
+
+echo `date` "PKGDEST:" "$SYNOPKG_PKGDEST"
+echo `date` "PKGNAME:" "$SYNOPKG_PKGNAME"
+
+if [[ -n "$SYNOPKG_TEMP_UPGRADE_FOLDER" ]] && [[ -d "$SYNOPKG_TEMP_UPGRADE_FOLDER/etc" ]]; then
+  echo `date` "ETC available in" "$SYNOPKG_TEMP_UPGRADE_FOLDER"
+else
+  echo `date` "ETC not available in" "$SYNOPKG_TEMP_UPGRADE_FOLDER"
+fi
+
+if [[ "$SYNOPKG_PKG_STATUS" != "INSTALL" ]]; then
+  echo `date` "Upgrade ongoing"
+
+  if [[ ! -f "$ETC_DIR/dir" ]]; then
+    echo `date` "Copying previous /etc"
+    cp -a "$SYNOPKG_TEMP_UPGRADE_FOLDER/etc/." "$ETC_DIR"
+  else
+    echo `date` "Reusing previous /etc"
+  fi
+
+  # if upgrading, read the config information from /etc
+  DIR=`cat $ETC_DIR/dir`
+  WEB_DIR=`cat $ETC_DIR/install_dir`
+  PKG_DIR=`cat $ETC_DIR/packages_dir`
+  NAME=`cat $ETC_DIR/gpg_name`
+  EMAIL=`cat $ETC_DIR/gpg_email`
+  echo "$THEME" > $ETC_DIR/theme
+else
+  echo `date` "Installation ongoing"
+  # store config information into /etc
+  if [[ -d "$ETC_DIR" ]]; then
+    echo `date` "Deleting previous /etc"
+    rm -Rf "$ETC_DIR/*"
+  fi
+  echo "$DIR" > $ETC_DIR/dir
+  echo "$WEB_DIR" > $ETC_DIR/install_dir
+  echo "$PKG_DIR" > $ETC_DIR/packages_dir
+  echo "$THEME" > $ETC_DIR/theme
+  echo "$NAME" > $ETC_DIR/gpg_name
+  echo "$EMAIL" > $ETC_DIR/gpg_email
+fi
+
+echo `date` "NAME:" "$DIR"
+echo `date` "WEB DIR:" "$WEB_DIR" 
+echo `date` "PACKAGE DIR:" "$PKG_DIR" 
+echo `date` "SSPKS THEME:" "$THEME"
+echo `date` "GPG NAME:" "$NAME"
+echo `date` "GPG EMAIL:" "$EMAIL"
+
+# prepare a gpgKey file if 
+#   a <name> and an <email> are provided,
+#   gpg2 is installed and
+#   there is no such key yet.
+if [[ ! -f "$ETC_DIR/gpgkey.asc" ]] || [[ "$SYNOPKG_PKG_STATUS" == "INSTALL" ]]; then
+  SIGN=$(which gpg2)
+  if [[ -n "$SIGN" ]]; then
+    GPG_FILE="$SRC_DIR/conf/gpgkey"
+    GEN_FILE="$SRC_DIR/conf/createGPGKey.sh"
+    if [[ -n "$NAME" ]] && [[ -n "$EMAIL" ]]; then
+      # replace '@name@' in gpgKey parameter file
+      sed -i -e "s|@name@|$NAME|g" "$GPG_FILE"
+    
+      # replace '@email@' in gpgKey parameter file
+      sed -i -e "s|@email@|$EMAIL|g" "$GPG_FILE"
+    fi
+    mv "$GPG_FILE" "$GEN_FILE" "$ETC_DIR"
+    cd "$ETC_DIR"
+    if [[ -d "gpg" ]]; then
+      rm -R "gpg"
+    fi
+    if [[ -f "gpgkey.asc" ]]; then
+      rm "gpgkey.asc"
+    fi
+    if [[ -f "gpgkeyid.asc" ]]; then
+      rm "gpgkeyid.asc"
+    fi
+    echo `date` "Creating gpg keys"
+    sh ./createGPGKey.sh
+
+    # ignore message from gpg2 if any
+    if [ -s "$ERRLOG" ]; then
+      sed -i '/.*generating an OpenPGP key.*/d' "$ERRLOG"
+      sed -i '/.*skipping control.*/d' "$ERRLOG"
+    fi
+  else
+    echo `date` "No key created as gpg2 is not installed"
+    rm "$SRC_DIR/codesign.php"
+  fi
+fi
+
+# replace '@sspks_url@' in package's config file by the installation dir defined by the WIZARD
+sed -i -e "s|@sspks_url@|$DIR|g" "$CFG_FILE"
+
+# complete 'theme: .*' in SSPKS's config file with the theme selected by the WIZARD
+sed -i -e "s|theme: .*|theme: $THEME|g" "$SRC_DIR/conf/sspks.yaml"
+
+# deploy the key stuff
+if [[ -f "$ETC_DIR/gpgkeyid.asc" ]]; then
+# replace '@keyid@' with the public key in sign.php
+  KEYID=`cat $ETC_DIR/gpgkeyid.asc`
+  sed -i -e "s|@keyid@|$KEYID|g" "$SRC_DIR/sign.php"
+  echo `date` "Using gpg keys" "$KEYID"
+
+  # copy the public key and the key rings into the SSPKS main folder
+  if [ -d "$ETC_DIR/gpg" ]; then
+    cp -R "$ETC_DIR/gpg" "$SRC_DIR"
+    echo `date` "Key Rings copied into SSPKS"
+  fi
+  if [ -f "$ETC_DIR/gpgkey.asc" ]; then
+    cp "$ETC_DIR/gpgkey.asc" "$SRC_DIR"
+    echo `date` "Public Key copied into SSPKS"
+  fi
+else
+  echo "Notice: GPG2 is not installed.<br>GPGKEYS have therefore not been generated.<br>You won't be able to sign your Package within SSPKS...<br>" >> $SYNOPKG_TEMP_LOGFILE
+  echo `date` "No Public Key and Ring Keys to be copied into SSPKS"
+fi
+
+# prepare the repository where packages will be published
+if [[ ! -d "$PKG_DIR" ]]; then
+  mkdir "$PKG_DIR"
+  echo `date` "Package Folder created"
+else
+  echo `date` "Package Folder reused"
+fi
+
+# move all files into the <target web directory>
+if [[ ! -d "$WEB_DIR" ]] && [[ -n "$WEB_DIR" ]]; then
+  mv "$SRC_DIR" "$WEB_DIR"
+  ln -s "$PKG_DIR" "$WEB_DIR/packages"
+  echo `date` "Website created and linked with the Package Folder"
+
+  chown -R http:users "$WEB_DIR"
+  chown -R http:users "$PKG_DIR"
+else
+  echo "A web folder named" "$DIR" "already exist. Please rename it before reinstalling or choose another folder." >> $ERRLOG
+  echo `date` "$WEB_DIR" "already exist."
+  ls -la "$WEB_DIR" >> $LOG
+fi
+
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettifying the POST INSTALL log file"
+  sed -i 's/$/<br>/' "$ERRLOG"
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
+
+exit 0

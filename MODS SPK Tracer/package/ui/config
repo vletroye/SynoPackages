@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.SPK_Tracer": {
+      "itemType": 1,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "SPK Tracer",
+      "desc": "Traces Synology's package installing/updating/removing processes.",
+      "icon": "images/SPK_Tracer_{0}.png",
+      "url": "/webman/3rdparty/MODS_SPKTracer/mods.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": null,
+      "width": 0,
+      "height": 0
+    }
+  }
+}

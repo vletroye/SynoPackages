@@ -1,0 +1,59 @@
+#!/bin/sh
+exec 4<&1
+exec 5<&2
+
+exec 2>&1
+exec 1>>/var/log/SpkTracer.log
+
+SCRIPT=${0##*/}
+SCRIPTPATH=`dirname $0`
+
+echo "<b>'$*'</b> called at $(date)" 
+echo ""
+
+: '
+echo "SYNOPKG_PKGNAME=$SYNOPKG_PKGNAME"
+echo "SYNOPKG_PKGVER=$SYNOPKG_PKGVER"
+echo "SYNOPKG_PKGDEST=$SYNOPKG_PKGDEST"
+echo "SYNOPKG_PKGDEST_VOL=$SYNOPKG_PKGDEST_VOL"
+echo "SYNOPKG_PKGPORT=$SYNOPKG_PKGPORT"
+echo "SYNOPKG_PKGINST_TEMP_DIR=$SYNOPKG_PKGINST_TEMP_DIR"
+echo "SYNOPKG_TEMP_LOGFILE=$SYNOPKG_TEMP_LOGFILE"
+echo "SYNOPKG_TEMP_UPGRADE_FOLDER=$SYNOPKG_TEMP_UPGRADE_FOLDER"
+echo "SYNOPKG_DSM_LANGUAGE=$SYNOPKG_DSM_LANGUAGE"
+echo "SYNOPKG_DSM_VERSION_MAJOR=$SYNOPKG_DSM_VERSION_MAJOR"
+echo "SYNOPKG_DSM_VERSION_MINOR=$SYNOPKG_DSM_VERSION_MINOR"
+echo "SYNOPKG_DSM_VERSION_BUILD=$SYNOPKG_DSM_VERSION_BUILD"
+echo "SYNOPKG_DSM_ARCH=$SYNOPKG_DSM_ARCH"
+echo "SYNOPKG_PKG_STATUS=$SYNOPKG_PKG_STATUS"
+echo "SYNOPKG_OLD_PKGVER=$SYNOPKG_OLD_PKGVER"
+echo "SYNOPKG_TEMP_SPKFILE=$SYNOPKG_TEMP_SPKFILE"
+echo "SYNOPKG_USERNAME=$SYNOPKG_USERNAME"
+echo "SYNOPKG_PKG_PROGRESS_PATH=$SYNOPKG_PKG_PROGRESS_PATH"
+'
+
+echo ""
+declare -xp | grep " SYNOPKG" | sed 's/declare -x //'
+echo ""
+declare -xp | grep " SYNO" | grep -v " SYNOPKG" | sed 's/declare -x //'
+echo ""
+declare -xp | grep " pkgwizard" | grep -v " SYNO" | sed 's/declare -x //'
+echo ""
+: '
+declare -xp | grep -v " SYNO" | sed 's/declare -x //'
+echo ""
+'
+
+if [ ! -z "$SYNOPKG_TEMP_LOGFILE" ]; then
+  if [ "$pkgwizard_hello" = "true" ]; then
+    echo "Hello! '$*' is done ($SCRIPTPATH)<br>" >> $SYNOPKG_TEMP_LOGFILE
+  else
+    echo "'$*' done ($SCRIPTPATH)<br>" >> $SYNOPKG_TEMP_LOGFILE
+  fi
+fi
+
+echo "<hr>"
+
+
+exec 1<&4
+exec 2<&5

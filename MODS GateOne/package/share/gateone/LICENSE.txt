@@ -1,0 +1,52 @@
+COPYRIGHT NOTICE
+================
+Gate One and all bundled original code...
+
+    Copyright 2013 Liftoff Software Corporation
+
+Gate One is dual-licensed:  AGPLv3 or Commercial Licensing.
+
+Unless you have been granted a license from Liftoff Software, Gate One and all
+bundled software--except where noted--is licensed under the GNU Affero General
+Public License version 3.  A copy of the AGPLv3 license should have been
+included with the Gate One software as AGPLv3.txt.  If not, a copy may be
+obtained by visiting:
+
+    http://www.gnu.org/licenses/agpl.html
+
+If the terms of the AGPLv3 license do not suit your needs, a proprietary
+license may be purchased from Liftoff Software:  http://liftoffsoftware.com/
+
+Included 3rd party items and their licenses
+-------------------------------------------
+
+Specific files
+^^^^^^^^^^^^^^
+SVG Icons (inline in gateone.js) were taken from GoSquared which released them
+under the, "free for you to use as you wish" license =).  See:
+
+    http://www.gosquared.com/liquidicity/archives/122
+
+The pdf.svg icon was created by "Beate Kaspar, Hendrik Eggers" and licensed
+under the "Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)" license:
+
+    http://creativecommons.org/licenses/by-sa/3.0/
+
+The gopam.py module is licensed under the MIT license:
+
+    http://www.opensource.org/licenses/mit-license.php
+
+Portional items
+^^^^^^^^^^^^^^^
+Portions of Gate One's JavaScript contain code taken from the excellent MochiKit
+library which is licensed under the MIT license:
+
+    http://www.opensource.org/licenses/mit-license.php
+
+The portions of code taken from MochiKit are explicitly indicated in gateone.js.
+
+
+NOTICE OF ATTRIBUTION IN GOOD FAITH
+-----------------------------------
+If we failed to attribute or state the license of something included with Gate
+One please let us know so it can be corrected.

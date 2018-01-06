@@ -1,0 +1,14 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.Simple_Chat": {
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Simple Chat",
+      "desc": "Most Simple Ajax Chat Ever",
+      "icon": "images/Simple_Chat_{0}.png",
+      "url": "/webman/3rdparty/MODS_SimpleChat/index.html",
+      "itemType": 2,
+      "allowMultiInstance": false
+    }
+  }
+}

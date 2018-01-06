@@ -1,0 +1,24 @@
+#!/bin/sh
+
+pkgwizard_server_name=`cat $SYNOPKG_PKGDEST/p_server_name`
+pkgwizard_db_Name=`cat $SYNOPKG_PKGDEST/p_database_name`
+
+MYSQL=`which mysql`;
+
+if [ "$pkgwizard_remove_database" = "true" ]; then
+    $MYSQL -vvv -h "$pkgwizard_server_name" -u "$SYNOPKG_USERNAME" -e "DROP DATABASE $pkgwizard_db_Name"
+    if [ $? -eq 1 ]; then
+        if [ -z "$SYNOPKG_DSM_LANGUAGE" ]; then
+            echo "Fail to drop database $pkgwizard_db_Name." > $SYNOPKG_TEMP_LOGFILE
+            exit 0
+        fi
+        case $SYNOPKG_DSM_LANGUAGE in
+             *)
+            echo "Fail to drop database $pkgwizard_db_Name." > $SYNOPKG_TEMP_LOGFILE 
+             ;;
+        esac
+        exit 0
+    fi
+fi
+
+exit 0

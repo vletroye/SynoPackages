@@ -1,0 +1,21 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_ServerMonitor": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Server Monitor",
+      "desc": "PHP Server Monitor is a script that checks whether your websites and servers are up and running. It comes with a web based user interface where you can manage your services and websites, and you can manage users for each server with a mobile number and email address.",
+      "icon": "images/Server_Monitor_{0}.png",
+      "protocol": "http",
+      "url": "/webman/3rdparty/MODS_ServerMonitor/index.php",
+      "port": 80,
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": null,
+      "width": 0,
+      "height": 0
+    }
+  }
+}

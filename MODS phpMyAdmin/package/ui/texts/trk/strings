@@ -1,0 +1,7 @@
+
+# Copyright (c) 2000-2008 Synology Inc. All rights reserved.
+
+[app]
+app_name	=	"phpMyAdmin"
+description	=	"phpMyAdmin ücretsiz bir yazılım aracı olup MySQL veritabanlarını yönetmek üzere tasarlanmıştır. Bu paketi yükleyerek DiskStation’ınızda saklanan MySQL veritabanlarını yönetin."
+

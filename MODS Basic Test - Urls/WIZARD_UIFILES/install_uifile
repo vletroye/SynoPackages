@@ -1,0 +1,24 @@
+[
+  {
+    "step_title": "Installation Warning",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "multiselect",
+        "desc": "This package contains two icons to open BeatificaBytes. The first icon opens the website in a new window. The second one opens it in an iframe. If you want to test this second icon, you must disable the option 'Improve security with HTTP Content Security Policy (CSP) header' via your DSM's Control Panel > Security.",
+        "subitems": [
+          {
+            "invalidText": "Please select the 'Understood' checkbox...",
+            "validator": {
+              "fn": "{return arguments[0];}",
+              "allowBlank": false
+            },
+            "key": "warning",
+            "defaultValue": "false",
+            "desc": "Understood"
+          }
+        ]
+      }
+    ]
+  }
+]

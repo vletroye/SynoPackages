@@ -1,0 +1,73 @@
+[
+  {
+    "step_title": "Database Information",
+    "invalid_next_disabled": "False",
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Enter Database Server Information",
+        "subitems": [
+          {
+            "key": "pkgwizard_server_name",
+            "desc": "Server Name",
+            "defaultValue": "localhost"
+          },
+          {
+            "key": "pkgwizard_db_Name",
+            "desc": "Database Name",
+            "defaultValue": "phpservermon"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Enter Database Administrator account",
+        "subitems": [
+          {
+            "defaultValue": "root",
+            "key": "pkgwizard_admin_account",
+            "desc": "Account"
+          }
+        ]
+      },
+      {
+        "type": "password",
+        "desc": "Enter Database Administrator password",
+        "subitems": [
+          {
+            "key": "pkgwizard_admin_password",
+            "desc": "Password"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "step_title": "ServerMon Information",
+    "invalid_next_disabled": "False",
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Enter an account to access Server Monitor's Database",
+        "subitems": [
+          {
+            "key": "pkgwizard_srvmon_account",
+            "defaultValue": "servermon",
+            "desc": "Account"
+          }
+        ]
+      },
+      {
+        "type": "password",
+        "desc": "Enter a Password for this account (will be visible in Server Monitor's config.php)",
+        "subitems": [
+          {
+            "key": "pkgwizard_srvmon_password",
+            "defaultValue": "ServerMonitor!",
+            "desc": "Password"
+          }
+        ]
+      }
+    ]
+  }
+]

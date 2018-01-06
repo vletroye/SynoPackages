@@ -1,0 +1,7 @@
+
+# Copyright (c) 2000-2008 Synology Inc. All rights reserved.
+
+[app]
+app_name	=	"phpMyAdmin"
+description	=	"phpMyAdmin is een gratis hulpprogramma ontwikkeld voor het beheren van MySQL-databases. Beheer de MySQL-databases op het DiskStation door dit pakket te installeren."
+

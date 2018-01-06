@@ -1,0 +1,10 @@
+#!/bin/sh
+
+CONFIG="/var/packages/$SYNOPKG_PKGNAME"
+if [ ! -d "$CONFIG/etc" ]; then
+    mkdir "$CONFIG/etc"
+fi
+echo "$pkgwizard_hello" > $CONFIG/etc/pkgwizard_hello
+
+
+. `dirname $0`/trace `basename $0` $*

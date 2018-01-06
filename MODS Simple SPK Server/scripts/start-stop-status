@@ -1,0 +1,59 @@
+#!/bin/sh
+
+CONFIG="/var/packages/$SYNOPKG_PKGNAME"
+WEB_DIR=`cat $CONFIG/etc/install_dir`
+LOG="/var/log/mods_sspks.log"
+
+if [[ ! $1 == "log" ]] && [[ ! $1 == "status" ]] ; then
+  echo `date` "START/STOP (" $1 ") PKG VERSION:" "$SYNOPKG_PKGVER" >> $LOG
+fi
+
+start()
+{
+rm "$WEB_DIR/cache/*.nfo"
+rm "$WEB_DIR/cache/*.png"
+rm "$WEB_DIR/cache/*.asc"
+
+if [ -f "$WEB_DIR/index.html" ]; then
+  mv "$WEB_DIR/index.html" "$WEB_DIR/disabled.html"
+fi
+if [ -f "$WEB_DIR/index.bkp" ]; then
+	mv "$WEB_DIR/index.bkp" "$WEB_DIR/index.php"
+fi
+echo `date` "SSPKS started" >> $LOG
+}
+
+stop()
+{
+rm "$WEB_DIR/cache/*.nfo"
+rm "$WEB_DIR/cache/*.png"
+rm "$WEB_DIR/cache/*.asc"
+
+if [ -f "$WEB_DIR/disabled.html" ]; then
+	mv "$WEB_DIR/disabled.html" "$WEB_DIR/index.html"
+fi
+if [ -f "$WEB_DIR/index.php" ]; then
+	mv "$WEB_DIR/index.php" "$WEB_DIR/index.bkp"
+fi
+echo `date` "SSPKS stopped" >> $LOG
+}
+
+case $1 in
+	start)
+		start
+		exit 0
+	;;
+	stop)
+		stop
+		exit 0
+	;;
+	status)
+		exit 0
+	;;
+	log)
+		echo $LOG
+		exit 0
+	;;
+esac
+
+exit 0

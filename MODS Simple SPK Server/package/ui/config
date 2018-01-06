@@ -1,0 +1,21 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_SSPKS.SSPKS": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": false,
+      "title": "SSPKS",
+      "desc": "A very simple Synology Package Server, reverse engineered from the official Synology package repository and SynoCommunity.",
+      "icon": "images/SSPKS_{0}.png",
+      "protocol": "http",
+      "url": "/@sspks_url@/?arch=all",
+      "port": 80,
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
