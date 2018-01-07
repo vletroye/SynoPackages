@@ -5,7 +5,7 @@
       "type": "legacy",
       "allUsers": false,
       "title": "Package Manager",
-      "desc": "Simple application to move packages from a volume to another",
+      "desc": "Simple application to move packages from a volume to another  - or - to erase them.",
       "icon": "images/Package_Manager_{0}.png",
       "url": "/webman/3rdparty/MODS_PackageManager/mvpkg.php",
       "allowMultiInstance": false,

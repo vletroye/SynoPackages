@@ -197,19 +197,12 @@
 		border-radius:8px;
 		-moz-box-shadow: 2px 2px 6px #888;  
 		-webkit-box-shadow: 2px 2px 6px #888;   
-		box-shadow:2px 2px 6px #888;  	
+		box-shadow:2px 2px 6px #888;
+		background-color: F5FAFF;
 	}
 	fieldset legend
 	{
 		color:#069;
-	}
-
-	body {
-		background: #fcfff4; /* Old browsers */
-		background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top, #fcfff4 0%,#dfe5d7 40%,#b3bead 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, #fcfff4 0%,#dfe5d7 40%,#b3bead 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 ); /* IE6-9 */
 	}
 
     #loading
@@ -387,7 +380,7 @@ foreach ($usedVolumes as $key => $volume){
 	echo "</fieldset>";
 }
 
-echo "<br/><br/><input type='button' id='refresh' value='Refresh'>\n";
+echo "<br/><input type='button' id='refresh' style='float: right;' value='Refresh'><br/><br/>\n";
 echo "<hr>\n";
 
 echo "<form action='mvpkg.php' method='post'>";
@@ -418,7 +411,7 @@ echo "<input type='button' id='start' value='Start' title='Start the selected se
 echo "<input type='button' id='stop' value='Stop' title='Stop the selected service' disabled> \n";
 echo "<input type='button' id='forward' value='Forward Dep' title='Display all services on which the selected one depends.' disabled> \n";
 echo "<input type='button' id='reverse' value='Reverse Dep' title='Display all services depending on the selected one.' disabled> \n";
-echo "<input type='button' id='erase' value='Erase' title='Delete a Package which is a dependency.' disabled> \n";
+echo "<input type='button' id='erase' value='Erase' style='float: right;' title='Delete a Package ignoring dependencies if any.' disabled> \n";
 echo "<hr> \n";
 if ($action != '') {
 	//ob_start();

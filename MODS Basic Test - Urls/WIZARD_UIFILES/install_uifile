@@ -5,7 +5,7 @@
     "items": [
       {
         "type": "multiselect",
-        "desc": "This package contains two icons to open BeatificaBytes. The first icon opens the website in a new window. The second one opens it in an iframe. If you want to test this second icon, you must disable the option 'Improve security with HTTP Content Security Policy (CSP) header' via your DSM's Control Panel > Security.",
+        "desc": "This package contains icons to open various URLs. Some URLs are opened in an iframe. If you want to test them, you must disable the option 'Improve security with HTTP Content Security Policy (CSP) header' via your DSM's Control Panel > Security.",
         "subitems": [
           {
             "invalidText": "Please select the 'Understood' checkbox...",

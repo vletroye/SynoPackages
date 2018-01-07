@@ -1,0 +1,17 @@
+#!/bin/sh
+case $1 in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	status)
+		exit 0
+	;;
+	log)
+		exit 0
+	;;
+esac
+
+exit 0
