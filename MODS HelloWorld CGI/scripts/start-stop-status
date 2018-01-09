@@ -1,0 +1,18 @@
+#!/bin/sh
+
+case $1 in
+	start)
+		exit 0
+	;;
+	stop)
+		exit 0
+	;;
+	status)
+		exit 0
+	;;
+	log)
+		echo "HelloWorldPhp is installed properly. To access it, select it from the Main Menu">/tmp/cc.log
+		echo "/tmp/cc.log";
+		exit 0
+	;;
+esac

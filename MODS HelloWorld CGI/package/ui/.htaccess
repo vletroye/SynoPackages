@@ -1,0 +1,10 @@
+# Turn on rewrite engine.
+RewriteEngine on
+
+# Rewrite existing php files to the router script.
+# Apache on the Synology NAS automatically redirects url
+# containing '../' to the corresponding real path, before
+# the router script is executed, so it's impossible to
+# execute system files.
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*\.php)$ router.cgi [PT,L,QSA,NE]
