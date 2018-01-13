@@ -1,2 +1,39 @@
 #!/bin/sh
+
+LOG="/var/log/mods_ServerMonitor.log"
+ERRLOG="/var/log/mods_ServerMonitor_err.log"
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+#close the stream and redirect them to a custom or standard Syno Log
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+echo `date` "POST UPGRADE PKG VERSION: $SYNOPKG_PKGVER"
+
+ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
+
+pkgwizard_server_name=`cat "$ETC_DIR/server_name"`
+pkgwizard_db_Name=`cat "$ETC_DIR/database_name"`
+pkgwizard_srvmon_account=`cat "$ETC_DIR/mysql_account"`
+pkgwizard_srvmon_password=`cat "$ETC_DIR/mysql_password"`
+PORT=`cat "$ETC_DIR/mysql_port"`
+HOST=`cat "$ETC_DIR/mysql_host"`
+
+ConfigFile="$SYNOPKG_PKGDEST/ui/config.php"
+
+echo "<?php" > "$ConfigFile"
+echo "\$url=(isset(\$_SERVER['HTTPS']) ? 'https' : 'http') . '://' . \$_SERVER[HTTP_HOST] . dirname(\$_SERVER[REQUEST_URI]);" >> "$ConfigFile"
+echo "define('PSM_DB_PREFIX', '');" >> "$ConfigFile"
+echo "define('PSM_DB_USER', '$pkgwizard_srvmon_account');" >> "$ConfigFile"
+echo "define('PSM_DB_PASS', '$pkgwizard_srvmon_password');" >> "$ConfigFile"
+echo "define('PSM_DB_NAME', '$pkgwizard_db_Name');" >> "$ConfigFile"
+echo "define('PSM_DB_HOST', '$HOST');" >> "$ConfigFile"
+echo "define('PSM_DB_PORT', '$PORT');" >> "$ConfigFile"
+echo "define('PSM_BASE_URL', \$url);" >> "$ConfigFile"
+echo "" >> "$ConfigFile"
+
 exit 0

@@ -18,18 +18,17 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: v3.2.0
  * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 2.1.0
  **/
 
 // Include paths
-define('PSM_PATH_SRC', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('PSM_PATH_INC', PSM_PATH_SRC . 'includes' . DIRECTORY_SEPARATOR);
-define('PSM_PATH_TPL', PSM_PATH_SRC . 'templates' . DIRECTORY_SEPARATOR);
+define('PSM_PATH_SRC', __DIR__ . DIRECTORY_SEPARATOR);
+define('PSM_PATH_CONFIG', PSM_PATH_SRC . 'config' . DIRECTORY_SEPARATOR);
 define('PSM_PATH_LANG', PSM_PATH_SRC . 'lang' . DIRECTORY_SEPARATOR);
 
 // user levels
@@ -52,7 +51,7 @@ if(!defined('PSM_DEBUG')) {
 }
 if(PSM_DEBUG) {
 	error_reporting(E_ALL);
-	ini_set('display_erors', 1);
+	ini_set('display_errors', 1);
 } else {
 	error_reporting(0);
 	ini_set('display_errors', 0);
@@ -64,30 +63,9 @@ if(!file_exists($vendor_autoload)) {
 }
 require_once $vendor_autoload;
 
-// set autoloader, make sure to set $prepend = true so that our autoloader is called first
-spl_autoload_register(function($class) {
-	// remove leading \
-	$class = ltrim($class, '\\');
-	$path_parts = explode('\\', $class);
-
-	$filename = array_pop($path_parts);
-	$path = PSM_PATH_SRC . implode(DIRECTORY_SEPARATOR, $path_parts) .
-			DIRECTORY_SEPARATOR .
-			$filename . '.class.php'
-	;
-	if(file_exists($path)) {
-		require_once $path;
-		return;
-	}
-});
-
-// auto-find all include files
-$includes = glob(PSM_PATH_INC . '*.inc.php');
-foreach($includes as $file) {
-	include_once $file;
-}
-// init db connection
-$db = new psm\Service\Database();
+$router = new psm\Router();
+// this may seem insignificant, but right now lots of functions depend on the following global var definition:
+$db = $router->getService('db');
 
 // sanity check!
 if(!defined('PSM_INSTALL') || !PSM_INSTALL) {

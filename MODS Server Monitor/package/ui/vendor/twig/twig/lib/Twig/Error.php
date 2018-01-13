@@ -57,7 +57,7 @@ class Twig_Error extends Exception
      */
     public function __construct($message, $lineno = -1, $filename = null, Exception $previous = null)
     {
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+        if (PHP_VERSION_ID < 50300) {
             $this->previous = $previous;
             parent::__construct('');
         } else {
@@ -111,7 +111,7 @@ class Twig_Error extends Exception
     /**
      * Gets the template line where the error occurred.
      *
-     * @return int     The template line
+     * @return int The template line
      */
     public function getTemplateLine()
     {
@@ -121,7 +121,7 @@ class Twig_Error extends Exception
     /**
      * Sets the template line where the error occurred.
      *
-     * @param int     $lineno The template line
+     * @param int $lineno The template line
      */
     public function setTemplateLine($lineno)
     {
@@ -155,6 +155,15 @@ class Twig_Error extends Exception
         throw new BadMethodCallException(sprintf('Method "Twig_Error::%s()" does not exist.', $method));
     }
 
+    public function appendMessage($rawMessage)
+    {
+        $this->rawMessage .= $rawMessage;
+        $this->updateRepr();
+    }
+
+    /**
+     * @internal
+     */
     protected function updateRepr()
     {
         $this->message = $this->rawMessage;
@@ -163,6 +172,12 @@ class Twig_Error extends Exception
         if ('.' === substr($this->message, -1)) {
             $this->message = substr($this->message, 0, -1);
             $dot = true;
+        }
+
+        $questionMark = false;
+        if ('?' === substr($this->message, -1)) {
+            $this->message = substr($this->message, 0, -1);
+            $questionMark = true;
         }
 
         if ($this->filename) {
@@ -181,14 +196,21 @@ class Twig_Error extends Exception
         if ($dot) {
             $this->message .= '.';
         }
+
+        if ($questionMark) {
+            $this->message .= '?';
+        }
     }
 
+    /**
+     * @internal
+     */
     protected function guessTemplateInfo()
     {
         $template = null;
         $templateClass = null;
 
-        if (version_compare(phpversion(), '5.3.6', '>=')) {
+        if (PHP_VERSION_ID >= 50306) {
             $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS | DEBUG_BACKTRACE_PROVIDE_OBJECT);
         } else {
             $backtrace = debug_backtrace();
@@ -229,6 +251,8 @@ class Twig_Error extends Exception
 
         while ($e = array_pop($exceptions)) {
             $traces = $e->getTrace();
+            array_unshift($traces, array('file' => $e->getFile(), 'line' => $e->getLine()));
+
             while ($trace = array_shift($traces)) {
                 if (!isset($trace['file']) || !isset($trace['line']) || $file != $trace['file']) {
                     continue;

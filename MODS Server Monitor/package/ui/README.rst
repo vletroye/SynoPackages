@@ -1,7 +1,12 @@
 PHP Server Monitor
 ==================
 
-Version 3.1.1
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+   :alt: Join the chat at https://gitter.im/erickrf/nlpnet
+   :target: https://gitter.im/phpservermon/phpservermon
+   
+Version 3.2.0
+
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
@@ -29,7 +34,7 @@ There are two different ways to monitor a server:
 * Website
 
   You can enter a link to a website, it will then use cURL to open the website and check the HTTP status code.
-  If the HTTP status code is in the 4xx range, it means an error occurred and the website is not accessible to the public.
+  If the HTTP status code is in the 4xx/5xx, it means an error occurred and the website is not accessible to the public.
   You can also set a regular expression to match for content on the page itself.
   If the regular expression returns no matches, the website is considered down.
   In both cases the script will return a "status offline", and will start sending out notifications.
@@ -46,6 +51,12 @@ The following SMS gateways are currently available:
 * SMSit - <http://www.smsit.dk/>
 * Spryng - <http://www.spryng.nl>
 * Textmarketer - <http://www.textmarketer.co.uk>
+* FreeVoipDeal - <http://www.freevoipdeal.com>
+* Nexmo - <https://www.nexmo.com/>
+* OctoPush - <http://www.octopush.com/>
+* FreeMobile (FR) - <http://mobile.free.fr/>
+
+
 
 Please note: for these gateways you will need an account with sufficient credits.
 
@@ -64,6 +75,7 @@ Requirements
 * PHP 5.3.7+
 * PHP cURL package
 * PHP PDO mysql driver
+* PHP-XML
 
 
 Install
@@ -77,6 +89,11 @@ To be able to run an installation from the repo, you need to run the following c
 
      php composer.phar install
 
+If you are familiar with Vagrant (https://www.vagrantup.com)::
+
+     vagrant up
+
+.. and browse to http://localhost:8080/psm/.
 
 
 Documentation
@@ -100,3 +117,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with PHP Server Monitor.  If not, see http://www.gnu.org/licenses/.
+
+Docker
+-------
+
+PHPServerMonitor is now available on Docker : https://github.com/phpservermon/docker-phpservermonitor

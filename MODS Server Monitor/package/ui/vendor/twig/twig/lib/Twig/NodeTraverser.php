@@ -19,7 +19,7 @@
 class Twig_NodeTraverser
 {
     protected $env;
-    protected $visitors;
+    protected $visitors = array();
 
     /**
      * Constructor.
@@ -30,7 +30,6 @@ class Twig_NodeTraverser
     public function __construct(Twig_Environment $env, array $visitors = array())
     {
         $this->env = $env;
-        $this->visitors = array();
         foreach ($visitors as $visitor) {
             $this->addVisitor($visitor);
         }
@@ -54,6 +53,8 @@ class Twig_NodeTraverser
      * Traverses a node and calls the registered visitors.
      *
      * @param Twig_NodeInterface $node A Twig_NodeInterface instance
+     *
+     * @return Twig_NodeInterface
      */
     public function traverse(Twig_NodeInterface $node)
     {

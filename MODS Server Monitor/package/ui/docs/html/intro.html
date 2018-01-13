@@ -1,64 +1,65 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Introduction &mdash; PHP Server Monitor v3.1.1 documentation</title>
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    
+    <title>Introduction &mdash; PHP Server Monitor 3.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-          URL_ROOT:    '',
-          VERSION:     '3.1.1',
-          COLLAPSE_MODINDEX: false,
-          FILE_SUFFIX: ''
+        URL_ROOT:    './',
+        VERSION:     '3.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/interface.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="contents" title="Global table of contents" href="contents.html" />
-    <link rel="index" title="Global index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
-    <link rel="top" title="PHP Server Monitor v3.1.1 documentation" href="index.html" />
+    <link rel="top" title="PHP Server Monitor 3.2.0 documentation" href="index.html" />
     <link rel="next" title="Requirements" href="requirements.html" />
-    <link rel="prev" title="Welcome to the PHP Server Monitor documentation!" href="index.html" />
+    <link rel="prev" title="Welcome to the PHP Server Monitor documentation!" href="index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="modindex.html" title="Global Module Index"
-             accesskey="M">modules</a> |</li>
-        <li class="right" >
           <a href="requirements.html" title="Requirements"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to the PHP Server Monitor documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">PHP Server Monitor v3.1.1 documentation</a> &raquo;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.2.0 documentation</a> &raquo;</li> 
       </ul>
-    </div>
+    </div>  
+
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
-  
   <div class="section" id="introduction">
-<span id="intro"></span><h1 id="introduction"><span id="intro"></span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<span id="intro"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="summary">
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
 and you can manage users for each server with a mobile number and email address.</p>
 </div>
 <div class="section" id="features">
-<h2 id="features">Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Monitor services and websites (see below).</li>
 <li>Email, SMS and Pushover notifications.</li>
@@ -68,7 +69,7 @@ and you can manage users for each server with a mobile number and email address.
 <li>Easy cronjob implementation to automatically check your servers.</li>
 </ul>
 <div class="section" id="servers">
-<h3 id="servers">Servers<a class="headerlink" href="#servers" title="Permalink to this headline">¶</a></h3>
+<h3>Servers<a class="headerlink" href="#servers" title="Permalink to this headline">¶</a></h3>
 <p>There are two different ways to monitor a server:</p>
 <ul>
 <li><p class="first">Service</p>
@@ -86,7 +87,7 @@ In both cases the script will return a &#8220;status offline&#8221;, and will st
 </ul>
 </div>
 <div class="section" id="notifications">
-<h3 id="notifications">Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline">¶</a></h3>
+<h3>Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline">¶</a></h3>
 <p>Each server has its own settings regarding notification.
 You can choose for email, text message (SMS) and Pushover.net notifications.
 The following SMS gateways are currently available:</p>
@@ -99,12 +100,14 @@ The following SMS gateways are currently available:</p>
 <li>SMSit - &lt;<a class="reference external" href="http://www.smsit.dk/">http://www.smsit.dk/</a>&gt;</li>
 <li>Spryng - &lt;<a class="reference external" href="http://www.spryng.nl">http://www.spryng.nl</a>&gt;</li>
 <li>Textmarketer - &lt;<a class="reference external" href="http://www.textmarketer.co.uk">http://www.textmarketer.co.uk</a>&gt;</li>
+<li>FreeVoipDeal - &lt;<a class="reference external" href="http://www.freevoipdeal.com">http://www.freevoipdeal.com</a>&gt;</li>
+<li>Nexmo - &lt;<a class="reference external" href="https://www.nexmo.com/">https://www.nexmo.com/</a>&gt;</li>
 </ul>
 <p>Please note: for these gateways you will need an account with sufficient credits.</p>
 </div>
 </div>
 <div class="section" id="download">
-<h2 id="download">Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
 <p>The latest version can be downloaded from <a class="reference external" href="http://www.phpservermonitor.org/">http://www.phpservermonitor.org/</a>.</p>
 </div>
 </div>
@@ -113,62 +116,70 @@ The following SMS gateways are currently available:</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-            <h3>Table Of Contents</h3>
-            <ul>
-<li><a class="reference external" href="">Introduction</a><ul>
-<li><a class="reference external" href="#summary">Summary</a></li>
-<li><a class="reference external" href="#features">Features</a><ul>
-<li><a class="reference external" href="#servers">Servers</a></li>
-<li><a class="reference external" href="#notifications">Notifications</a></li>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#features">Features</a><ul>
+<li><a class="reference internal" href="#servers">Servers</a></li>
+<li><a class="reference internal" href="#notifications">Notifications</a></li>
 </ul>
 </li>
-<li><a class="reference external" href="#download">Download</a></li>
+<li><a class="reference internal" href="#download">Download</a></li>
 </ul>
 </li>
 </ul>
 
-            <h4>Previous topic</h4>
-            <p class="topless"><a href="index.html" title="previous chapter">Welcome to the PHP Server Monitor documentation!</a></p>
-            <h4>Next topic</h4>
-            <p class="topless"><a href="requirements.html" title="next chapter">Requirements</a></p>
-            <h3>This Page</h3>
-            <ul class="this-page-menu">
-              <li><a href="_sources/intro.txt">Show Source</a></li>
-            </ul>
-            <h3>Quick search</h3>
-            <form class="search" action="search.html" method="get">
-              <input type="text" name="q" size="18" /> <input type="submit" value="Go" />
-              <input type="hidden" name="check_keywords" value="yes" />
-              <input type="hidden" name="area" value="default" />
-            </form>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to the PHP Server Monitor documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="requirements.html"
+                        title="next chapter">Requirements</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/intro.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="modindex.html" title="Global Module Index"
-             accesskey="M">modules</a> |</li>
+             >index</a></li>
         <li class="right" >
           <a href="requirements.html" title="Requirements"
-             accesskey="N">next</a> |</li>
+             >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to the PHP Server Monitor documentation!"
-             accesskey="P">previous</a> |</li>
-        <li><a href="index.html">PHP Server Monitor v3.1.1 documentation</a> &raquo;</li>
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.2.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
-      &copy; <a href="copyright.html">Copyright</a> 2008-2014, Pepijn Over.
-      Last updated on Nov 06, 2014.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    <div class="footer" role="contentinfo">
+        &copy; <a href="copyright.html">Copyright</a> 2008-2017, Pepijn Over.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.6.
     </div>
   </body>
 </html>

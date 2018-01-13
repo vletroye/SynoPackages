@@ -2,6 +2,30 @@ Changelog
 =========
 
 
+not yet released
+----------------
+
+
+
+v3.2.0 (released April 15, 2017)
+--------------------------------
+
+* #170: Implement Nexmo SMS.
+* #161: Added Swedish translation.
+* #185: Added Estonian translation.
+* #210: Added Finnish translation.
+* #201: Added Persian translation.
+* #195: Updated Spanish translation.
+* #169: Increased server ip char limit to 500.
+* #164: Added support for FreeVoipDeal SMS gateway <http://www.freevoipdeal.com>.
+* #181: Added blank index files to prevent directory listing.
+* #237: Adding CSRF protection.
+* #287: Default language - English
+* #286: Add popular ports drop down
+* #269: Added Slovenian language 
+* #96:  Authentication for website checks
+
+
 v3.1.1 (released November 6, 2014)
 ----------------------------------
 

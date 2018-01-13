@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      Luiz Alberto S. Ribeiro <madeinnordeste@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: v3.2.0
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Português - Brazilian Portuguese',
 	'locale' => array('pt_BR.UTF-8', 'pt_BR', 'portuguese-brazilian'),
+	'locale_tag' => 'BR',
+	'locale_dir' => 'ltr',
     'system' => array(
         'title' => 'Server Monitor',
 		'install' => 'Instalar',
@@ -149,7 +151,7 @@ $sm_lang = array(
 		'month' => 'Mês',
 		'week' => 'Semana',
 		'day' => 'Dia',
-		'hour' => 'HOra',
+		'hour' => 'Hora',
 		'warning_threshold' => 'Limite de Aviso',
 		'warning_threshold_description' => 'Número de verificações que falharam antes de ser marcado offline.',
 		'chart_last_week' => 'Última semana',
@@ -185,19 +187,25 @@ $sm_lang = array(
 		'email_smtp_username' => 'SMTP username',
 		'email_smtp_password' => 'SMTP password',
 		'email_smtp_noauth' => 'Deixe em branco para nenhuma autenticação',
-        'sms_status' => 'Habilitar o envio de mensagem de texto?',
-        'sms_gateway' => 'Gateway para o uso de envio de mensagens',
-        'sms_gateway_mosms' => 'Mosms',
-        'sms_gateway_mollie' => 'Mollie',
-        'sms_gateway_spryng' => 'Spryng',
-        'sms_gateway_inetworx' => 'Inetworx',
-        'sms_gateway_clickatell' => 'Clickatell',
+	        'sms_status' => 'Habilitar o envio de mensagem de texto?',
+	        'sms_gateway' => 'Gateway para o uso de envio de mensagens',
+	        'sms_gateway_mosms' => 'Mosms',
+	        'sms_gateway_mollie' => 'Mollie',
+	        'sms_gateway_spryng' => 'Spryng',
+	        'sms_gateway_inetworx' => 'Inetworx',
+	        'sms_gateway_clickatell' => 'Clickatell',
 		'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
         'sms_gateway_username' => 'Usuário do Gateway',
         'sms_gateway_password' => 'Senha do Gateway',
         'sms_from' => 'Número de telefone de envio',
+		'sms_gateway_nexmo' => 'Nexmo',
+	        'sms_gateway_username' => 'Usuário do Gateway',
+	        'sms_gateway_password' => 'Senha do Gateway',
+	        'sms_from' => 'Número de telefone de envio',
 		'pushover_status' => 'Habilitar envio de mensagens Pushover',
 		'pushover_description' => 'Pushover é um serviço de notificações em tempo real. Veja <a href="https://pushover.net/">o website</a> para mais informações.',
 		'pushover_clone_app' => 'Clique aqui para criar sua app Pushover',

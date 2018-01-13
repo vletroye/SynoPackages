@@ -18,16 +18,18 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: v3.2.0
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'English',
 	'locale' => array('en_US.UTF-8', 'en_US', 'american', 'english-us'),
+	'locale_tag' => 'en',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -119,10 +121,21 @@ $sm_lang = array(
 		'domain' => 'Domain/IP',
 		'timeout' => 'Timeout',
 		'timeout_description' => 'Number of seconds to wait for the server to respond.',
+		'authentication_settings' => 'Authentication Settings (Optional)',
+		'website_username' => 'Username',
+		'website_username_description' => 'Username to access the site. (Only Apache authentication is supported.)',
+		'website_password' => 'Password',
+		'website_password_description' => 'Password to access the site. The password is encrypted in the database.',
+		'fieldset_monitoring' => 'Monitoring',
+		'fieldset_permissions' => 'Permissions',
 		'port' => 'Port',
+		'custom_port' => 'Custom Port',
+		'popular_ports' => 'Popular Ports',
+		'please_select' => 'Please select',
 		'type' => 'Type',
 		'type_website' => 'Website',
 		'type_service' => 'Service',
+		'type_ping' => 'Ping',
 		'pattern' => 'Search string/pattern',
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => 'Last check',
@@ -174,6 +187,12 @@ $sm_lang = array(
 		'general' => 'General',
 		'language' => 'Language',
 		'show_update' => 'Check for updates?',
+		'password_encrypt_key' => 'The encryption key password',
+		'password_encrypt_key_note' => 'This key is used to encrypt passwords that are stored on servers for access to websites. If the key will change the stored password is invalid!',
+		'proxy' => 'Enable proxy',
+		'proxy_url' => 'Proxy URL',
+		'proxy_user' => 'Proxy username',
+		'proxy_password' => 'Proxy password',
 		'email_status' => 'Allow sending email',
 		'email_from_email' => 'Email from address',
 		'email_from_name' => 'Email from name',
@@ -192,9 +211,15 @@ $sm_lang = array(
 		'sms_gateway_spryng' => 'Spryng',
 		'sms_gateway_inetworx' => 'Inetworx',
 		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
+        	'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_octopush' => 'Octopush',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
+		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
+		'sms_gateway_clicksend' => 'ClickSend',
+		'sms_gateway_nexmo' => 'Nexmo',
+		'sms_gateway_smsgw' => 'SMSgw',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',
@@ -215,6 +240,8 @@ $sm_lang = array(
 		'alert_type_status' => 'Status change',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',
+		'alert_proxy' => 'Even if enabled, proxy is never used for services',
+		'alert_proxy_url' => '<b>Format:</b> Host:Port',
 		'log_status' => 'Log status',
 		'log_status_description' => 'If log status is set to TRUE, the monitor will log the event whenever the Notification settings are passed.',
 		'log_email' => 'Log emails sent by the script',
@@ -229,6 +256,7 @@ $sm_lang = array(
 		'settings_pushover' => 'Pushover settings',
 		'settings_notification' => 'Notification settings',
 		'settings_log' => 'Log settings',
+		'settings_proxy' => 'Proxy settings',
 		'auto_refresh' => 'Auto-refresh',
 		'auto_refresh_servers' =>
 			'Auto-refresh servers page.<br/>'.

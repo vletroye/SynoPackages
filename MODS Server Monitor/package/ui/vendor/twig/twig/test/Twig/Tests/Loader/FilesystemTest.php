@@ -60,6 +60,7 @@ class Twig_Tests_Loader_FilesystemTest extends PHPUnit_Framework_TestCase
         $loader->addPath($basePath.'/named_ter', 'named');
         $loader->addPath($basePath.'/normal_ter');
         $loader->prependPath($basePath.'/normal_final');
+        $loader->prependPath($basePath.'/named/../named_quater', 'named');
         $loader->prependPath($basePath.'/named_final', 'named');
 
         $this->assertEquals(array(
@@ -70,11 +71,16 @@ class Twig_Tests_Loader_FilesystemTest extends PHPUnit_Framework_TestCase
         ), $loader->getPaths());
         $this->assertEquals(array(
             $basePath.'/named_final',
+            $basePath.'/named/../named_quater',
             $basePath.'/named',
             $basePath.'/named_bis',
             $basePath.'/named_ter',
         ), $loader->getPaths('named'));
 
+        $this->assertEquals(
+            realpath($basePath.'/named_quater/named_absolute.html'),
+            realpath($loader->getCacheKey('@named/named_absolute.html'))
+        );
         $this->assertEquals("path (final)\n", $loader->getSource('index.html'));
         $this->assertEquals("path (final)\n", $loader->getSource('@__main__/index.html'));
         $this->assertEquals("named path (final)\n", $loader->getSource('@named/index.html'));
@@ -139,5 +145,31 @@ class Twig_Tests_Loader_FilesystemTest extends PHPUnit_Framework_TestCase
 
         $template = $twig->loadTemplate('blocks.html.twig');
         $this->assertSame('block from theme 2', $template->renderBlock('b2', array()));
+    }
+
+    public function getArrayInheritanceTests()
+    {
+        return array(
+            'valid array inheritance' => array('array_inheritance_valid_parent.html.twig'),
+            'array inheritance with null first template' => array('array_inheritance_null_parent.html.twig'),
+            'array inheritance with empty first template' => array('array_inheritance_empty_parent.html.twig'),
+            'array inheritance with non-existent first template' => array('array_inheritance_nonexistent_parent.html.twig'),
+        );
+    }
+
+    /**
+     * @dataProvider getArrayInheritanceTests
+     *
+     * @param $templateName string Template name with array inheritance
+     */
+    public function testArrayInheritance($templateName)
+    {
+        $loader = new Twig_Loader_Filesystem(array());
+        $loader->addPath(dirname(__FILE__).'/Fixtures/inheritance');
+
+        $twig = new Twig_Environment($loader);
+
+        $template = $twig->loadTemplate($templateName);
+        $this->assertSame('VALID Child', $template->renderBlock('body', array()));
     }
 }

@@ -21,7 +21,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     protected $source;
     protected $indentation;
     protected $env;
-    protected $debugInfo;
+    protected $debugInfo = array();
     protected $sourceOffset;
     protected $sourceLine;
     protected $filename;
@@ -34,7 +34,6 @@ class Twig_Compiler implements Twig_CompilerInterface
     public function __construct(Twig_Environment $env)
     {
         $this->env = $env;
-        $this->debugInfo = array();
     }
 
     public function getFilename()
@@ -74,6 +73,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     {
         $this->lastLine = null;
         $this->source = '';
+        $this->debugInfo = array();
         $this->sourceOffset = 0;
         // source code starts at 1 (as we then increment it when we encounter new lines)
         $this->sourceLine = 1;
@@ -181,14 +181,14 @@ class Twig_Compiler implements Twig_CompilerInterface
         } elseif (is_array($value)) {
             $this->raw('array(');
             $first = true;
-            foreach ($value as $key => $value) {
+            foreach ($value as $key => $v) {
                 if (!$first) {
                     $this->raw(', ');
                 }
                 $first = false;
                 $this->repr($key);
                 $this->raw(' => ');
-                $this->repr($value);
+                $this->repr($v);
             }
             $this->raw(')');
         } else {
@@ -230,13 +230,15 @@ class Twig_Compiler implements Twig_CompilerInterface
 
     public function getDebugInfo()
     {
+        ksort($this->debugInfo);
+
         return $this->debugInfo;
     }
 
     /**
      * Indents the generated code.
      *
-     * @param int     $step The number of indentation to add
+     * @param int $step The number of indentation to add
      *
      * @return Twig_Compiler The current compiler instance
      */
@@ -250,7 +252,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Outdents the generated code.
      *
-     * @param int     $step The number of indentation to remove
+     * @param int $step The number of indentation to remove
      *
      * @return Twig_Compiler The current compiler instance
      *
@@ -266,5 +268,10 @@ class Twig_Compiler implements Twig_CompilerInterface
         $this->indentation -= $step;
 
         return $this;
+    }
+
+    public function getVarName()
+    {
+        return sprintf('__internal_%s', hash('sha256', uniqid(mt_rand(), true), false));
     }
 }

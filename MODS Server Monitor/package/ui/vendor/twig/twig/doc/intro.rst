@@ -21,10 +21,14 @@ The key-features are...
 * *Flexible*: Twig is powered by a flexible lexer and parser. This allows the
   developer to define its own custom tags and filters, and create its own DSL.
 
+Twig is used by many Open-Source projects like Symfony, Drupal8, eZPublish,
+phpBB, Piwik, OroCRM, and many frameworks have support for it as well like
+Slim, Yii, Laravel, Codeigniter, and Kohana, just to name a few.
+
 Prerequisites
 -------------
 
-Twig needs at least **PHP 5.2.4** to run.
+Twig needs at least **PHP 5.2.7** to run.
 
 Installation
 ------------
@@ -33,7 +37,7 @@ The recommended way to install Twig is via Composer:
 
 .. code-block:: bash
 
-    composer require "twig/twig:1.*"
+    composer require "twig/twig:~1.0"
 
 .. note::
 
@@ -50,12 +54,14 @@ This section gives you a brief introduction to the PHP API for Twig.
 
     require_once '/path/to/vendor/autoload.php';
 
-    $loader = new Twig_Loader_String();
+    $loader = new Twig_Loader_Array(array(
+        'index' => 'Hello {{ name }}!',
+    ));
     $twig = new Twig_Environment($loader);
 
-    echo $twig->render('Hello {{ name }}!', array('name' => 'Fabien'));
+    echo $twig->render('index', array('name' => 'Fabien'));
 
-Twig uses a loader (``Twig_Loader_String``) to locate templates, and an
+Twig uses a loader (``Twig_Loader_Array``) to locate templates, and an
 environment (``Twig_Environment``) to store the configuration.
 
 The ``render()`` method loads the template passed as a first argument and

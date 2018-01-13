@@ -9,9 +9,14 @@ Credits
 
 The following people have contributed to the development of PHP Server Monitor:
 
+
 * Pepijn Over - https://github.com/dopeh
 
   * Creator and project maintainer
+
+* Samuel Denis-D'Ortun - https://github.com/sadortun
+
+ * Project developer
 
 * Jérôme Cabanis - https://github.com/Abawell
 
@@ -62,6 +67,15 @@ The following people have contributed to the development of PHP Server Monitor:
 
   * Icon
 
+* Michiel van der Wulp - https://github.com/mvdw
+
+  * FreeVoipDeal SMS gateway
+
+
+* Luis Rodriguez - https://github.com/ldrrp
+
+  * Nexmo SMS gateway
+
 Translators
 +++++++++++
 
@@ -83,6 +97,14 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * nerdalertdk
 
+* Estonian
+
+  * Richard A. - https://github.com/ItsRichardRaz
+
+* Finnish
+
+  * Sami Nieminen - https://github.com/celeroncool
+
 * French
 
   * David Ribeiro
@@ -101,6 +123,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Ik-Jun
 
+* Persian
+
+  * Javad Evazzadeh Kakroudi - https://github.com/evazzadeh
+
 * Polish
 
   * Arkadiusz Klenczar - https://github.com/aklenczar
@@ -118,6 +144,11 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Klemens Häckel - http://clickdimension.wordpress.com
   * Luis Rodriguez - https://github.com/ldrrp
+  * Mauro Vietri - https://github.com/Esselans
+
+* Swedish
+
+  * Andlil - https://github.com/andlil
 
 * Turkish
 

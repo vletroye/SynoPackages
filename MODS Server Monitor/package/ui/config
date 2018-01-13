@@ -9,7 +9,6 @@
       "icon": "images/Server_Monitor_{0}.png",
       "protocol": "http",
       "url": "/webman/3rdparty/MODS_ServerMonitor/index.php",
-      "port": 80,
       "allowMultiInstance": false,
       "configablePrivilege": false,
       "advanceGrantPrivilege": false,

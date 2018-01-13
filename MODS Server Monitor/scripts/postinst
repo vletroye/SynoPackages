@@ -1,15 +1,134 @@
 #!/bin/sh
-ConfigFile="$SYNOPKG_PKGDEST/ui/Server_Monitor/config.php"
+
+LOG="/var/log/mods_ServerMonitor.log"
+ERRLOG="/var/log/mods_ServerMonitor_err.log"
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+#close the stream and redirect them to a custom or standard Syno Log
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+if [[ "$SYNOPKG_PKG_STATUS" == "INSTALL" ]]; then
+
+echo `date` "POST INSTALL PKG VERSION: $SYNOPKG_PKGVER"
+
+ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
+
+MYSQL=`which mysql`;
+MYSQLSHOW=`which mysqlshow`;
+if [[ -z "$MYSQL" ]]; then
+  MYSQL="/usr/local/mariadb10/bin/mysql"
+  MYSQLSHOW="/usr/local/mariadb10/bin/mysqlshow"
+  if [[ ! -f "$MYSQL" ]]; then
+    MYSQL="/usr/local/mariadb5/bin/mysql"
+    MYSQLSHOW="/usr/local/mariadb5/bin/mysqlshow"
+    if [[ ! -f "$MYSQL" ]]; then
+      echo "MySQL can't be found. It is required to create the database during installation" >> $SYNOPKG_TEMP_LOGFILE
+      exit 1;
+    fi
+  fi
+fi
+
+echo `date` "Using mysql: $MYSQL"
+echo `date` "Using mysqlshow: $MYSQLSHOW"
+
+# Check port used to access mysql
+PORT=$(/usr/local/mariadb10/bin/mysqlshow --print-defaults | grep -Po "\-\-port=[0-9]*" | grep -Po "[0-9]*")
+echo `date` "Checking port: $PORT"
+
+# Check Access to mysql with the given account and password
+echo `date` "Checking access on mysql: $MYSQLSHOW --user=$pkgwizard_admin_account --password=********** | grep -v Wildcard | grep -o mysql"
+RESULT=`$MYSQLSHOW --user=$pkgwizard_admin_account --password=$pkgwizard_admin_password | grep -v Wildcard | grep -o mysql`
+echo `date` "Result: $RESULT"
+if [ "$RESULT" != "mysql" ]; then
+    echo `date` "Server name, account or password incorrect to access mysql"
+    echo "Server name, account or password incorrect to access mysql" > $SYNOPKG_TEMP_LOGFILE
+    echo 1
+fi
+
+echo $pkgwizard_admin_password > $$
+pkgwizard_admin_password=`sed 's/"/\\"/gp' $$`
+/bin/rm -f $$
+
+# Check that the database does not yet exist - otherwise reuse it.
+echo `date` "Checking access: $MYSQLSHOW --user=$pkgwizard_admin_account --password=********** | grep -v Wildcard | grep -o $pkgwizard_db_Name"
+RESULT=`$MYSQLSHOW --user=$pkgwizard_admin_account --password=$pkgwizard_admin_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
+echo `date` "Results: $RESULT"
+if [ "$RESULT" == "$pkgwizard_db_Name" ]; then
+  # Check that the database can be accessed with the given account
+  echo `date` "Checking access on $pkgwizard_db_Name: $MYSQLSHOW --user=$pkgwizard_srvmon_account --password=********** $pkgwizard_db_Name | grep -v Wildcard | grep -o $pkgwizard_db_Name"
+  RESULT=`$MYSQLSHOW --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
+  echo `date` "Results: $RESULT"
+  if [ "$RESULT" != "$pkgwizard_db_Name" ]; then
+    echo `date` "Existing database $pkgwizard_db_Name cannot be reused with the provided account and password"
+    echo "Existing database $pkgwizard_db_Name cannot be reused with the provided account and password" > $SYNOPKG_TEMP_LOGFILE
+    # Check that the database can be accessed with the given account    
+    exit 1
+  else
+    echo `date` "Existing database $pkgwizard_db_Name is going to be reused"
+    echo "Existing database $pkgwizard_db_Name is going to be reused" > $SYNOPKG_TEMP_LOGFILE
+    exit 0
+  fi
+fi
+
+# Create the database
+Q1="CREATE DATABASE IF NOT EXISTS $pkgwizard_db_Name COLLATE = utf8_unicode_ci;"
+Q2="GRANT USAGE ON *.* TO $pkgwizard_srvmon_account@localhost IDENTIFIED BY '$pkgwizard_srvmon_password';"
+Q3="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $pkgwizard_srvmon_account@localhost;"
+Q4="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $SYNOPKG_USERNAME@localhost;"
+Q5="FLUSH PRIVILEGES;"
+SQL="${Q1}${Q2}${Q3}${Q4}${Q5}"
+
+echo `date` "Executing: $MYSQL -vvv -h $pkgwizard_server_name -u $pkgwizard_admin_account --password=********** -e $SQL"
+$MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_admin_account" --password="$pkgwizard_admin_password" -e "$SQL"
+if [ $? -eq 1 ]; then
+  echo `date` "Fail to create $pkgwizard_db_Name  database."
+  echo "Fail to create $pkgwizard_db_Name  database." > $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
+
+
+# localhost doesn't work for mariadb10 => user 127.0.0.1 instead
+HOST=$pkgwizard_server_name
+if [ "$HOST" == "localhost" ]; then
+  HOST="127.0.0.1"
+fi
+
+echo "$pkgwizard_server_name" > "$ETC_DIR/server_name"
+echo "$pkgwizard_db_Name" > "$ETC_DIR/database_name"
+echo "$pkgwizard_srvmon_account" > "$ETC_DIR/mysql_account"
+echo "$pkgwizard_srvmon_password" > "$ETC_DIR/mysql_password"
+echo "$PORT" > "$ETC_DIR/mysql_port"
+echo "$HOST" > "$ETC_DIR/mysql_host"
+
+ConfigFile="$SYNOPKG_PKGDEST/ui/config.php"
 
 echo "<?php" > "$ConfigFile"
+echo "\$url=(isset(\$_SERVER['HTTPS']) ? 'https' : 'http') . '://' . \$_SERVER[HTTP_HOST] . dirname(\$_SERVER[REQUEST_URI]);" >> "$ConfigFile"
 echo "define('PSM_DB_PREFIX', '');" >> "$ConfigFile"
 echo "define('PSM_DB_USER', '$pkgwizard_srvmon_account');" >> "$ConfigFile"
 echo "define('PSM_DB_PASS', '$pkgwizard_srvmon_password');" >> "$ConfigFile"
 echo "define('PSM_DB_NAME', '$pkgwizard_db_Name');" >> "$ConfigFile"
-echo "define('PSM_DB_HOST', '$pkgwizard_server_name');" >> "$ConfigFile"
+echo "define('PSM_DB_HOST', '$HOST');" >> "$ConfigFile"
+echo "define('PSM_DB_PORT', '$PORT');" >> "$ConfigFile"
+echo "define('PSM_BASE_URL', \$url);" >> "$ConfigFile"
 echo "" >> "$ConfigFile"
 
-echo "$pkgwizard_server_name" > "$SYNOPKG_PKGDEST/p_server_name"
-echo "$pkgwizard_db_Name" > "$SYNOPKG_PKGDEST/p_database_name"
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettifying the POST INSTALL log file"
+  sed -i 's/$/<br>/' "$ERRLOG"
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
+
+fi
 
 exit 0

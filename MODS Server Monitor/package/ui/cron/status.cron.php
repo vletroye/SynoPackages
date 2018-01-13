@@ -18,18 +18,23 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@mailbox.org>
+ * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: v3.2.0
  * @link        http://www.phpservermonitor.org/
  **/
 
 // include main configuration and functionality
-require_once dirname(__FILE__) . '/../src/bootstrap.php';
+require_once __DIR__ . '/../src/bootstrap.php';
 
 if(!psm_is_cli()) {
-	die('This script can only be run from the command line.');
+	// check if it's an allowed host
+	$allow = PSM_CRON_ALLOW;
+	if(!in_array($_SERVER['REMOTE_ADDR'], $allow) && !in_array($_SERVER["HTTP_X_FORWARDED_FOR"], $allow)) {
+		header('HTTP/1.0 404 Not Found');
+		die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL /cron/status.cron.php was not found on this server.</p></body></html>');
+	}
 }
 
 $cron_timeout = PSM_CRON_TIMEOUT;
@@ -68,7 +73,7 @@ if(!defined('PSM_DEBUG') || !PSM_DEBUG) {
 }
 psm_update_conf('cron_running_time', $time);
 
-$autorun = new \psm\Util\Server\UpdateManager($db);
-$autorun->run();
+$autorun = $router->getService('util.server.updatemanager');
+$autorun->run(true);
 
 psm_update_conf('cron_running', 0);

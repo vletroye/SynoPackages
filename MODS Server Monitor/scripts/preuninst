@@ -1,24 +1,56 @@
 #!/bin/sh
 
-pkgwizard_server_name=`cat $SYNOPKG_PKGDEST/p_server_name`
-pkgwizard_db_Name=`cat $SYNOPKG_PKGDEST/p_database_name`
+LOG="/var/log/mods_ServerMonitor.log"
+ERRLOG="/var/log/mods_ServerMonitor_err.log"
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+#close the stream and redirect them to a custom or standard Syno Log
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+echo `date` "PRE UNINSTALL PKG VERSION:" "$SYNOPKG_PKGVER"
+
+ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
 
 MYSQL=`which mysql`;
+if [[ -z "$MYSQL" ]]; then
+  MYSQL="/usr/local/mariadb10/bin/mysql"
+  if [[ ! -f "$MYSQL" ]]; then
+    MYSQL="/usr/local/mariadb5/bin/mysql"
+    if [[ ! -f "$MYSQL" ]]; then
+      echo "MySQL can't be found. It is required to create the database during installation" >> $SYNOPKG_TEMP_LOGFILE
+      exit 1;
+    fi
+  fi
+fi
+
+pkgwizard_server_name=`cat $ETC_DIR/server_name`
+pkgwizard_db_mame=`cat $ETC_DIR/database_name`
+pkgwizard_admin_account=`cat $ETC_DIR/mysql_account`
+pkgwizard_admin_password=`cat $ETC_DIR/mysql_password`
 
 if [ "$pkgwizard_remove_database" = "true" ]; then
-    $MYSQL -vvv -h "$pkgwizard_server_name" -u "$SYNOPKG_USERNAME" -e "DROP DATABASE $pkgwizard_db_Name"
-    if [ $? -eq 1 ]; then
-        if [ -z "$SYNOPKG_DSM_LANGUAGE" ]; then
-            echo "Fail to drop database $pkgwizard_db_Name." > $SYNOPKG_TEMP_LOGFILE
-            exit 0
-        fi
-        case $SYNOPKG_DSM_LANGUAGE in
-             *)
-            echo "Fail to drop database $pkgwizard_db_Name." > $SYNOPKG_TEMP_LOGFILE 
-             ;;
-        esac
-        exit 0
-    fi
+  $MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_admin_account" --password="$pkgwizard_admin_password" -e "DROP DATABASE $pkgwizard_db_mame"
+  if [ $? -eq 1 ]; then
+    echo `date` "Fail to drop database $pkgwizard_db_mame."
+    echo "Fail to drop database $pkgwizard_db_mame." >> $SYNOPKG_TEMP_LOGFILE
+    exit 0
+  fi
+fi
+
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettifying the POST INSTALL log file"
+  sed -i 's/$/<br>/' "$ERRLOG"
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
 fi
 
 exit 0

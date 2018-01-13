@@ -9,44 +9,26 @@ Installing the Twig PHP package
 Installing via Composer (recommended)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Install Composer in your project:
+Install `Composer`_ and run the following command to get the latest version:
 
 .. code-block:: bash
 
-    curl -s http://getcomposer.org/installer | php
-
-2. Create a ``composer.json`` file in your project root:
-
-.. code-block:: javascript
-
-    {
-        "require": {
-            "twig/twig": "1.*"
-        }
-    }
-
-3. Install via Composer
-
-.. code-block:: bash
-
-    php composer.phar install
-
-.. note::
-    If you want to learn more about Composer, the ``composer.json`` file syntax
-    and its usage, you can read the `online documentation`_.
+    composer require twig/twig:~1.0
 
 Installing from the tarball release
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Download the most recent tarball from the `download page`_
-2. Unpack the tarball
-3. Move the files somewhere in your project
+2. Verify the integrity of the tarball http://fabien.potencier.org/article/73/signing-project-releases
+3. Unpack the tarball
+4. Move the files somewhere in your project
 
 Installing the development version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Install Git
-2. ``git clone git://github.com/fabpot/Twig.git``
+.. code-block:: bash
+
+    git clone git://github.com/twigphp/Twig.git
 
 Installing the PEAR package
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,9 +38,10 @@ Installing the PEAR package
     Using PEAR for installing Twig is deprecated and Twig 1.15.1 was the last
     version published on the PEAR channel; use Composer instead.
 
-1. Install PEAR
-2. ``pear channel-discover pear.twig-project.org``
-3. ``pear install twig/Twig``
+.. code-block:: bash
+
+    pear channel-discover pear.twig-project.org
+    pear install twig/Twig
 
 Installing the C extension
 --------------------------
@@ -67,19 +50,22 @@ Installing the C extension
     The C extension was added in Twig 1.4.
 
 .. note::
-    The C extension is **optional** but as it brings some nice performance
-    improvements, you might want to install it in your production environment.
+
+    The C extension is **optional** but it brings some nice performance
+    improvements. Note that the extension is not a replacement for the PHP
+    code; it only implements a small part of the PHP code to improve the
+    performance at runtime; you must still install the regular PHP code.
 
 Twig comes with a C extension that enhances the performance of the Twig
 runtime engine; install it like any other PHP extensions:
 
 .. code-block:: bash
 
-    $ cd ext/twig
-    $ phpize
-    $ ./configure
-    $ make
-    $ make install
+    cd ext/twig
+    phpize
+    ./configure
+    make
+    make install
 
 .. note::
 
@@ -87,9 +73,10 @@ runtime engine; install it like any other PHP extensions:
     deprecated and newer versions of Twig are not available on the PEAR
     channel):
 
-    1. Install PEAR
-    2. ``pear channel-discover pear.twig-project.org``
-    3. ``pear install twig/CTwig``
+    .. code-block:: bash
+
+        pear channel-discover pear.twig-project.org
+        pear install twig/CTwig
 
 For Windows:
 
@@ -123,7 +110,7 @@ advantage of the C extension. Note that this extension does not replace the
 PHP code but only provides an optimized version of the
 ``Twig_Template::getAttribute()`` method.
 
-.. _`download page`: https://github.com/fabpot/Twig/tags
-.. _`online documentation`: http://getcomposer.org/doc
+.. _`download page`:     https://github.com/twigphp/Twig/tags
+.. _`Composer`:          https://getcomposer.org/download/
 .. _`PHP documentation`: https://wiki.php.net/internals/windows/stepbystepbuild
-.. _`Zend Server FAQ`: http://www.zend.com/en/products/server/faq#faqD6
+.. _`Zend Server FAQ`:   http://www.zend.com/en/products/server/faq#faqD6

@@ -1,3 +1,147 @@
+* 1.24.0 (2016-01-25)
+
+ * adding support for the ?? operator
+ * fixed the defined test when used on a constant, a map, or a sequence
+ * undeprecated _self (should only be used to get the template name, not the template instance)
+ * fixed parsing on PHP7
+
+* 1.23.3 (2016-01-11)
+
+ * fixed typo
+
+* 1.23.2 (2015-01-11)
+
+ * added versions in deprecated messages
+ * made file cache tolerant for trailing (back)slashes on directory configuration
+ * deprecated unused Twig_Node_Expression_ExtensionReference class
+
+* 1.23.1 (2015-11-05)
+
+ * fixed some exception messages which triggered PHP warnings
+ * fixed BC on Twig_Test_NodeTestCase
+
+* 1.23.0 (2015-10-29)
+
+ * deprecated the possibility to override an extension by registering another one with the same name
+ * deprecated Twig_ExtensionInterface::getGlobals() (added Twig_Extension_GlobalsInterface for BC)
+ * deprecated Twig_ExtensionInterface::initRuntime() (added Twig_Extension_InitRuntimeInterface for BC)
+ * deprecated Twig_Environment::computeAlternatives()
+
+* 1.22.3 (2015-10-13)
+
+ * fixed regression when using null as a cache strategy
+ * improved performance when checking template freshness
+ * fixed warnings when loaded templates do not exist
+ * fixed template class name generation to prevent possible collisions
+ * fixed logic for custom escapers to call them even on integers and null values
+ * changed template cache names to take into account the Twig C extension
+
+* 1.22.2 (2015-09-22)
+
+ * fixed a race condition in template loading
+
+* 1.22.1 (2015-09-15)
+
+ * fixed regression in template_from_string
+
+* 1.22.0 (2015-09-13)
+
+ * made Twig_Test_IntegrationTestCase more flexible
+ * added an option to force PHP bytecode invalidation when writing a compiled template into the cache
+ * fixed the profiler duration for the root node
+ * changed template cache names to take into account enabled extensions
+ * deprecated Twig_Environment::clearCacheFiles(), Twig_Environment::getCacheFilename(),
+   Twig_Environment::writeCacheFile(), and Twig_Environment::getTemplateClassPrefix()
+ * added a way to override the filesystem template cache system
+ * added a way to get the original template source from Twig_Template
+
+* 1.21.2 (2015-09-09)
+
+ * fixed variable names for the deprecation triggering code
+ * fixed escaping strategy detection based on filename
+ * added Traversable support for replace, merge, and sort
+ * deprecated support for character by character replacement for the "replace" filter
+
+* 1.21.1 (2015-08-26)
+
+ * fixed regression when using the deprecated Twig_Test_* classes
+
+* 1.21.0 (2015-08-24)
+
+ * added deprecation notices for deprecated features
+ * added a deprecation "framework" for filters/functions/tests and test fixtures
+
+* 1.20.0 (2015-08-12)
+
+ * forbid access to the Twig environment from templates and internal parts of Twig_Template
+ * fixed limited RCEs when in sandbox mode
+ * deprecated Twig_Template::getEnvironment()
+ * deprecated the _self variable for usage outside of the from and import tags
+ * added Twig_BaseNodeVisitor to ease the compatibility of node visitors 
+   between 1.x and 2.x
+
+* 1.19.0 (2015-07-31)
+
+ * fixed wrong error message when including an undefined template in a child template
+ * added support for variadic filters, functions, and tests
+ * added support for extra positional arguments in macros
+ * added ignore_missing flag to the source function
+ * fixed batch filter with zero items
+ * deprecated Twig_Environment::clearTemplateCache()
+ * fixed sandbox disabling when using the include function
+
+* 1.18.2 (2015-06-06)
+
+ * fixed template/line guessing in exceptions for nested templates
+ * optimized the number of inodes and the size of realpath cache when using the cache
+
+* 1.18.1 (2015-04-19)
+
+ * fixed memory leaks in the C extension
+ * deprecated Twig_Loader_String
+ * fixed the slice filter when used with a SimpleXMLElement object
+ * fixed filesystem loader when trying to load non-files (like directories)
+
+* 1.18.0 (2015-01-25)
+
+ * fixed some error messages where the line was wrong (unknown variables or argument names)
+ * added a new way to customize the main Module node (via empty nodes)
+ * added Twig_Environment::createTemplate() to create a template from a string
+ * added a profiler
+ * fixed filesystem loader cache when different file paths are used for the same template
+
+* 1.17.0 (2015-01-14)
+
+ * added a 'filename' autoescaping strategy, which dynamically chooses the
+   autoescaping strategy for a template based on template file extension.
+
+* 1.16.3 (2014-12-25)
+
+ * fixed regression for dynamic parent templates
+ * fixed cache management with statcache
+ * fixed a regression in the slice filter
+
+* 1.16.2 (2014-10-17)
+
+ * fixed timezone on dates as strings
+ * fixed 2-words test names when a custom node class is not used
+ * fixed macros when using an argument named like a PHP super global (like GET or POST)
+ * fixed date_modify when working with DateTimeImmutable
+ * optimized for loops
+ * fixed multi-byte characters handling in the split filter
+ * fixed a regression in the in operator
+ * fixed a regression in the slice filter
+
+* 1.16.1 (2014-10-10)
+
+ * improved error reporting in a sandboxed template
+ * fixed missing error file/line information under certain circumstances
+ * fixed wrong error line number in some error messages
+ * fixed the in operator to use strict comparisons
+ * sped up the slice filter
+ * fixed for mb function overload mb_substr acting different
+ * fixed the attribute() function when passing a variable for the arguments
+
 * 1.16.0 (2014-07-05)
 
  * changed url_encode to always encode according to RFC 3986

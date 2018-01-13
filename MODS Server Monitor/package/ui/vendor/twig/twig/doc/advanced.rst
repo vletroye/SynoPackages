@@ -224,6 +224,23 @@ through your filter::
 
     $filter = new Twig_SimpleFilter('somefilter', 'somefilter', array('pre_escape' => 'html', 'is_safe' => array('html')));
 
+Variadic Filters
+~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.19
+    Support for variadic filters was added in Twig 1.19.
+
+When a filter should accept an arbitrary number of arguments, set the
+``is_variadic`` option to ``true``; Twig will pass the extra arguments as the
+last argument to the filter call as an array::
+
+    $filter = new Twig_SimpleFilter('thumbnail', function ($file, array $options = array()) {
+        // ...
+    }, array('is_variadic' => true));
+
+Be warned that named arguments passed to a variadic filter cannot be checked
+for validity as they will automatically end up in the option array.
+
 Dynamic Filters
 ~~~~~~~~~~~~~~~
 
@@ -249,6 +266,23 @@ The filter will receive all dynamic part values before the normal filter
 arguments, but after the environment and the context. For instance, a call to
 ``'foo'|a_path_b()`` will result in the following arguments to be passed to
 the filter: ``('a', 'b', 'foo')``.
+
+Deprecated Filters
+~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.21
+    Support for deprecated filters was added in Twig 1.21.
+
+You can mark a filter as being deprecated by setting the ``deprecated`` option
+to ``true``. You can also give an alternative filter that replaces the
+deprecated one when that makes sense::
+
+    $filter = new Twig_SimpleFilter('obsolete', function () {
+        // ...
+    }, array('deprecated' => true, 'alternative' => 'new_one'));
+
+When a filter is deprecated, Twig emits a deprecation notice when compiling a
+template using it. See :ref:`deprecation-notices` for more information.
 
 Functions
 ---------
@@ -281,7 +315,7 @@ Tests allow you to create custom application specific logic for evaluating
 boolean conditions. As a simple example, let's create a Twig test that checks if
 objects are 'red'::
 
-    $twig = new Twig_Environment($loader)
+    $twig = new Twig_Environment($loader);
     $test = new Twig_SimpleTest('red', function ($value) {
         if (isset($value->color) && $value->color == 'red') {
             return true;
@@ -299,7 +333,7 @@ When creating tests you can use the ``node_class`` option to provide custom test
 compilation. This is useful if your test can be compiled into PHP primitives.
 This is used by many of the tests built into Twig::
 
-    $twig = new Twig_Environment($loader)
+    $twig = new Twig_Environment($loader);
     $test = new Twig_SimpleTest(
         'odd',
         null,
@@ -330,6 +364,10 @@ value that is being tested. When the ``odd`` filter is used in code such as:
 The ``node`` sub-node will contain an expression of ``my_value``. Node-based
 tests also have access to the ``arguments`` node. This node will contain the
 various other arguments that have been provided to your test.
+
+If you want to pass a variable number of positional or named arguments to the
+test, set the ``is_variadic`` option to ``true``. Tests also support dynamic
+name feature as filters and functions.
 
 Tags
 ----
@@ -503,7 +541,7 @@ to host all the specific tags and filters you want to add to Twig.
 .. note::
 
     Before writing your own extensions, have a look at the Twig official
-    extension repository: http://github.com/fabpot/Twig-extensions.
+    extension repository: http://github.com/twigphp/Twig-extensions.
 
 An extension is a class that implements the following interface::
 
@@ -515,6 +553,8 @@ An extension is a class that implements the following interface::
          * This is where you can load some file that contains filter functions for instance.
          *
          * @param Twig_Environment $environment The current Twig_Environment instance
+         *
+         * @deprecated since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterface instead
          */
         function initRuntime(Twig_Environment $environment);
 
@@ -564,6 +604,8 @@ An extension is a class that implements the following interface::
          * Returns a list of global variables to add to the existing list.
          *
          * @return array An array of global variables
+         *
+         * @deprecated since 1.23 (to be removed in 2.0), implement Twig_Extension_GlobalsInterface instead
          */
         function getGlobals();
 
@@ -606,9 +648,6 @@ main ``Environment`` object::
 
     $twig = new Twig_Environment($loader);
     $twig->addExtension(new Project_Twig_Extension());
-
-Of course, you need to first load the extension file by either using
-``require_once()`` or by using an autoloader (see `spl_autoload_register()`_).
 
 .. tip::
 
@@ -828,7 +867,6 @@ Testing the node visitors can be complex, so extend your test cases from
 ``Twig_Test_NodeTestCase``. Examples can be found in the Twig repository
 `tests/Twig/Node`_ directory.
 
-.. _`spl_autoload_register()`: http://www.php.net/spl_autoload_register
 .. _`rot13`:                   http://www.php.net/manual/en/function.str-rot13.php
-.. _`tests/Twig/Fixtures`:     https://github.com/fabpot/Twig/tree/master/test/Twig/Tests/Fixtures
-.. _`tests/Twig/Node`:         https://github.com/fabpot/Twig/tree/master/test/Twig/Tests/Node
+.. _`tests/Twig/Fixtures`:     https://github.com/twigphp/Twig/tree/master/test/Twig/Tests/Fixtures
+.. _`tests/Twig/Node`:         https://github.com/twigphp/Twig/tree/master/test/Twig/Tests/Node

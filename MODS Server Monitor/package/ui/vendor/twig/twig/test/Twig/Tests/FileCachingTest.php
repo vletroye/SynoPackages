@@ -1,12 +1,22 @@
 <?php
 
+/*
+ * This file is part of Twig.
+ *
+ * (c) Fabien Potencier
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+require_once dirname(__FILE__).'/FilesystemHelper.php';
+
 class Twig_Tests_FileCachingTest extends PHPUnit_Framework_TestCase
 {
-    protected $fileName;
-    protected $env;
-    protected $tmpDir;
+    private $env;
+    private $tmpDir;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->tmpDir = sys_get_temp_dir().'/TwigTests';
         if (!file_exists($this->tmpDir)) {
@@ -17,54 +27,37 @@ class Twig_Tests_FileCachingTest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped(sprintf('Unable to run the tests as "%s" is not writable.', $this->tmpDir));
         }
 
-        $this->env = new Twig_Environment(new Twig_Loader_String(), array('cache' => $this->tmpDir));
+        $this->env = new Twig_Environment(new Twig_Loader_Array(array('index' => 'index', 'index2' => 'index2')), array('cache' => $this->tmpDir));
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
-        if ($this->fileName) {
-            unlink($this->fileName);
-        }
-
-        $this->removeDir($this->tmpDir);
+        Twig_Tests_FilesystemHelper::removeDir($this->tmpDir);
     }
 
+    /**
+     * @group legacy
+     */
     public function testWritingCacheFiles()
     {
-        $name = 'This is just text.';
-        $template = $this->env->loadTemplate($name);
+        $name = 'index';
+        $this->env->loadTemplate($name);
         $cacheFileName = $this->env->getCacheFilename($name);
 
         $this->assertTrue(file_exists($cacheFileName), 'Cache file does not exist.');
-        $this->fileName = $cacheFileName;
     }
 
+    /**
+     * @group legacy
+     */
     public function testClearingCacheFiles()
     {
-        $name = 'I will be deleted.';
-        $template = $this->env->loadTemplate($name);
+        $name = 'index2';
+        $this->env->loadTemplate($name);
         $cacheFileName = $this->env->getCacheFilename($name);
 
         $this->assertTrue(file_exists($cacheFileName), 'Cache file does not exist.');
         $this->env->clearCacheFiles();
         $this->assertFalse(file_exists($cacheFileName), 'Cache file was not cleared.');
-    }
-
-    private function removeDir($target)
-    {
-        $fp = opendir($target);
-        while (false !== $file = readdir($fp)) {
-            if (in_array($file, array('.', '..'))) {
-                continue;
-            }
-
-            if (is_dir($target.'/'.$file)) {
-                self::removeDir($target.'/'.$file);
-            } else {
-                unlink($target.'/'.$file);
-            }
-        }
-        closedir($fp);
-        rmdir($target);
     }
 }

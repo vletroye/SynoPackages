@@ -11,9 +11,6 @@
 
 class Twig_Tests_Node_MacroTest extends Twig_Test_NodeTestCase
 {
-    /**
-     * @covers Twig_Node_Macro::__construct
-     */
     public function testConstructor()
     {
         $body = new Twig_Node_Text('foo', 1);
@@ -25,15 +22,6 @@ class Twig_Tests_Node_MacroTest extends Twig_Test_NodeTestCase
         $this->assertEquals('foo', $node->getAttribute('name'));
     }
 
-    /**
-     * @covers Twig_Node_Macro::compile
-     * @dataProvider getTests
-     */
-    public function testCompile($node, $source, $environment = null)
-    {
-        parent::testCompile($node, $source, $environment);
-    }
-
     public function getTests()
     {
         $body = new Twig_Node_Text('foo', 1);
@@ -43,14 +31,23 @@ class Twig_Tests_Node_MacroTest extends Twig_Test_NodeTestCase
         ), array(), 1);
         $node = new Twig_Node_Macro('foo', $body, $arguments, 1);
 
+        if (PHP_VERSION_ID >= 50600) {
+            $declaration = ', ...$__varargs__';
+            $varargs = '$__varargs__';
+        } else {
+            $declaration = '';
+            $varargs = 'func_num_args() > 2 ? array_slice(func_get_args(), 2) : array()';
+        }
+
         return array(
             array($node, <<<EOF
 // line 1
-public function getfoo(\$_foo = null, \$_bar = "Foo")
+public function getfoo(\$__foo__ = null, \$__bar__ = "Foo"$declaration)
 {
     \$context = \$this->env->mergeGlobals(array(
-        "foo" => \$_foo,
-        "bar" => \$_bar,
+        "foo" => \$__foo__,
+        "bar" => \$__bar__,
+        "varargs" => $varargs,
     ));
 
     \$blocks = array();

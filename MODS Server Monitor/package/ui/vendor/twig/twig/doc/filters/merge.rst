@@ -39,3 +39,10 @@ overridden.
         {% set items = { 'apple': 'unknown' }|merge(items) %}
 
         {# items now contains { 'apple': 'fruit', 'orange': 'fruit' } #}
+        
+.. note::
+
+    Internally, Twig uses the PHP `array_merge`_ function. It supports
+    Traversable objects by transforming those to arrays.
+
+.. _`array_merge`: http://php.net/array_merge

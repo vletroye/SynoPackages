@@ -25,6 +25,10 @@ Each language file should contain a 'locale' key which can be used for formattin
 
 For more information, see http://www.php.net/manual/en/function.setlocale.php
 
+For display purposes, the language file should also provide the text direction (ltr / rtl) and language subtag.
+Unfortunately they do not match 1:1 with the locales used for the server.
+Valid language subtags can be found on http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry.
+
 Adding a new language
 ---------------------
 
@@ -39,6 +43,23 @@ To add a new language, follow these steps:
 
 Getting started
 +++++++++++++++
+
+Vagrant
+-------
+
+If you are not familiar with Vagrant, have a look at https://www.vagrantup.com/ for more information (it is awesome).
+To ease development, a Vagrantfile has been included along with a full provisioning profile generated using PuPHPet (https://puphpet.com).
+The Vagrantfile is configured to set up a CentOS 6.5 box with PHP 5.6 and MySQL installed, with a local port forward on port 8080.
+To set up the development environment, make sure you have Vagrant and VirtualBox (https://www.virtualbox.org/) installed, then run::
+
+     vagrant up
+
+The initial setup may take some time as the virtual machine needs to be provisioned.
+After that, you can access your development environment by navigating to http://localhost:8080/psm/ or http://192.158.56.101/psm/.
+The config.php file has been created automatically, but the first time you do need to run through the install wizard.
+
+Code
+----
 
 All code related to phpservermon lives in the "psm" namespace, which can be found under "src/psm".
 

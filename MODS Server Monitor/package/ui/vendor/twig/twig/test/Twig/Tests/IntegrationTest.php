@@ -157,6 +157,13 @@ class TwigTestExtension extends Twig_Extension
         );
     }
 
+    public function getTests()
+    {
+        return array(
+            new Twig_SimpleTest('multi word', array($this, 'is_multi_word')),
+        );
+    }
+
     public function §Filter($value)
     {
         return "§{$value}§";
@@ -168,7 +175,7 @@ class TwigTestExtension extends Twig_Extension
     }
 
     /**
-     * nl2br which also escapes, for testing escaper filters
+     * nl2br which also escapes, for testing escaper filters.
      */
     public function escape_and_nl2br($env, $value, $sep = '<br />')
     {
@@ -176,7 +183,7 @@ class TwigTestExtension extends Twig_Extension
     }
 
     /**
-     * nl2br only, for testing filters with pre_escape
+     * nl2br only, for testing filters with pre_escape.
      */
     public function nl2br($value, $sep = '<br />')
     {
@@ -208,6 +215,11 @@ class TwigTestExtension extends Twig_Extension
     public function br()
     {
         return '<br />';
+    }
+
+    public function is_multi_word($value)
+    {
+        return false !== strpos($value, ' ');
     }
 
     public function getName()
