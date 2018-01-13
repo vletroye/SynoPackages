@@ -1,6 +1,4 @@
 #!/bin/sh
-
-eval $(env | grep "^SYNOPKG_PKGDEST=")
-ret=`ln -s "${SYNOPKG_PKGDEST}/helloworldphp" /usr/syno/synoman/webman/3rdparty/helloworldphp`
-ret=`chown -R admin.users $SYNOPKG_PKGDEST`
+chgrp users /var/log/MODS_HelloWorld_CGI
+chmod g+w /var/log/MODS_HelloWorld_CGI
 exit 0

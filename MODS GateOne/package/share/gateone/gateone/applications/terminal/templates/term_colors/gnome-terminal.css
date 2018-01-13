@@ -11,8 +11,8 @@ span.✈f7 { color: #AAA; } /* White */
 /* 8-color Foregrounds on 8-color Backgrounds */
 span.✈f0.✈b0 { color: #000; background-color: #000; } /* Black on Black */
 span.✈f0.✈b1 { color: #000; background-color: #B21818; } /* Black on Red */
-span.✈f0.✈b2 { color: #000; background-color: #00E40C; } /* Black on Green */
-span.✈f0.✈b3 { color: #000; background-color: #FFFF00; } /* Black on Yellow */
+span.✈f0.✈b3 { color: #000; background-color: #00E40C; } /* Black on Green */
+span.✈f0.✈b2 { color: #000; background-color: #FFFF00; } /* Black on Yellow */
 span.✈f0.✈b4 { color: #000; background-color: #1818B2; } /* Black on Blue */
 span.✈f0.✈b5 { color: #000; background-color: #B218B2; } /* Black on Magenta */
 span.✈f0.✈b6 { color: #000; background-color: #18B2B2; } /* Black on Cyan */
@@ -22,8 +22,8 @@ span.✈f0.✈bb0 { color: #000; background-color: #222; } /* Black on Black */
 /* 8-color Backgrounds */
 span.✈b0  { background-color: #000; } /* Black (used when the rendition is set to 49) */
 span.✈b1  { background-color: #B21818; } /* Red */
-span.✈b2  { background-color: #00E40C; } /* Green */
-span.✈b3  { background-color: #FFFF00; } /* Yellow */
+span.✈b3  { background-color: #00E40C; } /* Green */
+span.✈b2  { background-color: #FFFF00; } /* Yellow */
 span.✈b4  { background-color: #1818B2; } /* Blue */
 span.✈b5  { background-color: #B218B2; } /* Magenta */
 span.✈b6  { background-color: #18B2B2; } /* Cyan */
@@ -32,8 +32,8 @@ span.✈b7  { background-color: #B2B2B2; } /* White */
 /* NOTE: The default span.reverse {} must go in the theme to be background and foreground aware */
 span.✈reverse.✈f0 { background-color: #000; } /* Black on Black (#444 so you can still read it)*/
 span.✈reverse.✈f1 { background-color: #D6292C; } /* Red on Black */
-span.✈reverse.✈f2 { background-color: #13A110; } /* Green on Black */
-span.✈reverse.✈f3 { background-color: #BDC000; } /* Yellow on Black */
+span.✈reverse.✈f3 { background-color: #13A110; } /* Green on Black */
+span.✈reverse.✈f2 { background-color: #BDC000; } /* Yellow on Black */
 span.✈reverse.✈f4 { background-color: #1B4CFF; } /* Blue on Black */
 span.✈reverse.✈f5 { background-color: #E01DC6; } /* Magenta on Black */
 span.✈reverse.✈f6 { background-color: #28A7A5; } /* Cyan on Black */
@@ -57,8 +57,8 @@ span.✈bf5 { color: #F5F; } /* Bright Magenta */
 span.✈bf6 { color: #5FF; } /* Bright Cyan */
 span.✈bf7 { color: #FFF; } /* Bright White (use this on dentures) */
 span.✈bf0.✈bb1 { color: #000; background-color: #B21818; } /* Bright Black on Bright Red */
-span.✈bf0.✈bb2 { color: #000; background-color: #00E40C; } /* Bright Black on Bright Green */
-span.✈bf0.✈bb3 { color: #000; background-color: #FFFF00; } /* Bright Black on Bright Yellow */
+span.✈bf0.✈bb3 { color: #000; background-color: #00E40C; } /* Bright Black on Bright Green */
+span.✈bf0.✈bb2 { color: #000; background-color: #FFFF00; } /* Bright Black on Bright Yellow */
 span.✈bf0.✈bb4 { color: #000; background-color: #1818B2; } /* Bright Black on Bright Blue */
 span.✈bf0.✈bb5 { color: #000; background-color: #B218B2; } /* Bright Black on Bright Magenta */
 span.✈bf0.✈bb6 { color: #000; background-color: #18B2B2; } /* Bright Black on Bright Cyan */
@@ -66,8 +66,8 @@ span.✈bf0.✈bb7 { color: #000; background-color: #F0F0F0; } /* Bright Black o
 /* 16-color ('Bright') Backgrounds */
 span.✈bb0  { background-color: #000; } /* Bright Black */
 span.✈bb1  { background-color: #B21818; } /* Bright Red */
-span.✈bb2  { background-color: #00E40C; } /* Bright Green */
-span.✈bb3  { background-color: #FFFF00; } /* Bright Yellow */
+span.✈bb3  { background-color: #00E40C; } /* Bright Green */
+span.✈bb2  { background-color: #FFFF00; } /* Bright Yellow */
 span.✈bb4  { background-color: #1818B2; } /* Bright Blue */
 span.✈bb5  { background-color: #B218B2; } /* Bright Magenta */
 span.✈bb6  { background-color: #18B2B2; } /* Bright Cyan */
@@ -76,8 +76,8 @@ span.✈bb7  { background-color: #F0F0F0; } /* Bright White */
 span.✈reverse { color: #000; background-color: #ccc; } /* Black on White */
 span.✈reverse.✈bf0 { color: #000; background-color: #ccc; } /* Black */
 span.✈reverse.✈bf1 { color: #000; background-color: #D6292C; } /* Red */
-span.✈reverse.✈bf2 { color: #000; background-color: #13A110; } /* Green */
-span.✈reverse.✈bf3 { color: #000; background-color: #BDC000; } /* Yellow */
+span.✈reverse.✈bf3 { color: #000; background-color: #13A110; } /* Green */
+span.✈reverse.✈bf2 { color: #000; background-color: #BDC000; } /* Yellow */
 span.✈reverse.✈bf4 { color: #000; background-color: #1B4CFF; } /* Blue */
 span.✈reverse.✈bf5 { color: #000; background-color: #E01DC6; } /* Magenta */
 span.✈reverse.✈bf6 { color: #000; background-color: #28A7A5; } /* Cyan */

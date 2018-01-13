@@ -1,4 +1,2 @@
 #!/bin/sh
-
-rm -f /usr/syno/synoman/webman/3rdparty/helloworldphp
 exit 0

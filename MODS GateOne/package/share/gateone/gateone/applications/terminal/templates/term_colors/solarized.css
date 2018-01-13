@@ -9,8 +9,8 @@ span.✈f6 { color: #2aa198; } /* Cyan */
 span.✈f7 { color: #eee8d5; } /* White */
 span.✈bf0 { color: #002b36; } /* Bright Black */
 span.✈bf1 { color: #cb4b16; } /* Bright Red */
-span.✈bf2 { color: #586e75; } /* Bright Green */
-span.✈bf3 { color: #657b83; } /* Bright Yellow */
+span.✈bf3 { color: #586e75; } /* Bright Green */
+span.✈bf2 { color: #657b83; } /* Bright Yellow */
 span.✈bf4 { color: #839496; } /* Bright Blue */
 span.✈bf5 { color: #6c71c4; } /* Bright Magenta */
 span.✈bf6 { color: #93a1a1; } /* Bright Cyan */
@@ -18,16 +18,16 @@ span.✈bf7 { color: #fdf6e3; } /* Bright White */
 /* Backgrounds */
 span.✈b0 { background-color: #073642; } /* Black */
 span.✈b1 { background-color: #dc322f; } /* Black on Red */
-span.✈b2 { background-color: #859900; } /* Black on Green */
-span.✈b3 { background-color: #b58900; } /* Black on Yellow */
+span.✈b3 { background-color: #859900; } /* Black on Green */
+span.✈b2 { background-color: #b58900; } /* Black on Yellow */
 span.✈b4 { background-color: #268bd2; } /* Black on Blue */
 span.✈b5 { background-color: #d33682; } /* Black on Magenta */
 span.✈b6 { background-color: #2aa198; } /* Black on Cyan */
 span.✈b7 { background-color: #eee8d5; } /* Black on White */
 span.✈bb0 { background-color: #002b36; } /* Bright Black */
 span.✈bb1 { background-color: #cb4b16; } /* Bright Red */
-span.✈bb2 { background-color: #586e75; } /* Bright Green */
-span.✈bb3 { background-color: #657b83; } /* Bright Yellow */
+span.✈bb3 { background-color: #586e75; } /* Bright Green */
+span.✈bb2 { background-color: #657b83; } /* Bright Yellow */
 span.✈bb4 { background-color: #839496; } /* Bright Blue */
 span.✈bb5 { background-color: #6c71c4; } /* Bright Magenta */
 span.✈bb6 { background-color: #93a1a1; } /* Bright Cyan */
@@ -37,16 +37,16 @@ span.✈reverse { color: #002b36; background-color: #839496; }
 /* Reversed Foregrounds */
 span.✈reverse.✈f0 { background-color: #073642; } /* Black */
 span.✈reverse.✈f1 { background-color: #dc322f; } /* Black on Red */
-span.✈reverse.✈f2 { background-color: #859900; } /* Black on Green */
-span.✈reverse.✈f3 { background-color: #b58900; } /* Black on Yellow */
+span.✈reverse.✈f3 { background-color: #859900; } /* Black on Green */
+span.✈reverse.✈f2 { background-color: #b58900; } /* Black on Yellow */
 span.✈reverse.✈f4 { background-color: #268bd2; } /* Black on Blue */
 span.✈reverse.✈f5 { background-color: #d33682; } /* Black on Magenta */
 span.✈reverse.✈f6 { background-color: #2aa198; } /* Black on Cyan */
 span.✈reverse.✈f7 { background-color: #eee8d5; } /* Black on White */
 span.✈reverse.✈bf0 { background-color: #002b36; } /* Bright Black */
 span.✈reverse.✈bf1 { background-color: #cb4b16; } /* Bright Red */
-span.✈reverse.✈bf2 { background-color: #586e75; } /* Bright Green */
-span.✈reverse.✈bf3 { background-color: #657b83; } /* Bright Yellow */
+span.✈reverse.✈bf3 { background-color: #586e75; } /* Bright Green */
+span.✈reverse.✈bf2 { background-color: #657b83; } /* Bright Yellow */
 span.✈reverse.✈bf4 { background-color: #839496; } /* Bright Blue */
 span.✈reverse.✈bf5 { background-color: #6c71c4; } /* Bright Magenta */
 span.✈reverse.✈bf6 { background-color: #93a1a1; } /* Bright Cyan */

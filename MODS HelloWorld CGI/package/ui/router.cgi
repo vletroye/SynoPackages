@@ -11,8 +11,11 @@ SCRIPT_NAME=$SCRIPT_URL export SCRIPT_NAME
 # and apply realpath to construct absolute path to requested script.
 WEB_BASE="/webman/3rdparty"
 SCRIPT_FILENAME=$(pwd)/..${SCRIPT_URL:${#WEB_BASE}}
+echo `date` $SCRIPT_FILENAME >> /var/log/MODS_HelloWorld_CGI
 SCRIPT_FILENAME=`realpath $SCRIPT_FILENAME`
+echo `date` $SCRIPT_FILENAME >> /var/log/MODS_HelloWorld_CGI
 export SCRIPT_FILENAME
 
 # Execute the requested PHP file.
-/usr/local/bin/php70-cgi -d open_basedir=none $SCRIPT_FILENAME 2>&1
+echo "router.cgi called" >> /var/log/MODS_HelloWorld_CGI
+/usr/local/bin/php56-cgi -d open_basedir=none $SCRIPT_FILENAME 2>&1

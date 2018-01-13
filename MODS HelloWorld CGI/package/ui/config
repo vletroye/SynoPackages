@@ -22,7 +22,7 @@
       "title": "Hello World CGI",
       "desc": "Call directly a CGI which executes a php page.",
       "icon": "images/Hello_World_CGI_{0}.png",
-      "url": "/webman/3rdparty/MODS_HelloWorld_CGI/test.cgi",
+      "url": "/webman/3rdparty/MODS_HelloWorld_CGI/helloworld.cgi",
       "allowMultiInstance": false,
       "configablePrivilege": false,
       "advanceGrantPrivilege": false,

@@ -1,15 +1,13 @@
 {
   ".url": {
-    "com.synocommunity.packages.gateone": {
+    "SYNO.SDS._ThirdParty.App.MODS_GateOne.GateOne": {
       "itemType": 0,
-      "type": "url",
+      "type": "legacy",
       "allUsers": true,
       "title": "GateOne",
       "desc": "GateOne",
-      "icon": "images/gateone-{0}.png",
-      "protocol": "https",
-      "url": "/",
-      "port": 8271,
+      "icon": "images/GateOne_{0}.png",
+      "url": "/webman/3rdparty/MODS_GateOne/index.cgi",
       "allowMultiInstance": false,
       "configablePrivilege": false,
       "advanceGrantPrivilege": false,
