@@ -1,17 +1,19 @@
 #!/bin/sh
+LOG=/var/log/MODS_BasicTestCGI
 case $1 in
-	start)
-		start
-	;;
-	stop)
-		stop
-	;;
-	status)
-		exit 0
-	;;
-	log)
-		exit 0
-	;;
+  start)
+    echo `date` "Basic Test CGI is installed properly & started" >> $LOG
+    exit 0
+    ;;
+  stop)
+    echo `date` "Basic Test CGI is stopped" >> $LOG
+    exit 0
+    ;;
+  status)
+    exit 0
+    ;;
+  log)
+    echo $LOG
+    exit 0
+    ;;
 esac
-
-exit 0
