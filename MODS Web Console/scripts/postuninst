@@ -1,2 +1,5 @@
 #!/bin/sh
+rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
+sudo synoservicecfg --reload nginx
+
 exit 0
