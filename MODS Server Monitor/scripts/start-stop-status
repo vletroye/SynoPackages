@@ -1,5 +1,5 @@
 #!/bin/sh
-
+LOG="/var/log/MODS_ServerMonitor.log"
 case $1 in
 	start)
 		exit 0
@@ -11,6 +11,7 @@ case $1 in
 		exit 0
 	;;
 	log)
+        echo $LOG
 		exit 0
 	;;
 esac

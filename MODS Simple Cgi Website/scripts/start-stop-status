@@ -1,0 +1,19 @@
+#!/bin/sh
+LOG=/var/log/MODS_SimplePhpSite
+case $1 in
+  start)
+    echo `date` "Simple Php Site is installed properly & started" >> $LOG
+    exit 0
+    ;;
+  stop)
+    echo `date` "Simple Php Site is stopped" >> $LOG
+    exit 0
+    ;;
+  status)
+    exit 0
+    ;;
+  log)
+    echo $LOG
+    exit 0
+    ;;
+esac

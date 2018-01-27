@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_SimpleCgiWebsite.Simple_Php_Website": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Simple Php Website",
+      "desc": "Simple php website running without the need for the Init_3rdparty package",
+      "icon": "images/Simple_Php_Website_{0}.png",
+      "url": "/webman/3rdparty/MODS_SimpleCgiWebsite/index.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

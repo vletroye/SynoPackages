@@ -1,7 +1,7 @@
 #!/bin/sh
 
-LOG="/var/log/mods_ServerMonitor.log"
-ERRLOG="/var/log/mods_ServerMonitor_err.log"
+LOG="/var/log/MODS_ServerMonitor.log"
+ERRLOG="/var/log/MODS_ServerMonitor_err.log"
 if [[ -f "$ERRLOG" ]]; then
   rm -f "$ERRLOG"
 fi
@@ -35,6 +35,14 @@ fi
 
 echo `date` "Using mysql: $MYSQL"
 echo `date` "Using mysqlshow: $MYSQLSHOW"
+
+# set the name of the package in the nginx config
+sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
+
+# link the nginx config to redirect pages accessed on admin port
+rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
+ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
+sudo synoservicecfg --reload nginx
 
 # Check port used to access mysql
 PORT=$(/usr/local/mariadb10/bin/mysqlshow --print-defaults | grep -Po "\-\-port=[0-9]*" | grep -Po "[0-9]*")
