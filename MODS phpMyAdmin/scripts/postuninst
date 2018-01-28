@@ -1,5 +1,0 @@
-#!/bin/sh
-
-rm -rf /var/services/web/phpMyAdmin
-
-exit 0

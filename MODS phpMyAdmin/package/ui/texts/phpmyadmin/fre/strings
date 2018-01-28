@@ -1,7 +1,0 @@
-
-# Copyright (c) 2000-2008 Synology Inc. All rights reserved.
-
-[app]
-app_name	=	"phpMyAdmin"
-description	=	"phpMyAdmin est un outil logiciel gratuit conçu pour gérer les bases de données MySQL. Gérez les bases de données MySQL stockées sur votre DiskStation en installant ce programme."
-

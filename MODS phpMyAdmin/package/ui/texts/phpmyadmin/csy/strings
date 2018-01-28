@@ -1,7 +1,0 @@
-
-# Copyright (c) 2000-2008 Synology Inc. All rights reserved.
-
-[app]
-app_name	=	"phpMyAdmin"
-description	=	"phpMyAdmin je bezplatný softwarový nástroj navržený pro správu MySQL databází. Pokud si tento balíček nainstalujete, budete moci spravovat databáze MySQL uložené na vaší stanici DiskStation."
-

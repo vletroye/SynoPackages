@@ -1,7 +1,0 @@
-
-# Copyright (c) 2000-2008 Synology Inc. All rights reserved.
-
-[app]
-app_name	=	"phpMyAdmin"
-description	=	"phpMyAdmin は、MySQL データベースを管理するための無償ソフトウェアツールです。このパッケージをインストールして、DiskStation に保存された MySQL データベースを管理してください。"
-

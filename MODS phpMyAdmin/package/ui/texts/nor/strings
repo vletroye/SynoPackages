@@ -1,7 +1,0 @@
-
-# Copyright (c) 2000-2008 Synology Inc. All rights reserved.
-
-[app]
-app_name	=	"phpMyAdmin"
-description	=	"phpMyAdmin er et gratis programvareverktøy utformet for å administrere MySQL-databaser. Administrer de lagrede MySQL-databasene på DiskStation ved å installere denne pakken."
-
