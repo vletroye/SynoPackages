@@ -102,7 +102,8 @@ class ServerValidator {
 				}
 				break;
 			case 'ping':
-				if(!filter_var($value, FILTER_VALIDATE_IP)) {
+				if(!filter_var($value, FILTER_VALIDATE_MAC)
+					&& !filter_var($value, FILTER_VALIDATE_IP)) {
 					throw new \InvalidArgumentException('server_ip_bad_service');
 				}
 				break;

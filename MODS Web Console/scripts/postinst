@@ -11,6 +11,7 @@ exec 1>>$LOG
 exec 2>>$ERRLOG
 
 echo `date` "Granting access on log file for the webserver"
+chown http $LOG
 chmod o+w $LOG
 
 chown -R http "$SYNOPKG_PKGDEST/ui"

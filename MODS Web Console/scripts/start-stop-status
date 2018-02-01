@@ -2,11 +2,11 @@
 LOG=/var/log/MODS_WebConsole
 case $1 in
   start)
-    echo `date` "Simple Php Site is installed properly & started" >> $LOG
+    echo `date` "MODS Web Console is installed properly & started" >> $LOG
     exit 0
     ;;
   stop)
-    echo `date` "Simple Php Site is stopped" >> $LOG
+    echo `date` "MODS Web Console is stopped" >> $LOG
     exit 0
     ;;
   status)

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-LOG="/var/log/MODS_SimplePhpSite"
+LOG="/var/log/MODS_ServerMonitor"
 
 # the web server account (Ex.: http) must be granted write access
 if [ -w $LOG ]; then

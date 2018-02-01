@@ -1,5 +1,5 @@
 #!/bin/sh
-LOG="/var/log/MODS_ServerMonitor.log"
+LOG="/var/log/MODS_ServerMonitor"
 case $1 in
 	start)
 		exit 0
