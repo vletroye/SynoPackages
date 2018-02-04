@@ -1,2 +1,5 @@
 #!/bin/sh
+LOG="/var/log/$SYNOPKG_PKGNAME"
+echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-upgrading" >> $LOG
+
 exit 0

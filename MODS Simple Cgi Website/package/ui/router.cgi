@@ -1,6 +1,15 @@
 #!/bin/sh
 
-LOG="/var/log/MODS_SimplePhpSite"
+LOG="/var/log/@SYNOPKG_PKGNAME@"
+ERRLOG="/var/log/@SYNOPKG_PKGNAME@_ERR"
+
+if [ ! -w $ERRLOG ]; then
+  #echo "Content-type: text/html"
+  echo -e "HTTP/1.1 200 OK\n\n"
+  echo "Cannot write into" $ERRLOG"\n\n"
+  echo "Please fix this issue to be able to use the router.cgi of this package.\n\n"
+  exit 0
+fi
 
 # the web server account (Ex.: http) must be granted write access
 if [ -w $LOG ]; then
@@ -20,34 +29,34 @@ if [ "$REQUEST_URI" == "$SCRIPT_NAME" ]; then
   fi
   #echo "Content-type: text/html"
   echo -e "HTTP/1.1 200 OK\n\n"
-else
-
-  # Set redirect_status to 1 to get php cgi working.
-  REDIRECT_STATUS=1 export REDIRECT_STATUS
-  
-  # Fix several $_SERVER globals.
-  PHP_SELF=$REQUEST_URI export PHP_SELF
-  SCRIPT_NAME=$REQUEST_URI export SCRIPT_NAME
-  
-  # Generate the request url without the Query String parameters
-  SCRIPT_FILENAME=$DOCUMENT_ROOT${REQUEST_URI%\?$QUERY_STRING}
-  if [ -w $LOG ]; then
-    echo `date` "SCRIPT_FILENAME:" $SCRIPT_FILENAME >> $LOG
-  fi
-
-  # Prepare the Query String parameters
-  SCRIPT_PARAMETERS=${QUERY_STRING//[&]/ }
-  if [ -w $LOG ]; then
-    echo `date` "SCRIPT_PARAMETERS:" $SCRIPT_PARAMETERS >> $LOG
-  fi
-
-  SCRIPT_FILENAME=`realpath $SCRIPT_FILENAME` export SCRIPT_FILENAME
-  if [ -w $LOG ]; then
-    echo `date` "REALPATH:" $SCRIPT_FILENAME >> $LOG
-  fi
-  
-  if [ -w $LOG ]; then
-    echo `date` "EXECUTE:" "/usr/local/bin/php56-cgi -d open_basedir=none "$SCRIPT_FILENAME" "$SCRIPT_PARAMETERS" 2>&1" >> $LOG
-  fi
-  /usr/local/bin/php56-cgi -d open_basedir=none $SCRIPT_FILENAME $SCRIPT_PARAMETERS 2>&1
+  exit 0
 fi
+
+# Set redirect_status to 1 to get php cgi working.
+REDIRECT_STATUS=1 export REDIRECT_STATUS
+
+# Fix several $_SERVER globals.
+PHP_SELF=$REQUEST_URI export PHP_SELF
+SCRIPT_NAME=$REQUEST_URI export SCRIPT_NAME
+
+# Generate the request url without the Query String parameters
+SCRIPT_FILENAME=$DOCUMENT_ROOT${REQUEST_URI%\?$QUERY_STRING}
+if [ -w $LOG ]; then
+echo `date` "SCRIPT_FILENAME:" $SCRIPT_FILENAME >> $LOG
+fi
+
+# Prepare the Query String parameters
+SCRIPT_PARAMETERS=${QUERY_STRING//[&]/ }
+if [ -w $LOG ]; then
+echo `date` "SCRIPT_PARAMETERS:" $SCRIPT_PARAMETERS >> $LOG
+fi
+
+SCRIPT_FILENAME=`realpath $SCRIPT_FILENAME` export SCRIPT_FILENAME
+if [ -w $LOG ]; then
+echo `date` "REALPATH:" $SCRIPT_FILENAME >> $LOG
+fi
+
+if [ -w $LOG ]; then
+echo `date` "EXECUTE:" "/usr/local/bin/php56-cgi -d open_basedir=none "$SCRIPT_FILENAME" "$SCRIPT_PARAMETERS >> $LOG
+fi
+/usr/local/bin/php56-cgi -d open_basedir=none $SCRIPT_FILENAME $SCRIPT_PARAMETERS 2>$ERRLOG

@@ -1,7 +1,8 @@
 #!/bin/sh
+LOG="/var/log/$SYNOPKG_PKGNAME"
+echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-installing" >> $LOG
 
-LOG="/var/log/MODS_SimplePhpSite"
-ERRLOG="/var/log/MODS_SimplePhpSite_ERR"
+ERRLOG="$LOG"_ERR
 rm -f "$ERRLOG"
 
 #close the stream and redirect them to a custom or standard Syno Log
@@ -10,19 +11,22 @@ exec 2<&-
 exec 1>>$LOG
 exec 2>>$ERRLOG
 
-echo `date` "Granting access on log file for the webserver"
+echo `date` "Granting access on log files for the webserver"
 chmod o+w $LOG
+chmod o+w $ERRLOG
 
 chown -R http "$SYNOPKG_PKGDEST/ui"
 
-# set the name of the package in the nginx config
+# set the name of the package in the nginx config and router.cgi
 sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
+sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/router.cgi"
 
-# link the nginx config to redirect pages accessed on admin port
+#link the nginx config to redirect pages accessed on admin port
 rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 
-sudo synoservicecfg --reload nginx
+#restating nginx is done via package's dependencies (instuninst_restart_services)
+#sudo synoservicecfg --reload nginx
 
 if [ -s "$ERRLOG" ]; then
   echo `date` "----------------------------------------------------"

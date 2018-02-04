@@ -1,12 +1,13 @@
 #!/bin/sh
-LOG=/var/log/MODS_SimplePhpSite
+LOG="/var/log/$SYNOPKG_PKGNAME"
 case $1 in
   start)
-    echo `date` "Simple Php Site is installed properly & started" >> $LOG
+    echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is installed properly & started" >> $LOG
     exit 0
     ;;
   stop)
-    echo `date` "Simple Php Site is stopped" >> $LOG
+    echo `date` "----------------------------------------------------"
+    echo `date` $SYNOPKG_PKGNAME "V" $SYNOPKG_PKGVER "is stopped" >> $LOG
     exit 0
     ;;
   status)
