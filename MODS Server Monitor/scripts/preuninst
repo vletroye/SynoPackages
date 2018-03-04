@@ -30,11 +30,11 @@ fi
 
 pkgwizard_server_name=`cat $ETC_DIR/server_name`
 pkgwizard_db_mame=`cat $ETC_DIR/database_name`
-pkgwizard_admin_account=`cat $ETC_DIR/mysql_account`
-pkgwizard_admin_password=`cat $ETC_DIR/mysql_password`
+pkgwizard_user_account=`cat $ETC_DIR/mysql_account`
+pkgwizard_user_password=`cat $ETC_DIR/mysql_password`
 
 if [ "$pkgwizard_remove_database" = "true" ]; then
-  $MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_admin_account" --password="$pkgwizard_admin_password" -e "DROP DATABASE $pkgwizard_db_mame"
+  $MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_user_account" --password="$pkgwizard_user_password" -e "DROP DATABASE $pkgwizard_db_mame"
   if [ $? -eq 1 ]; then
     echo `date` "Fail to drop database $pkgwizard_db_mame."
     echo "Fail to drop database $pkgwizard_db_mame." >> $SYNOPKG_TEMP_LOGFILE

@@ -48,6 +48,22 @@ sudo synoservicecfg --reload nginx
 PORT=$(/usr/local/mariadb10/bin/mysqlshow --print-defaults | grep -Po "\-\-port=[0-9]*" | grep -Po "[0-9]*")
 echo `date` "Checking port: $PORT"
 
+# localhost doesn't work for mariadb10 => user 127.0.0.1 instead
+HOST=$pkgwizard_server_name
+if [ "$HOST" == "localhost" ]; then
+  HOST="127.0.0.1"
+fi
+
+#Save wizard settings
+echo "$pkgwizard_server_name" > "$ETC_DIR/server_name"
+echo "$pkgwizard_db_Name" > "$ETC_DIR/database_name"
+echo "$pkgwizard_srvmon_account" > "$ETC_DIR/mysql_account"
+echo "$pkgwizard_srvmon_password" > "$ETC_DIR/mysql_password"
+echo "$pkgwizard_admin_account" > "$ETC_DIR/admin_account"
+echo "$pkgwizard_admin_password" > "$ETC_DIR/admin_password"
+echo "$PORT" > "$ETC_DIR/mysql_port"
+echo "$HOST" > "$ETC_DIR/mysql_host"
+
 # Check Access to mysql with the given account and password
 echo `date` "Checking access on mysql: $MYSQLSHOW --user=$pkgwizard_admin_account --password=********** | grep -v Wildcard | grep -o mysql"
 RESULT=`$MYSQLSHOW --user=$pkgwizard_admin_account --password=$pkgwizard_admin_password | grep -v Wildcard | grep -o mysql`
@@ -72,7 +88,7 @@ if [ "$RESULT" == "$pkgwizard_db_Name" ]; then
   RESULT=`$MYSQLSHOW --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
   echo `date` "Results: $RESULT"
   if [ "$RESULT" != "$pkgwizard_db_Name" ]; then
-    echo `date` "Existing database $pkgwizard_db_Name cannot be reused with the provided account and password"
+    echo `date` "Existing database $pkgwizard_db_Name cannot be reused with the provided account and password --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password"
     echo "Existing database $pkgwizard_db_Name cannot be reused with the provided account and password" > $SYNOPKG_TEMP_LOGFILE
     # Check that the database can be accessed with the given account    
     exit 1
@@ -99,25 +115,11 @@ if [ $? -eq 1 ]; then
   exit 1
 fi
 
-
-# localhost doesn't work for mariadb10 => user 127.0.0.1 instead
-HOST=$pkgwizard_server_name
-if [ "$HOST" == "localhost" ]; then
-  HOST="127.0.0.1"
-fi
-
-echo "$pkgwizard_server_name" > "$ETC_DIR/server_name"
-echo "$pkgwizard_db_Name" > "$ETC_DIR/database_name"
-echo "$pkgwizard_srvmon_account" > "$ETC_DIR/mysql_account"
-echo "$pkgwizard_srvmon_password" > "$ETC_DIR/mysql_password"
-echo "$PORT" > "$ETC_DIR/mysql_port"
-echo "$HOST" > "$ETC_DIR/mysql_host"
-
 ConfigFile="$SYNOPKG_PKGDEST/ui/config.php"
 
 echo "<?php" > "$ConfigFile"
 echo "\$url=(isset(\$_SERVER['HTTPS']) ? 'https' : 'http') . '://' . \$_SERVER[HTTP_HOST] . dirname(\$_SERVER[REQUEST_URI]);" >> "$ConfigFile"
-echo "define('PSM_DB_PREFIX', '');" >> "$ConfigFile"
+echo "define('PSM_DB_PREFIX', 'psm_');" >> "$ConfigFile"
 echo "define('PSM_DB_USER', '$pkgwizard_srvmon_account');" >> "$ConfigFile"
 echo "define('PSM_DB_PASS', '$pkgwizard_srvmon_password');" >> "$ConfigFile"
 echo "define('PSM_DB_NAME', '$pkgwizard_db_Name');" >> "$ConfigFile"
@@ -138,5 +140,7 @@ if [ -s "$ERRLOG" ]; then
 fi
 
 fi
+
+chown -R http "$SYNOPKG_PKGDEST/ui"
 
 exit 0

@@ -58,7 +58,7 @@
         ]
       },
       {
-        "type": "password",
+        "type": "textfield",
         "desc": "Enter a Password for this account (will be visible in Server Monitor's config.php)",
         "subitems": [
           {
