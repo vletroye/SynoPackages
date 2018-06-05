@@ -1,7 +1,32 @@
 #!/bin/sh
 
-# remove symbolic links
-rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-sudo synoservicecfg --reload nginx
+LOG="/var/log/MODS_FlexTV"
+ERRLOG="/var/log/MODS_FlexTV_ERR"
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+#close the stream and redirect them to a custom or standard Syno Log
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+echo `date` "POST UNINSTALL PKG VERSION:" "$SYNOPKG_PKGVER"
+
+rm -f -R "/var/services/web/FlexTV"
+
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettifying the POST UNINSTALL log file"
+  sed -i 's/$/<br>/' "$ERRLOG"
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
+
+fi
 
 exit 0

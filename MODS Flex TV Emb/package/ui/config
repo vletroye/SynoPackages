@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Flex_TV_Emb.FlexTV": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "FlexTV",
+      "desc": "A Voice Interface for the Plex HTPC.",
+      "icon": "images/FlexTV_{0}.png",
+      "url": "/webman/3rdparty/MODS_Flex_TV_Emb/FlexTV/index.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "all",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

@@ -14,13 +14,17 @@ exec 2>>$ERRLOG
 
 echo `date` "POST UPGRADE PKG VERSION: $SYNOPKG_PKGVER"
 
-# set the name of the package in the nginx config
-sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
+cp $SYNOPKG_TEMP_UPGRADE_FOLDER/configBKP/*.php /var/services/web/FlexTV/php/config/
 
-# link the nginx config to redirect pages accessed on admin port
-rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-sudo synoservicecfg --reload nginx
-
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettifying the POST UPGRADE log file"
+  sed -i 's/$/<br>/' "$ERRLOG"
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
 
 exit 0

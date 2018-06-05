@@ -12,23 +12,18 @@ exec 2<&-
 exec 1>>$LOG
 exec 2>>$ERRLOG
 
-if [[ "$SYNOPKG_PKG_STATUS" == "INSTALL" ]]; then
+#if [[ "$SYNOPKG_PKG_STATUS" == "INSTALL" ]]; then
 
 echo `date` "POST INSTALL PKG VERSION: $SYNOPKG_PKGVER"
 
-ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
+chown -R http "$SYNOPKG_PKGDEST/ui/FlexTV"
 
-# copy the router.cgi into the website
-cp "$SYNOPKG_PKGDEST/ui/router.cgi" "$SYNOPKG_PKGDEST/ui/FlexTV/"
+if [[ -d "/var/services/web/FlexTV" ]]; then
+    COUNT=$(ls -dq /var/services/web/FlexTV.* | wc -l)
+    mv "/var/services/web/FlexTV" "/var/services/web/FlexTV.$COUNT"
+fi
 
-# set the name of the package in the nginx config
-sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
-
-# link the nginx config to redirect pages accessed on admin port
-rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-sudo synoservicecfg --reload nginx
-
+mv "$SYNOPKG_PKGDEST/ui/FlexTV" "/var/services/web/FlexTV"
 
 if [ -s "$ERRLOG" ]; then
   echo `date` "----------------------------------------------------"
@@ -41,8 +36,6 @@ if [ -s "$ERRLOG" ]; then
   exit 1
 fi
 
-fi
-
-chown -R http "$SYNOPKG_PKGDEST/ui"
+#fi
 
 exit 0

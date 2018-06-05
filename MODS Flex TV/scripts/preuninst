@@ -14,13 +14,12 @@ exec 2>>$ERRLOG
 
 echo `date` "PRE UNINSTALL PKG VERSION:" "$SYNOPKG_PKGVER"
 
-
 if [ -s "$ERRLOG" ]; then
   echo `date` "----------------------------------------------------"
   cat $ERRLOG
   echo `date` "----------------------------------------------------"
   # make the log pretty to be displayed by the Catalog Manager
-  echo `date` "Prettifying the POST INSTALL log file"
+  echo `date` "Prettifying the PRE UNINSTALL log file"
   sed -i 's/$/<br>/' "$ERRLOG"
   cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
   exit 1

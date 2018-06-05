@@ -1,0 +1,34 @@
+#!/bin/sh
+
+LOG="/var/log/MODS_FlexTV"
+ERRLOG="/var/log/MODS_FlexTV_ERR"
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+#close the stream and redirect them to a custom or standard Syno Log
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+echo `date` "PRE UPGRADE PKG VERSION: $SYNOPKG_PKGVER"
+
+if [[ -d "$SYNOPKG_TEMP_UPGRADE_FOLDER/configBKP" ]]; then
+  rm -R $SYNOPKG_TEMP_UPGRADE_FOLDER/configBKP
+fi
+mkdir $SYNOPKG_TEMP_UPGRADE_FOLDER/configBKP
+cp $SYNOPKG_PKGDEST/ui/FlexTV/php/config/*.php $SYNOPKG_TEMP_UPGRADE_FOLDER/configBKP/
+
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettifying the POST INSTALL log file"
+  sed -i 's/$/<br>/' "$ERRLOG"
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
+
+exit 0

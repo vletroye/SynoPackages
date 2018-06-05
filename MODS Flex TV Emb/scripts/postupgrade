@@ -1,0 +1,37 @@
+#!/bin/sh
+
+LOG="/var/log/MODS_FlexTV"
+ERRLOG="/var/log/MODS_FlexTV_ERR"
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+#close the stream and redirect them to a custom or standard Syno Log
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+echo `date` "POST UPGRADE PKG VERSION: $SYNOPKG_PKGVER"
+
+# set the name of the package in the nginx config
+sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
+
+# link the nginx config to redirect pages accessed on admin port
+rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
+ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
+sudo synoservicecfg --reload nginx
+
+cp $SYNOPKG_TEMP_UPGRADE_FOLDER/configBKP/*.php $SYNOPKG_PKGDEST/ui/FlexTV/php/config/
+
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettifying the POST UPGRADE log file"
+  sed -i 's/$/<br>/' "$ERRLOG"
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
+exit 0
