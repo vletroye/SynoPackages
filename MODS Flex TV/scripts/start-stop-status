@@ -1,0 +1,37 @@
+#!/bin/sh
+LOG="/var/log/MODS_FlexTV"
+
+# Package
+PACKAGE="mods"
+# Others
+INSTALL_DIR="/usr/local/${PACKAGE}"
+
+start()
+{
+su -c "mv ${INSTALL_DIR}/.app/ ${INSTALL_DIR}/app/"
+}
+
+stop()
+{
+su -c "mv ${INSTALL_DIR}/app/ ${INSTALL_DIR}/.app/"
+}
+
+case $1 in
+	start)
+		start
+		exit 0
+	;;
+	stop)
+		stop
+		exit 0
+	;;
+	status)
+		exit 0
+	;;
+	log)
+        	echo $LOG
+		exit 0
+	;;
+esac
+
+exit 0
