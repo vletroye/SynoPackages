@@ -1,0 +1,54 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title></title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+	#btn  {
+		background-color: blue;
+		color: #fff;
+		padding: 10px;
+		solid #ccc;
+		border-radius: 5px;
+		width: 80px;
+		height:30px;
+		line-height:10px;
+		cursor:pointer;
+	}	
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+		$("#btn").click( function(e) {
+			var url = $("#url").val();
+			if (url.substring(0, 4) != "http") url= "http://" + url;
+			
+			$("#browser").attr("src", url);
+		});
+
+		$("#url").keyup(function(event) {
+			if (event.keyCode === 13) {
+				$("#btn").click();
+			}
+		});
+
+    });	
+  </script>
+</head>
+<body>
+  <table style="width: 100%;height: 100%;table-layout: fixed;">
+  <tr style="">
+  <td style="min-width: 80px;max-width: 80px;width: 80px;"><input type="button" id="btn" value="Browse" /></td>
+  <td style=""><input type="text" id="url" style="width: 100%;" /></td>
+  </tr>
+  <tr style="height: 100%">
+  <td style="width: 100%;height: 100%" colspan="2"><iframe id="browser" src="" style="width: 100%;height: 100%;border : 0px"></iframe></td>
+  </tr>
+  </table>
+</body>
+</html>

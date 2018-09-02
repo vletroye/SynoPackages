@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Browser.MODS_Browser": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "MODS Browser",
+      "desc": "Open any page in a DSM Window.",
+      "icon": "images/MODS_Browser_{0}.png",
+      "url": "/webman/3rdparty/MODS_Browser/browser.html",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

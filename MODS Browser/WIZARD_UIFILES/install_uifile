@@ -1,0 +1,62 @@
+[
+  {
+    "step_title": "Configuration",
+    "invalid_next_disabled": false,
+    "items": [
+      {
+        "type": "singleselect",
+        "desc": "Opening",
+        "subitems": [
+          {
+            "key": "tab",
+            "defaultValue": "true",
+            "desc": "Open in a new Tab"
+          },
+          {
+            "key": "window",
+            "defaultValue": "false",
+            "desc": "Open windowed"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Ports",
+        "subitems": [
+          {
+            "key": "gateone",
+            "defaultValue": "8721",
+            "desc": "GateOne port",
+            "validator": {
+              "maxLength": "5",
+              "allowBlank": false
+            }
+          },
+          {
+            "key": "ssh",
+            "defaultValue": "22",
+            "desc": "Default SSH port",
+            "validator": {
+              "maxLength": "5",
+              "allowBlank": false
+            }
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Domain",
+        "subitems": [
+          {
+            "key": "address",
+            "defaultValue": "",
+            "desc": "DSM Address",
+            "validator": {
+              "allowBlank": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

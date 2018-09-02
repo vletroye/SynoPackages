@@ -19,7 +19,7 @@ __license_info__ = {
     }
 }
 __author__ = 'Dan McDougall <daniel.mcdougall@liftoffsoftware.com>'
-__commit__ = "20151116212858" # Gets replaced by git (holds the date/time)
+__commit__ = "20171125154235" # Gets replaced by git (holds the date/time)
 
 # NOTE: Docstring includes reStructuredText markup for use with Sphinx.
 __doc__ = '''\
@@ -791,7 +791,7 @@ class StaticHandler(tornado.web.StaticFileHandler):
         # must be a classmethod (we need access to self.use_pkg).
         if self.use_pkg:
             if not resource_exists(self.use_pkg, absolute_path):
-                raise HTTPError(404)
+                raise tornado.web.HTTPError(404)
             return resource_filename(self.use_pkg, absolute_path)
         return super(
             StaticHandler, self).validate_absolute_path(root, absolute_path)
@@ -2083,8 +2083,12 @@ class ApplicationWebSocket(WebSocketHandler, OnOffMixin):
                 port=port,
                 url_prefix=parsed.path)
             if orig_base_url != self.base_url:
-                self.logger.info(_(
+                self.auth_log.info(_(
                     "Proxy in use: Client URL differs from server."))
+        self.full_url = settings.get('href', None) # In case we need all of it
+        # NOTE: The full URL is only logged via debug() because it could contain
+        #       sensitive info.
+        self.auth_log.debug(_("Client URL: {}".format(self.full_url)))
         auth_method = self.settings.get('auth', None)
         if auth_method and auth_method != 'api':
             # Regular, non-API authentication
@@ -2132,7 +2136,6 @@ class ApplicationWebSocket(WebSocketHandler, OnOffMixin):
                 #self.close() # Close the WebSocket
         elif auth_method and auth_method == 'api':
             if 'auth' in list(settings.keys()):
-                print("auth settings: %s" % repr(settings['auth']))
                 if not isinstance(settings['auth'], dict):
                     settings['auth'] = json_decode(settings['auth'])
                 user = self.api_auth(settings['auth'])
@@ -4375,7 +4378,8 @@ def main(installed=True):
                 except OSError as e:
                     logging.error(_(
                         "Gate One could not create {ssl_base} ({e}). "
-                        "Are you using the correct --settings_dir?"))
+                        "Are you using the correct --settings_dir?").format(
+                            ssl_base=ssl_base, e=e))
                     sys.exit(1)
             logging.info(_("No SSL private key found.  One will be generated."))
             gen_self_signed_ssl(path=ssl_base)
@@ -4398,20 +4402,35 @@ def main(installed=True):
     else:
         cert_reqs = ssl.CERT_NONE
     # Instantiate our Tornado web server
-    ssl_options = {
-        "certfile": go_settings['certificate'],
-        "keyfile": go_settings['keyfile'],
-        "cert_reqs": cert_reqs
-    }
-    ca_certs = go_settings.get('ca_certs', None)
-    if ca_certs:
-        ssl_options['ca_certs'] = ca_certs
+    proto = "https://"
     disable_ssl = go_settings.get('disable_ssl', False)
+    ca_certs = go_settings.get('ca_certs', None)
+    ssl_options = None
     if disable_ssl:
         proto = "http://"
-        ssl_options = None
-    else:
-        proto = "https://"
+    else: # Use SSL!
+        if hasattr(ssl, 'create_default_context'): # Python 2.7.9+ and 3.4+
+            ssl_options = ssl.create_default_context(
+                ssl.Purpose.CLIENT_AUTH, capath=ca_certs)
+            # SSLv2 and SSLv3 are disabled by default in Python 3.4+ so these
+            # aren't necessary (left them here for reference):
+            #ssl_options.options &= ~ssl.OP_NO_SSLv3 # Disable insecure SSLv3
+            #ssl_options.options &= ~ssl.OP_NO_SSLv2 # Disable insecure SSLv2
+        else: # Python 2.7 and Python 3 versions older than 3.4
+            if sys.version_info[0] == 2: # Python 2.7
+                ssl_options = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+                # PROTOCOL_SSLv23 supports through TLS 1.3
+            else: # Python 3.0 through 3.3
+                ssl_options = ssl.SSLContext(ssl.PROTOCOL_TLS)
+                # PROTOCOL_TLS supports all (current) versions of TLS
+            ssl_options.options |= ssl.OP_NO_SSLv2
+            ssl_options.options |= ssl.OP_NO_SSLv3
+            ssl_options.load_default_certs(ssl.Purpose.CLIENT_AUTH)
+            if ca_certs:
+                ssl_options.load_verify_locations(capath=ca_certs)
+        ssl_options.load_cert_chain(
+            go_settings['certificate'], keyfile=go_settings['keyfile'])
+        ssl_options.verify_mode = cert_reqs
     # Fill out our settings with command line args if any are missing
     for option in list(options):
         if option in non_options:

@@ -18,11 +18,12 @@ echo `date` "POST INSTALL PKG VERSION: $SYNOPKG_PKGVER"
 
 ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
 
+# set the name of the package in the nginx config and router.cgi
+sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
+sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/router.cgi"
+
 # copy the router.cgi into the website
 cp "$SYNOPKG_PKGDEST/ui/router.cgi" "$SYNOPKG_PKGDEST/ui/FlexTV/"
-
-# set the name of the package in the nginx config
-sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
 
 # link the nginx config to redirect pages accessed on admin port
 rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
