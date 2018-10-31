@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_AcpiOnLan.Acpi_On_Lan": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Acpi On Lan",
+      "desc": "List all devices on your LAN.",
+      "icon": "images/Acpi_On_Lan_{0}.png",
+      "url": "/webman/3rdparty/MODS_AcpiOnLan/Acpi_On_Lan/index.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

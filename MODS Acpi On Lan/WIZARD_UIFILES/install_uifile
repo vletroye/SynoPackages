@@ -1,0 +1,22 @@
+[
+  {
+    "step_title": "Mac Vendors",
+    "invalid_next_disabled": false,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Enter a token got from https://app.macvendors.com",
+        "subitems": [
+          {
+            "key": "pkgwizard_tokenVendor",
+            "defaultValue": "",
+            "desc": "Your MacVendor token",
+            "validator": {
+              "allowBlank": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

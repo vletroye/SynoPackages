@@ -1,0 +1,77 @@
+{
+    "windows": {
+        "name": "Windows",
+		"icon": "windows",
+        "features": {
+			"acpi": {
+				"hibernate": "acpiHibernate",
+				"sleep": "acpiSleep",
+				"stanby": "acpiStandby",
+				"shutdown": "acpiShutdown",
+				"restart": "acpiRestart" 
+			},
+			"on": {
+				"shutdown": "windowsShutdown"
+			},
+			"off": {
+				"wol": "wol"
+			}
+		}
+    },
+    "mac": {
+        "name": "Mac",
+		"icon": "mac",
+        "features": {
+			"on": {
+				"shutdown": "macShutdown"
+			},
+			"off": {
+				"wol": "wol"
+			}
+		}
+    },
+    "linux": {
+        "name": "Linux",
+		"icon": "linux",
+        "features": {
+			"on": {
+				"shutdown": "linuxShutdown"
+			},
+			"off": {
+				"wol": "wol"
+			}
+		}
+    },
+    "android": {
+        "name": "Android",
+		"icon": "android",
+        "features": {
+			"on": {
+			},
+			"off": {
+			}
+		}
+    },		
+    "other": {
+        "name": "Other",
+		"icon": "other",
+        "features": {
+			"on": {
+			},
+			"off": {
+			}
+		}
+    },
+    "syno": {
+        "name": "DSM",
+		"icon": "syno",
+        "features": {
+			"on": {
+				"shutdown": "synoShutdown",
+				"restart": "synoRestart"
+			},
+			"off": {
+			}
+		}
+    }
+}
