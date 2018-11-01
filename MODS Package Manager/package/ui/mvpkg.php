@@ -1,13 +1,59 @@
+<?php
+
+#Regular Expression Online tester: https://regex101.com/
+#PHP functions Online tester: https://fr.functions-online.com/preg_match.html
+#Help HTML 5: https://www.scriptol.fr/html5/
+
+ob_start();
+
+$PACKAGE = $_POST['package'];
+$TARGET = $_POST['volume'];
+if ($PACKAGE != '' && $TARGET != '') {
+	switch ($TARGET) {
+		case "start":
+			$action = "sudo /usr/syno/sbin/synoservicecfg --hard-start 'pkgctl-$PACKAGE' 2>&1";
+			break;
+		case "stop":
+			$action = "sudo /usr/syno/sbin/synoservicecfg --hard-stop 'pkgctl-$PACKAGE' 2>&1";
+			break;
+		case "reverse":
+			$action = "sudo /usr/syno/sbin/synoservicecfg --reverse-dependency 'pkgctl-$PACKAGE' 2>&1";
+			$dep = "sudo /usr/syno/sbin/synoservicecfg --reverse-dependency 'pkgctl-$PACKAGE'";
+			break;
+		case "forward":
+			$action = "sudo /usr/syno/sbin/synoservicecfg --forward-dependency 'pkgctl-$PACKAGE' 2>&1";
+			$dep = "sudo /usr/syno/sbin/synoservicecfg --forward-dependency 'pkgctl-$PACKAGE'";
+			break;
+		case "erase":
+			$action = "sudo ".dirname(__FILE__)."/rmpkg.sh '$PACKAGE' 2>&1";
+			$TARGET = "";
+			$PACKAGE = "";
+			break;
+		default:
+			$action = "sudo ".dirname(__FILE__)."/mvpkg.sh '$TARGET' '$PACKAGE' 2>&1";
+			$TARGET = "";
+			$PACKAGE = "";
+	}
+}
+
+if ($action != '') {
+	//ob_start();
+	//passthru($move);
+	//$output = ob_get_clean();
+	exec($action, $output, $result);
+}
+?>
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+<link rel="icon" type="image/png" href="favicon.png">
 </head>
-<body>
+<body style="display:none">
 <script type="text/javascript" src="spin.min.js"></script>
 <script>
 	$(document).ready(function(){
 		$("#volume").prop("disabled", true);
+		$('body').show();
 				
 		var selectPackage = function($name) {
 			var package = $name;
@@ -237,42 +283,9 @@
         padding-top:80px;
     }
 </style>
+
 <?php
 
-#Regular Expression Online tester: https://regex101.com/
-#PHP functions Online tester: https://fr.functions-online.com/preg_match.html
-#Help HTML 5: https://www.scriptol.fr/html5/
-
-$PACKAGE = $_POST['package'];
-$TARGET = $_POST['volume'];
-if ($PACKAGE != '' && $TARGET != '') {
-	switch ($TARGET) {
-		case "start":
-			$action = "/usr/syno/sbin/synoservicecfg --hard-start 'pkgctl-$PACKAGE' 2>&1";
-			break;
-		case "stop":
-			$action = "/usr/syno/sbin/synoservicecfg --hard-stop 'pkgctl-$PACKAGE' 2>&1";
-			break;
-		case "reverse":
-			$action = "/usr/syno/sbin/synoservicecfg --reverse-dependency 'pkgctl-$PACKAGE' 2>&1";
-			$dep = "/usr/syno/sbin/synoservicecfg --reverse-dependency 'pkgctl-$PACKAGE'";
-			break;
-		case "forward":
-			$action = "/usr/syno/sbin/synoservicecfg --forward-dependency 'pkgctl-$PACKAGE' 2>&1";
-			$dep = "/usr/syno/sbin/synoservicecfg --forward-dependency 'pkgctl-$PACKAGE'";
-			break;
-		case "erase":
-			$action = "rmpkg.sh '$PACKAGE' 2>&1";
-			$TARGET = "";
-			$PACKAGE = "";
-			break;
-		default:
-			$action = "mvpkg.sh '$TARGET' '$PACKAGE' 2>&1";
-			$TARGET = "";
-			$PACKAGE = "";
-	}
-}
-	
 #Get Packages information
 $packages = shell_exec('ls -la /var/packages/*/target');
 foreach(preg_split("/((\r?\n)|(\r\n?))/", $packages) as $package){
@@ -312,7 +325,7 @@ foreach(preg_split("/((\r?\n)|(\r\n?))/", $volumeNames) as $volumeName){
 }
 
 #Get Packages status
-$statusList = shell_exec('/usr/syno/sbin/synoservicecfg --status');
+$statusList = shell_exec('sudo /usr/syno/sbin/synoservicecfg --status');
 
 //Test: $statusList = "
 // Service [pkgctl-Init_3rdparty] status=[enable]
@@ -414,17 +427,14 @@ echo "<input type='button' id='reverse' value='Reverse Dep' title='Display all s
 echo "<input type='button' id='erase' value='Erase' style='float: right;' title='Delete a Package ignoring dependencies if any.' disabled> \n";
 echo "<hr> \n";
 if ($action != '') {
-	//ob_start();
-	//passthru($move);
-	//$output = ob_get_clean();
-	exec($action, $output, $result);
-	
+
 	echo "<fieldset><legend>Package Mover's feedback</legend>";
 	foreach ($output as $item => $data){
 		echo "<p>$data</p>";	
 	}
 	echo "</fieldset>";	
 }
+ob_end_flush();
 ?>
 <div id="loading">
     <div id="loadingcontent">

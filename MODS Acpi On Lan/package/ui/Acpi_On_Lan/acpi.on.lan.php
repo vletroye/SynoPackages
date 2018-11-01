@@ -523,7 +523,6 @@ function NewComputersFromArp($computers) {
 function GetVendor($MAC) {
   $settings = LoadSettings();
   $token = $settings->tokenVendor;
-  //$token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtYWN2ZW5kb3JzIiwiZXhwIjoxODUyMTAyNTA4LCJpYXQiOjE1Mzc2MDY1MDgsImlzcyI6Im1hY3ZlbmRvcnMiLCJqdGkiOiI0MzNmNTE3MC1kZDIwLTRlMTMtOTNkNy0yMzUwOWYzZDc5OGUiLCJuYmYiOjE1Mzc2MDY1MDcsInN1YiI6Ijc0OSIsInR5cCI6ImFjY2VzcyJ9.5AGSByYXVNFBozqrYugOyuM-SYyj-NO5E0F30XY1JJGKuGydTVOfbqhjSkL1NxBlV5tddroGcTSTC91MXesCTw";
     
   $url="https://api.macvendors.com/v1/lookup/".urlencode($MAC);
   $ch=curl_init();

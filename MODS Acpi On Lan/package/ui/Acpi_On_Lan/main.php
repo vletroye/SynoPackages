@@ -131,6 +131,8 @@
 	}		
 	echo "\n\r<!-- Error Message field -->";
 	echo "\n\r<div id='results' class='menu' style='text-align:left;display: none;'>AcpiOnLan running fine</div>";
+	
+	ob_end_flush();
 ?>
 
 <!-- Information popup area -->
