@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# set the name of the package in the nginx config
+sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
+
+# link the nginx config to redirect pages accessed on admin port
+rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
+ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
+#sudo synoservicecfg --reload nginx [done via package config]
+
+exit 0

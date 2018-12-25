@@ -28,7 +28,7 @@ case $1 in
 			touch "$SYNOPKG_PKGDEST/request_log"
 			. `dirname $0`/trace `basename $0` $*
 		fi
-		echo "/var/log/SpkTracer.log"
+		echo "/var/log/$SYNOPKG_PKGNAME.log"
 		exit 0
 	;;
     *)

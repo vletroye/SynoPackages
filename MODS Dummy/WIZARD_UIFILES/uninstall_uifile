@@ -1,0 +1,17 @@
+[
+  {
+    "step_title": "Uninstallaion Wizard",
+    "items": [
+      {
+        "type": "multiselect",
+        "subitems": [
+          {
+            "key": "pkgwizard_hello",
+            "desc": "Say goodbye!",
+            "defaultValue": false
+          }
+        ]
+      }
+    ]
+  }
+]

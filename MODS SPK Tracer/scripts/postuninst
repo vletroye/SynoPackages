@@ -7,6 +7,8 @@ fi
 . `dirname $0`/trace `basename $0` $*
 
 if [ "$pkgwizard_delete" = "true" ]; then
-  rm -f /var/log/SpkTracer.log
+  rm -f /var/log/$SYNOPKG_PKGNAME.log
   echo "<br>Log has been deleted...<br>" >> $SYNOPKG_TEMP_LOGFILE
 fi
+
+rm -R "/usr/syno/etc/packages/$SYNOPKG_PKGNAME"

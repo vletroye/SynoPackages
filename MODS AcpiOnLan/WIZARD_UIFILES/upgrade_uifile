@@ -1,0 +1,24 @@
+[
+  {
+    "step_title": "Remove ACPI On Lan",
+    "invalid_next_disabled": false,
+    "items": [
+      {
+        "type": "singleselect",
+        "desc": "What do you want to do with existing data (token, devices, etc...)",
+        "subitems": [
+          {
+            "key": "pkgwizard_keepData",
+            "defaultValue": "true",
+            "desc": "Keep them"
+          },
+          {
+            "key": "pkgwizard_deleteData",
+            "defaultValue": "false",
+            "desc": "Delete them"
+          }
+        ]
+      }
+    ]
+  }
+]

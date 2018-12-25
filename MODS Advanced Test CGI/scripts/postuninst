@@ -1,7 +1,0 @@
-#!/bin/sh
-rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-rm -f /usr/syno/share/nginx/conf.d/www.$SYNOPKG_PKGNAME.conf
-rm -f "/var/services/web/$SYNOPKG_PKGNAME"_Site
-sudo synoservicecfg --reload nginx
-
-exit 0

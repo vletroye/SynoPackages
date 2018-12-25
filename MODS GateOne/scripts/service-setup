@@ -7,7 +7,7 @@ if [ -n "${SYNOPKG_DSM_VERSION_MAJOR}" -a "${SYNOPKG_DSM_VERSION_MAJOR}" -lt 6 ]
 # Service port
 SERVICE_PORT="8271"
 # start-stop-status script redirect stdout/stderr to LOG_FILE
-LOG_FILE="${SYNOPKG_PKGDEST}/var/${SYNOPKG_PKGNAME}.log"
+LOG_FILE="/var/log/${SYNOPKG_PKGNAME}.log"
 # Service command has to deliver its pid into PID_FILE
 PID_FILE="${SYNOPKG_PKGDEST}/var/${SYNOPKG_PKGNAME}.pid"
 
@@ -45,6 +45,7 @@ SSL_DIR="${SYNOPKG_PKGDEST}/ssl/"
 
 SERVICE_COMMAND="${PYTHON} ${GATEONE} --settings_dir=${SETTINGS_DIR}"
 SVC_BACKGROUND=yes
+SVC_WRITE_PID=yes
 
 service_postinst ()
 {

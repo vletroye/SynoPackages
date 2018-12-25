@@ -4,7 +4,7 @@
 #  Cannot remove user as still in use or may be DSM service itself
 # Require warning in ChangeLog and manual user/group cleanup
 
-INST_LOG="/tmp/${SYNOPKG_PKGNAME}_install.log"
+INST_LOG="/var/log/${SYNOPKG_PKGNAME}_install.log"
 INST_ETC="/var/packages/${SYNOPKG_PKGNAME}/etc"
 INST_VARIABLES="${INST_ETC}/installer-variables"
 INST_VAR="${SYNOPKG_PKGDEST}/var"
@@ -314,10 +314,6 @@ postinst ()
 
     call_func "service_postinst"
 
-    $CP "${INST_LOG}" "${INST_VAR}"
-    if [ -n "${LOG_FILE}" ]; then
-        echo "Installation log: ${INST_VAR}/${SYNOPKG_PKGNAME}_install.log" >> ${LOG_FILE}
-    fi
     if [ $SYNOPKG_DSM_VERSION_MAJOR -lt 6 ]; then
         # On DSM 5 set package files permissions for consistency with DSM 6
         set_unix_permissions "${SYNOPKG_PKGDEST}"

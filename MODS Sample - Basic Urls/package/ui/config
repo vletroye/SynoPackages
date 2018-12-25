@@ -1,0 +1,49 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Basic_Urls.Mods_BeatificaBytes_ext": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": true,
+      "title": "Mods BeatificaBytes ext!",
+      "desc": "Opens The Joys of Computing in an external browser/tab.\r\nInstalled for all users and they may open multi-instances of it.",
+      "icon": "images/Mods_BeatificaBytes_ext_{0}.png",
+      "url": "http://www.beatificabytes.be",
+      "allowMultiInstance": true,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    },
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Basic_Urls.Mods_BeatificaBytes_int": {
+      "itemType": 0,
+      "type": "legacy",
+      "allUsers": true,
+      "title": "Mods BeatificaBytes int!",
+      "desc": "The Joys of Computing windowed in DSM iframe.\r\nInstalled for all users but access must be granted explicitly via the Control Panel > Privileges > Permission tab. You must also reload DSM once access granted to yourself.\r\nEach user may only open once instance of this url.",
+      "icon": "images/Mods_BeatificaBytes_int_{0}.png",
+      "url": "http://www.beatificabytes.be",
+      "allowMultiInstance": false,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "local",
+      "width": 0,
+      "height": 0
+    },
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Basic_Urls.Mods_Synology_Forum": {
+      "itemType": 0,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Mods Synology Forum",
+      "desc": "Open Synology's forum in a DSM iframe.",
+      "icon": "images/Mods_Synology_Forum_{0}.png",
+      "url": "https://forum.synology.com/enu/",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

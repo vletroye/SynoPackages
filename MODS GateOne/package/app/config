@@ -1,13 +1,13 @@
 {
   ".url": {
-    "com.synocommunity.packages.MODS_gateone": {
+    "com.synocommunity.MODS_GateOne.GateOne": {
       "itemType": 2,
       "type": "legacy",
       "allUsers": true,
       "title": "GateOne",
       "desc": "Gate One is an HTML5-powered terminal emulator and SSH client",
-      "icon": "images/gateone-{0}.png",
-      "url": "/webman/3rdparty/MODS_gateone/index.php",
+      "icon": "images/GateOne_{0}.png",
+      "url": "/webman/3rdparty/MODS_GateOne/index.php",
       "allowMultiInstance": false,
       "configablePrivilege": false,
       "advanceGrantPrivilege": true,

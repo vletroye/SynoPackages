@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cat /var/log/SpkTracer.log
+cat /var/log/MODS_SPKTracer.log

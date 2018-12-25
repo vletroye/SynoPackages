@@ -1,7 +1,11 @@
 <?php
 
-$server = 'http://'.$_SERVER['SERVER_ADDR'].':8271';
+//file_get_contents("http://bot.whatismyipaddress.com"); 
 
-header('Location:'.$server,TRUE,301);
+$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
+$server = $protocol.$_SERVER['SERVER_NAME'].':8271';
+
+//temporary redirection
+header('Location:'.$server,TRUE,307);
 exit();
 ?>

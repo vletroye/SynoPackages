@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Dummy.MODS_Dummy": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": true,
+      "title": "MODS Dummy",
+      "desc": "Test MODS' features",
+      "icon": "images/MODS_Dummy_{0}.png",
+      "url": "/webman/3rdparty/MODS_Dummy/info.php",
+      "allowMultiInstance": true,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "all",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

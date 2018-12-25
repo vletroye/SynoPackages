@@ -3,7 +3,7 @@ exec 4<&1
 exec 5<&2
 
 exec 2>&1 
-exec 1>>/var/log/SpkTracer.log
+exec 1>>/var/log/MODS_SPKTracer.log
 
 echo "<center><pre>*****************************"
 echo "***                      ***"
@@ -12,8 +12,9 @@ echo "***                      ***"
 echo "****************************</pre></center>"
 
 NAME=`basename $0`
+DIRECTORY=`dirname $0`
 
-echo "<b>'$NAME'</b> called at $(date)" 
+echo "<b>'$NAME'</b> called in $DIRECTORY at $(date)" 
 echo ""
 
 echo ""

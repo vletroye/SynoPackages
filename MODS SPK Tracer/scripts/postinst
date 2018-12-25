@@ -1,5 +1,4 @@
 #!/bin/sh
-
 CONFIG="/var/packages/$SYNOPKG_PKGNAME"
 if [ ! -d "$CONFIG/etc" ]; then
     mkdir "$CONFIG/etc"

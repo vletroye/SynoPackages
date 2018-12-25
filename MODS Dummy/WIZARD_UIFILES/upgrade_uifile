@@ -1,0 +1,17 @@
+[
+  {
+    "step_title": "Upgrade Wizard",
+    "items": [
+      {
+        "type": "multiselect",
+        "subitems": [
+          {
+            "key": "pkgwizard_hello",
+            "desc": "See you again!",
+            "defaultValue": true
+          }
+        ]
+      }
+    ]
+  }
+]

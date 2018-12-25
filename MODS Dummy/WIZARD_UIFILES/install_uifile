@@ -1,0 +1,17 @@
+[
+  {
+    "step_title": "Installation Wizard",
+    "items": [
+      {
+        "type": "multiselect",
+        "subitems": [
+          {
+            "key": "pkgwizard_hello",
+            "desc": "Say Hello!",
+            "defaultValue": false
+          }
+        ]
+      }
+    ]
+  }
+]

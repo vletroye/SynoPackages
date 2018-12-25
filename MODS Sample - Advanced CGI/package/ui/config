@@ -1,0 +1,68 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Advanced_CGI.Mods_Advanced_CGI_DSM": {
+      "itemType": 0,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Mods Advanced CGI DSM",
+      "desc": "Call a php page in /webman/3rdparty/<...>. This call is redirected to a CGI based on a .htaccess or nginx config. The CGI executes next the requested php page whihc is located in /var/packages/<...>.",
+      "icon": "images/Mods_Advanced_CGI_DSM_{0}.png",
+      "url": "/webman/3rdparty/MODS_Sample_Advanced_CGI/helloworld.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    },
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Advanced_CGI.Mods_Advanced_CGI_DSM_Check": {
+      "itemType": 0,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Mods Advanced CGI DSM Check",
+      "desc": "Check that redirection is enabled (either via htaccess or via nginx conf) when accessing pages in /webman/3rdparty.",
+      "icon": "images/Mods_Advanced_CGI_DSM_Check_{0}.png",
+      "url": "/webman/3rdparty/MODS_Sample_Advanced_CGI/index.html",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    },
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Advanced_CGI.Mods_Advanced_CGI_Web": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": false,
+      "title": "Mods Advanced CGI Web",
+      "desc": "Call a php page in /webman/3rdparty/<...>. This call is redirected to a CGI based on a .htaccess or nginx config. The CGI executes next the requested php page whihc is located in /var/packages/<...>.",
+      "icon": "images/Mods_Advanced_CGI_Web_{0}.png",
+      "protocol": "http",
+      "url": "/MODS_Sample_Advanced_CGI/helloworld.php",
+      "port": 80,
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    },
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Advanced_CGI.Mods_Advanced_CGI_Web_Check": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": false,
+      "title": "Mods Advanced CGI Web Check",
+      "desc": "Check that redirection is enabled (either via htaccess or via nginx conf) when accessing pages in /webman/3rdparty.",
+      "icon": "images/Mods_Advanced_CGI_Web_Check_{0}.png",
+      "protocol": "http",
+      "url": "/MODS_Sample_Advanced_CGI/index.html",
+      "port": 80,
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

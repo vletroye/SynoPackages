@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Simple_CGI.Mods_Simple_CGI": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Mods Simple CGI",
+      "desc": "Simple php website running without the need for the Init_3rdparty package",
+      "icon": "images/Mods_Simple_CGI_{0}.png",
+      "url": "/webman/3rdparty/MODS_Sample_Simple_CGI/index.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
