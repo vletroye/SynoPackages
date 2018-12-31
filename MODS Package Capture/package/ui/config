@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Package_Capture.Package_Capture": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Package Capture",
+      "desc": "Capture a package during its installation.",
+      "icon": "images/Package_Capture_{0}.png",
+      "url": "/webman/3rdparty/MODS_Package_Capture/index.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "all",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
