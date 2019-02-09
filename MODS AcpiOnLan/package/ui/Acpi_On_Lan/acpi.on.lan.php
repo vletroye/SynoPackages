@@ -339,18 +339,15 @@ function InitComputers() {
 		if ($address_ovsbond1) {
 			$interfaces->add($address_ovsbond1);
 		}
-		else
-		{
-			$address_ovs0 = ScanEthernet('ovs_eth0');
-			if ($address_ovs0) {
-				$interfaces->add($address_ovs0);
-			}
-				
-			$address_ovs1 = ScanEthernet('ovs_eth1');
-			if ($address_ovs1) {
-				$interfaces->add($address_ovs1);
-			}					
-		}	
+		$address_ovs0 = ScanEthernet('ovs_eth0');
+		if ($address_ovs0) {
+			$interfaces->add($address_ovs0);
+		}
+			
+		$address_ovs1 = ScanEthernet('ovs_eth1');
+		if ($address_ovs1) {
+			$interfaces->add($address_ovs1);
+		}					
 	}
 	else
 		{
@@ -373,7 +370,17 @@ function InitComputers() {
 		if ($address3) {
 			$address_3->nas=1;
 			$interfaces->add($address3);
-		}	
+		}
+		
+		$address_bond0 = ScanEthernet('bond0');
+		if ($address_bond0) {
+			$interfaces->add($address_bond0);
+		}
+		
+		$address_bond1 = ScanEthernet('bond1');
+		if ($address_bond1) {
+			$interfaces->add($address_bond1);
+		}		
 	}
 	return $interfaces;
 }
@@ -382,32 +389,35 @@ function ScanEthernet($eth) {
 	//Add NAS
 	$mac = strtoupper(CleanValue(`ifconfig $eth | grep -Eo '([[:xdigit:]]{1,2}[:-]){5}[[:xdigit:]]{1,2}' | head -n1`));
 	if ($mac) {
-		//echo "Found MAC ".$mac." on ".$eth."<br/>";
+		//echo "Found MAC ".$mac." on ".$eth."<br/>\r\n";
 		$ip = CleanValue(`ifconfig $eth | grep inet | awk '{print $2}' | cut -f2 -d":"`);
-		//echo "Found IP ".$ip." on ".$eth."<br/>";
+		//echo "Found IP ".$ip." on ".$eth."<br/>\r\n";
 		$bmask = CleanValue(`ifconfig $eth | grep inet | awk '{print $3}' | cut -f2 -d":"`);
-		//echo "Found bmask ".$bmask." on ".$eth."<br/>";
+		//echo "Found bmask ".$bmask." on ".$eth."<br/>\r\n\r\n";
 		
-		$computer = new Computer();
-		$computer->id = uniqid();
-		$computer->mac=strtoupper($mac);
-		$computer->ip=$ip;
-		$computer->hostname=getHostName();
-		$computer->os='syno';
-		$computer->acpiOnLan='';
-		$computer->state='';
-		$computer->bmask=$bmask;
-		$computer->ethernet=$eth;
-		
-		$computer->nas=1;
-		$computer->vendor="Synology";
+		if ($ip) {		
+			//echo "Found IP ".$ip." on ".$eth."<br/>\r\n";
+			$computer = new Computer();
+			$computer->id = uniqid();
+			$computer->mac=strtoupper($mac);
+			$computer->ip=$ip;
+			$computer->hostname=getHostName();
+			$computer->os='syno';
+			$computer->acpiOnLan='';
+			$computer->state='';
+			$computer->bmask=$bmask;
+			$computer->ethernet=$eth;
+			
+			$computer->nas=1;
+			$computers->vendor="Synology";
 
-		if ($ip == '0.0.0.0') {
-			$computer->State = "off.png";
-		} else {
-			$computer->State = "search.png";
-		}		
-	}	
+			if ($ip == '0.0.0.0') {
+				$computer->State = "off.png";
+			} else {
+				$computer->State = "search.png";
+			}
+		}
+	}
 	return $computer;
 }
 

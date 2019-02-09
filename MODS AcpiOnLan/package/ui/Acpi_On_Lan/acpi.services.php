@@ -235,14 +235,36 @@
 			//echo $eth.", ".$mac.", ".$bmask."<br/>";
 			//NativeWakeOnLan($mac, $eth);
 			if ($bmask == '') {
+				//echo "bmask empty";
+				//break;
 				header('HTTP/1.0 400 Bad error');
 				$response = array('type' => 'error', 'message' => 'Unknown ethernet mask');
 			} else if (WakeOnLan($bmask, $mac, 1009) == FALSE) {
+				//echo "WakeOnLan failed";
+				//break;
 				header('HTTP/1.0 400 Bad error');
 				$response = array('type' => 'error', 'message' => 'Wake-On-Lan failed');
 			} else {
+				//echo "WakeOnLan done";
+				//break;
 				$response = $computer;
 			}
+			break;
+
+		case "InitEthernet":
+			if (!file_exists(TEMPPATH)) {
+				mkdir(TEMPPATH, 0777, true);
+				file_put_contents(TEMPPATH.LOCK, "");
+			}
+			if (!file_exists(TEMPPATH.LOCK)) {
+				file_put_contents(TEMPPATH.LOCK, "");
+			}			
+			$fp = GetLock();
+
+			$computers = InitComputers();
+			SaveBroadcastInfo($computers);
+				
+			ReleaseLock($fp);
 			break;
 			
 		case "InitACPI":

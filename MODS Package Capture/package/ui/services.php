@@ -2,7 +2,8 @@
 $name = $_GET["service"];
 $param = $_GET["parameters"];
 
-$file_to_search = "@SYNOPKG_DOWNLOAD_*";
+$file_prefix = "@SYNOPKG_DOWNLOAD_";
+$file_to_search = "$file_prefix*";
 $volume = $param;
 $target = "/".$volume."/@tmp/SynoCapture";
 $stop = $target."/stop";
@@ -53,15 +54,18 @@ switch ($name) {
 				header("HTTP/1.0 404 Not Found");
 				echo "Error\n";
 			} else {
+				$spk = str_replace($file_prefix, "", $file);
+				rename($file, $spk);
+				
 				header('Content-Description: File Transfer');
 				header('Content-Type: application/octet-stream');
-				header('Content-Disposition: attachment; filename="'.basename($file).'"');
+				header('Content-Disposition: attachment; filename="'.basename($spk).'"');
 				header('Expires: 0');
 				header('Cache-Control: must-revalidate');
 				header('Pragma: public');
-				header('Content-Length: ' . filesize($file));
+				header('Content-Length: ' . filesize($spk));
 				header('Set-Cookie: fileDownload=true; path=/');
-				readfile($file);
+				readfile($spk);
 			}
 		}
 		break;

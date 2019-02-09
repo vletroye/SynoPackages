@@ -278,6 +278,17 @@ function UploadIcon() {
 	$icon.dialog({ modal: true, width: "auto" });
 }
 
+function RefreshEth() {
+	Notification.show("Refreshing Ethernet", 'Info');
+	$.getJSON( "acpi.services.php", { service: 'InitEthernet'} )
+	.done(function( data ) {
+		Notification.show("Ethernet successfuly refreshed", 'Success');
+	}).fail(function (jqXHR, textStatus, errorThrown) {
+		Notification.show("Ethernet couldn't be refreshed", 'Error');
+		DisplayError(jqXHR, textStatus, errorThrown);
+	});
+}
+
 function startUploadIcon() {
 	event.preventDefault();
 	
@@ -482,12 +493,18 @@ $(function(){
 					Import();
 				}
 			},
+			Ethernet: {
+				name: "Refresh Eth",
+				callback: function(key, options) {
+					RefreshEth();
+				}
+			},
 			Icon: {
 				name: "Upload Icon",
 				callback: function(key, options) {
 					UploadIcon();
 				}
-			}			
+			}
 		}
     });
 });
