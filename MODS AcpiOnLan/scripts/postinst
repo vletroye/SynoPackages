@@ -33,6 +33,7 @@ chown http /usr/syno/etc/packages/$SYNOPKG_PKGNAME
 if [ -n "$pkgwizard_tokenVendor" ]; then
   echo "$pkgwizard_tokenVendor" > $SYNOPKG_PKGDEST/ui/Acpi_On_Lan/config/token
 fi
+chmod +s /usr/bin/ping
 
 if [ -s "$ERRLOG" ]; then
   echo `date` "----------------------------------------------------"

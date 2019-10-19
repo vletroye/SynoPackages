@@ -251,10 +251,11 @@ function Ping($ip) {
 	if ($ip == "0.0.0.0") {
 		$response = 0;
 	} else {
-		$exist = exec('if [ -f /opt/bin/ping ] ; then echo 1; else echo 0; fi');
-
+		//$exist = exec('if [ -f /opt/bin/inetutils-ping ] ; then echo 1; else echo 0; fi');
+		$exist = "1";
+		
 		if ($exist == "1") {
-			`/opt/bin/ping -c1 -n -r -q $ip > ./temp/ACPI.ping.$ip & WPID=\$!; sleep 1 && kill \$WPID > /dev/null 2>&1 & wait \$WPID`;
+			`/bin/ping -c1 -n -r -q $ip > ./temp/ACPI.ping.$ip & WPID=\$!; sleep 1 && kill \$WPID > /dev/null 2>&1 & wait \$WPID`;
 			$result = trim(`grep transmitted ./temp/ACPI.ping.$ip | cut -f3 -d"," | cut -f1 -d"%"`);
 			`rm -f ./temp/ACPI.ping.$ip`;	
 			
@@ -264,7 +265,7 @@ function Ping($ip) {
 				$response = 0;
 			}
 		} else {
-			// Package inetutils must be installed via ipkg
+			// Package inetutils must be installed via opkg (Entware)
 			$response = -1;
 		}
 	}	
@@ -409,7 +410,7 @@ function ScanEthernet($eth) {
 			$computer->ethernet=$eth;
 			
 			$computer->nas=1;
-			$computers->vendor="Synology";
+			$computer->vendor="Synology";
 
 			if ($ip == '0.0.0.0') {
 				$computer->State = "off.png";

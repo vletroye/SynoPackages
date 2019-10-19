@@ -729,7 +729,7 @@ function AcpiOnLanFail(computer) {
 			break;
 		  case -1: 
 			Notification.show("The package 'inetutils' is missing", "Error");
-			Notification.show("'inetutils' can be installed with IPKG", "Info");
+			Notification.show("'inetutils' can be installed with OPKG (Entware)", "Info");
 		  default:
 			ComputerIssue(computer.id); 	
 			break;
