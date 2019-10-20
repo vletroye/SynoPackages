@@ -7,7 +7,7 @@ if [ -n "${SYNOPKG_DSM_VERSION_MAJOR}" -a "${SYNOPKG_DSM_VERSION_MAJOR}" -lt 6 ]
 # Service port
 SERVICE_PORT="8271"
 # start-stop-status script redirect stdout/stderr to LOG_FILE
-LOG_FILE="/var/log/${SYNOPKG_PKGNAME}.log"
+LOG_FILE="/var/log/${SYNOPKG_PKGNAME}"
 # Service command has to deliver its pid into PID_FILE
 PID_FILE="${SYNOPKG_PKGDEST}/var/${SYNOPKG_PKGNAME}.pid"
 
@@ -23,7 +23,8 @@ call_func ()
     fi
 }
 
-PYTHON_DIR="/usr/local/python"
+# PYTHON_DIR="/usr/local/python"
+PYTHON_DIR=""
 PATH="${SYNOPKG_PKGDEST}/bin:${SYNOPKG_PKGDEST}/env/bin:${PYTHON_DIR}/bin:${PATH}"
 PYTHON="${SYNOPKG_PKGDEST}/env/bin/python"
 VIRTUALENV="${PYTHON_DIR}/bin/virtualenv"
@@ -49,6 +50,17 @@ SVC_WRITE_PID=yes
 
 service_postinst ()
 {
+	echo "Execute Service Postinst" >> ${INST_LOG}
+
+	# Install pip
+	echo "Installing pip..." >> ${INST_LOG}
+	wget https://bootstrap.pypa.io/get-pip.py >> ${INST_LOG} 2>&1
+	python get-pip.py >> ${INST_LOG} 2>&1
+
+	# Install virtualenv
+	echo "Installing virtualenv..." >> ${INST_LOG}
+	pip install virtualenv >> ${INST_LOG} 2>&1
+
     # Create a Python virtualenv
     echo "Creating Python virtualenv..." >> ${INST_LOG}
     ${VIRTUALENV} --system-site-packages ${SYNOPKG_PKGDEST}/env >> ${INST_LOG} 2>&1
@@ -80,9 +92,36 @@ service_postinst ()
 
 service_preupgrade ()
 {
+	echo "Execute Service Preupgrade" >> ${INST_LOG}
+	
     # Revision 5 introduces backward incompatible changes
     if [ `echo ${SYNOPKG_OLD_PKGVER} | sed -r "s/^.*-([0-9]+)$/\1/"` -le 4 ]; then
         echo "Please uninstall previous version, no update possible.<br>Remember to save your ${INSTALL_DIR}/var/server.conf file before uninstalling.<br>You will need to manually port old configuration settings to the new configuration files."
         exit 1
     fi
+}
+
+service_preinst ()
+{
+	echo "Execute Service Preinst" >> ${INST_LOG}
+}
+
+service_preuninst ()
+{
+	echo "Execute Service Preuninst" >> ${INST_LOG}
+}
+
+service_postuninst ()
+{
+	echo "Execute Service postuninst" >> ${INST_LOG}
+}
+
+service_postupgrade ()
+{
+	echo "Execute Service Postupgrade" >> ${INST_LOG}
+}
+
+service_prestart ()
+{
+	echo "Execute Service Prestart" >> ${INST_LOG}
 }

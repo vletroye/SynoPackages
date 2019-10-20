@@ -4,6 +4,7 @@
 #  Cannot remove user as still in use or may be DSM service itself
 # Require warning in ChangeLog and manual user/group cleanup
 
+LOG="/var/log/$SYNOPKG_PKGNAME"
 INST_LOG="/var/log/${SYNOPKG_PKGNAME}_install.log"
 INST_ETC="/var/packages/${SYNOPKG_PKGNAME}/etc"
 INST_VARIABLES="${INST_ETC}/installer-variables"
@@ -235,6 +236,9 @@ postinst ()
 {
     log_step "postinst"
     save_wizard_variables
+
+	echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-installing" >> $LOG
+	chmod o+w $LOG
 
 	# set the name of the package in the nginx config and router.cgi
 	sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/app/dsm.cgi.conf"

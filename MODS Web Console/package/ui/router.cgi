@@ -47,7 +47,7 @@ else
   fi
   
   if [ -w $LOG ]; then
-    echo `date` "EXECUTE:" "/usr/local/bin/php70-cgi -c /etc/php/php.ini -d open_basedir=none "$SCRIPT_FILENAME" "$SCRIPT_PARAMETERS" 2>&1" >> $LOG
+    echo `date` "EXECUTE:" "/usr/local/bin/php73-cgi -c /etc/php/php.ini -d open_basedir=none "$SCRIPT_FILENAME" "$SCRIPT_PARAMETERS" 2>&1" >> $LOG
   fi
-  /usr/local/bin/php70-cgi -c /etc/php/php.ini -d open_basedir=none $SCRIPT_FILENAME $SCRIPT_PARAMETERS 2>&1
+  /usr/local/bin/php73-cgi -c /etc/php/php.ini -d open_basedir=none $SCRIPT_FILENAME $SCRIPT_PARAMETERS 2>&1
 fi

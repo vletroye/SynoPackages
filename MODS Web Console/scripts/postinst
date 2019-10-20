@@ -1,18 +1,19 @@
 #!/bin/sh
+LOG="/var/log/$SYNOPKG_PKGNAME"
+echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-installing" >> $LOG
 
-LOG="/var/log/MODS_WebConsole"
-ERRLOG="/var/log/MODS_WebConsole_ERR"
+ERRLOG="$LOG"_ERR
 rm -f "$ERRLOG"
 
-#close the stream and redirect them to a custom or standard Syno Log
+#close the streams and redirect them to a custom or standard Syno Log
 exec 1<&-
 exec 2<&-
 exec 1>>$LOG
 exec 2>>$ERRLOG
 
-echo `date` "Granting access on log file for the webserver"
-chown http $LOG
+echo `date` "Granting access on log files for the webserver"
 chmod o+w $LOG
+chmod o+w $ERRLOG
 
 chown -R http "$SYNOPKG_PKGDEST/ui"
 
@@ -24,7 +25,8 @@ sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/router.c
 rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 
-sudo synoservicecfg --reload nginx
+#restating nginx is done via package's dependencies (instuninst_restart_services)
+#sudo synoservicecfg --reload nginx
 
 if [ -s "$ERRLOG" ]; then
   echo `date` "----------------------------------------------------"
