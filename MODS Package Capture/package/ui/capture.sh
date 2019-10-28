@@ -25,7 +25,6 @@ if [ -f "/$VOLUME/@tmp/SynoCapture/stop" ]; then
   rm "/$VOLUME/@tmp/SynoCapture/stop"
 fi
 
-
 while [ ! -f "/$VOLUME/@tmp/SynoCapture/stop" ]; do
   if [ -d "/$VOLUME/@tmp/@synopkg/@download/" ]; then
     cp -nlR "/$VOLUME/@tmp/@synopkg/@download/." "/$VOLUME/@tmp/SynoCapture/"

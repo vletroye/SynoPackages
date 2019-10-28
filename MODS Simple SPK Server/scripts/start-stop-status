@@ -2,7 +2,7 @@
 
 CONFIG="/var/packages/$SYNOPKG_PKGNAME"
 WEB_DIR=`cat $CONFIG/etc/install_dir`
-LOG="/var/log/mods_sspks.log"
+LOG="/var/log/MODS_SSPKS"
 
 if [[ ! $1 == "log" ]] && [[ ! $1 == "status" ]] ; then
   echo `date` "START/STOP (" $1 ") PKG VERSION:" "$SYNOPKG_PKGVER" >> $LOG

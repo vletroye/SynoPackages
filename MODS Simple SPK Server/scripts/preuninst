@@ -4,7 +4,7 @@
 exec 2<&-
 exec 2>>$SYNOPKG_TEMP_LOGFILE
 
-LOG="/var/log/mods_sspks.log"
+LOG="/var/log/MODS_SSPKS"
 
 echo `date` "PRE UNINSTALL PKG VERSION:" "$SYNOPKG_PKGVER" >> $LOG
 

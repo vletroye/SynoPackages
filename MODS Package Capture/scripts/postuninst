@@ -1,2 +1,25 @@
 #!/bin/sh
+LOG="/var/log/$SYNOPKG_PKGNAME"
+echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-installing" >> $LOG
+
+ERRLOG="$LOG"_ERR
+rm -f "$ERRLOG"
+
+#close the streams and redirect them to a custom or standard Syno Log
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # make the log pretty to be displayed by the Catalog Manager
+  echo `date` "Prettifying the POST INSTALL log file"
+  sed -i 's/$/<br>/' "$ERRLOG"
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
+
 exit 0

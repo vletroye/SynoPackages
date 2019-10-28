@@ -1,35 +1,21 @@
 #!/bin/sh
-
-# Package
-PACKAGE="mods"
-# Others
-INSTALL_DIR="/usr/local/${PACKAGE}"
-
-start()
-{
-su -c "mv ${INSTALL_DIR}/.app/ ${INSTALL_DIR}/app/"
-}
-
-stop()
-{
-su -c "mv ${INSTALL_DIR}/app/ ${INSTALL_DIR}/.app/"
-}
+LOG="/var/log/$SYNOPKG_PKGNAME"
 
 case $1 in
-	start)
-		start
-		exit 0
-	;;
-	stop)
-		stop
-		exit 0
-	;;
-	status)
-		exit 0
-	;;
-	log)
-		exit 0
-	;;
+  start)
+    echo `date` "MODS Package Capture is installed properly & started" >> $LOG
+    exit 0
+    ;;
+  stop)
+    echo `date` "MODS Package Capture cannot be stopped" >> $LOG		
+    exit 0
+    ;;
+  status)
+    exit 0
+    ;;
+  log)
+    exit 0
+    ;;
 esac
 
 exit 0
