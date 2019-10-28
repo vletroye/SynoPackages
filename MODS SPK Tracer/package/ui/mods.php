@@ -44,7 +44,9 @@ function liveExecuteCommand($cmd)
 }
 echo "<pre>";
 
-$result = liveExecuteCommand("mods.sh");
+//$result = liveExecuteCommand("/var/packages/MODS_SPKTracer/target/ui/mods.sh");
+$dir = dirname(__FILE__);
+$result = liveExecuteCommand($dir."/mods.sh");
 
 if($result['exit_status'] === 0){
    // do something if command execution succeeds

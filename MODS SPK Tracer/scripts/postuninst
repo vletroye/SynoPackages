@@ -11,4 +11,5 @@ if [ "$pkgwizard_delete" = "true" ]; then
   echo "<br>Log has been deleted...<br>" >> $SYNOPKG_TEMP_LOGFILE
 fi
 
+rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 rm -R "/usr/syno/etc/packages/$SYNOPKG_PKGNAME"

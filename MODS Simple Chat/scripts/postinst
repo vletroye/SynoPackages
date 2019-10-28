@@ -22,8 +22,7 @@ sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/router.c
 # link the nginx config to redirect pages accessed on admin port
 rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-
-sudo synoservicecfg --reload nginx
+#sudo synoservicecfg --reload nginx
 
 if [ -s "$ERRLOG" ]; then
   echo `date` "----------------------------------------------------"
