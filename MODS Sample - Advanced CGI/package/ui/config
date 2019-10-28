@@ -5,7 +5,7 @@
       "type": "legacy",
       "allUsers": false,
       "title": "Mods Advanced CGI DSM",
-      "desc": "Call a php page in /webman/3rdparty/<...>. This call is redirected to a CGI based on a .htaccess or nginx config. The CGI executes next the requested php page whihc is located in /var/packages/<...>.",
+      "desc": "Call a php page in /webman/3rdparty/<...>. This call is redirected to a CGI based on a .htaccess or nginx config. The CGI executes next the requested php page which is located in /var/packages/<...>.",
       "icon": "images/Mods_Advanced_CGI_DSM_{0}.png",
       "url": "/webman/3rdparty/MODS_Sample_Advanced_CGI/helloworld.php",
       "allowMultiInstance": false,
@@ -30,15 +30,15 @@
       "width": 0,
       "height": 0
     },
-    "SYNO.SDS._ThirdParty.App.MODS_Sample_Advanced_CGI.Mods_Advanced_CGI_Web": {
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Advanced_CGI.Mods_Advanced_CGI": {
       "itemType": 0,
       "type": "url",
       "allUsers": false,
       "title": "Mods Advanced CGI Web",
-      "desc": "Call a php page in /webman/3rdparty/<...>. This call is redirected to a CGI based on a .htaccess or nginx config. The CGI executes next the requested php page whihc is located in /var/packages/<...>.",
+      "desc": "Call a php page in /webman/3rdparty/<...>. This call is done directly to a CGI which executes next the target php page located in /var/packages/<...>.",
       "icon": "images/Mods_Advanced_CGI_Web_{0}.png",
       "protocol": "http",
-      "url": "/MODS_Sample_Advanced_CGI/helloworld.php",
+      "url": "/MODS_Sample_Advanced_CGI/helloworld.cgi",
       "port": 80,
       "allowMultiInstance": false,
       "configablePrivilege": false,

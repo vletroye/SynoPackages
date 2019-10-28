@@ -33,6 +33,7 @@ ln -s $SYNOPKG_PKGDEST/ui/www.cgi.conf /usr/syno/share/nginx/conf.d/www.$SYNOPKG
 
 # create a "symbolink website"
 ln -s $SYNOPKG_PKGDEST/ui "/var/services/web/$SYNOPKG_PKGNAME"
+chown -h http:http "/var/services/web/$SYNOPKG_PKGNAME"
 
 #restating nginx is done via package's dependencies (instuninst_restart_services)
 #sudo synoservicecfg --reload nginx
