@@ -22,24 +22,25 @@ if [[ -z "$MYSQL" ]]; then
   if [[ ! -f "$MYSQL" ]]; then
     MYSQL="/usr/local/mariadb5/bin/mysql"
     if [[ ! -f "$MYSQL" ]]; then
-      echo "MySQL can't be found. It is required to create the database during installation" >> $SYNOPKG_TEMP_LOGFILE
-      exit 1;
+      echo "MySQL was not installed. So, there is nothing to uninstall here." >> $SYNOPKG_TEMP_LOGFILE
+      MYSQL=""
     fi
   fi
 fi
 
-pkgwizard_server_name=`cat $ETC_DIR/server_name`
-pkgwizard_db_mame=`cat $ETC_DIR/database_name`
-pkgwizard_user_account=`cat $ETC_DIR/mysql_account`
-pkgwizard_user_password=`cat $ETC_DIR/mysql_password`
+if [[ -f "$MYSQL" ]]; then
+    pkgwizard_server_name=`cat $ETC_DIR/server_name`
+    pkgwizard_db_mame=`cat $ETC_DIR/database_name`
+    pkgwizard_user_account=`cat $ETC_DIR/mysql_account`
+    pkgwizard_user_password=`cat $ETC_DIR/mysql_password`
 
-if [ "$pkgwizard_remove_database" = "true" ]; then
-  $MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_user_account" --password="$pkgwizard_user_password" -e "DROP DATABASE $pkgwizard_db_mame"
-  if [ $? -eq 1 ]; then
-    echo `date` "Fail to drop database $pkgwizard_db_mame."
-    echo "Fail to drop database $pkgwizard_db_mame." >> $SYNOPKG_TEMP_LOGFILE
-    exit 0
-  fi
+    if [ "$pkgwizard_remove_database" = "true" ]; then
+        $MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_user_account" --password="$pkgwizard_user_password" -e "DROP DATABASE $pkgwizard_db_mame"
+        if [ $? -eq 1 ]; then
+            echo `date` "Fail to drop database $pkgwizard_db_mame."
+            echo "Fail to drop database $pkgwizard_db_mame." >> $SYNOPKG_TEMP_LOGFILE
+        fi
+    fi
 fi
 
 if [ -s "$ERRLOG" ]; then

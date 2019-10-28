@@ -21,7 +21,7 @@
  * @author      andlil
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Nej',
 		'insert' => 'Infoga',
 		'add_new' => 'Lägg till',
-		'update_available' => 'En ny version ({version}) finns tillgänglig från <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'En ny version ({version}) finns tillgänglig från <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Gå upp',
 		'go_back' => 'Gå tillbaka',
 		'ok' => 'OK',
@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'ungefär en minut sen',
 		'seconds_ago' => '%d sekunder sedan',
 		'a_second_ago' => 'en sekund sedan',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Inställningar',
@@ -80,7 +92,7 @@ $sm_lang = array(
 		'level' => 'Nivå',
 		'level_10' => 'Administratör',
 		'level_20' => 'Användare',
-		'level_description' => '<b>Administratörer</b> har fulla rättigheter: de kan hantera servrar, användare och redigera gemensamma inställningar.<br/><b>Användare</b> kan bara se och köra uppdateraren för de servrar som de blivit tilldelade.',
+		'level_description' => '<b>Administratörer</b> har fulla rättigheter: de kan hantera servrar, användare och redigera gemensamma inställningar.<br><b>Användare</b> kan bara se och köra uppdateraren för de servrar som de blivit tilldelade.',
 		'mobile' => 'Mobilnummer',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -96,7 +108,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Din profil har uppdaterats.',
 		'error_user_name_bad_length' => 'Användarnamn måste vara mellan 2 och 64 tecken.',
-		'error_user_name_invalid' => 'Användarnamnet får bara innehålla bokstäver (a-z, A-Z), siffror (0-9) and understreck (_).',
+		'error_user_name_invalid' => 'Användarnamnet får bara innehålla bokstäver (a-z, A-Z), siffror (0-9), prickar (.) and understreck (_).',
 		'error_user_name_exists' => 'Användarnamnet används redan.',
 		'error_user_email_bad_length' => 'Email-adressen måste vara mellan 5 och 255 tecken.',
 		'error_user_email_invalid' => 'Email-adressen är ogiltig.',
@@ -113,6 +125,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Inga loggar',
+		'clear' => 'Tydlig logg',
+		'delete_title' => 'Tydlig logg',
+		'delete_message' => 'Är du säker på att du vill radera <b>alla</b> loggar?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -129,6 +144,7 @@ $sm_lang = array(
 		'pattern_description' => 'Om detta mönster inte hittas i svaret kommer servern att markeras offline. "Regular expressions" är tillåtna.',
 		'last_check' => 'Senaste kontroll',
 		'last_online' => 'Senast online',
+		'last_offline' => 'Senast offline',
 		'monitoring' => 'Övervakas',
 		'no_monitoring' => 'Övervakas inte',
 		'email' => 'Email',
@@ -189,16 +205,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Lämna blank för att inte autentisera',
 		'sms_status' => 'Tillåt SMS',
 		'sms_gateway' => 'Gateway för SMS',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        	'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway användarnamn',
 		'sms_gateway_password' => 'Gateway lösenord',
 		'sms_from' => 'Avsändarens telefonnummer',
@@ -206,16 +212,16 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover är en tjänst som skickar meddelande i realtid. Se <a href="https://pushover.net/">deras webbsida</a> för mer info.',
 		'pushover_clone_app' => 'Klicka här för att skapa din Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Innan du kan använda Pushover behöver du <a href="%1$s" target="_blank">registrera en App</a> på deras webbsida och skriva in App API Token här.',
+		'pushover_api_token_description' => 'Innan du kan använda Pushover behöver du <a href="%1$s" target="_blank" rel="noopener">registrera en App</a> på deras webbsida och skriva in App API Token här.',
 		'alert_type' => 'Välj när du vill bli meddelad.',
-        'alert_type_description' => '<b>Statusförändring:</b> '.
-		    'Du får ett meddelande när status ändras. Så från online -> offline eller offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Du får ett meddelande när en server går offline *FÖR FÖRSTA GÅNGEN* Exempelvis, '.
-		    'ditt cronjob körs var 15 minut och din server går ned kl 1 och är nere till kl 6. '.
-		    'Du kommer få 1 meddelande kl 1 och inga mer.<br/>'.
-		    '<br><b>Alltid:</b> '.
-		    'Du kommer få ett meddelande varje gång kontrollen görs, även om servern har varit offline under en längre tid.',
+		'alert_type_description' => '<b>Statusförändring:</b> '.
+			'Du får ett meddelande när status ändras. Så från online -> offline eller offline -> online.<br>'.
+			'<br /><b>Offline:</b> '.
+			'Du får ett meddelande när en server går offline *FÖR FÖRSTA GÅNGEN* Exempelvis, '.
+			'ditt cronjob körs var 15 minut och din server går ned kl 1 och är nere till kl 6. '.
+			'Du kommer få 1 meddelande kl 1 och inga mer.<br>'.
+			'<br><b>Alltid:</b> '.
+			'Du kommer få ett meddelande varje gång kontrollen görs, även om servern har varit offline under en längre tid.',
 		'alert_type_status' => 'Statusförändring',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Alltid',
@@ -234,8 +240,8 @@ $sm_lang = array(
 		'settings_notification' => 'Meddelande-inställningar',
 		'settings_log' => 'Logg-inställningar',
 		'auto_refresh' => 'Auto-uppdatera',
-		'auto_refresh_servers' =>
-			'Auto-uppdatera status-sidan.<br/>'.
+		'auto_refresh_description' =>
+			'Auto-uppdatera status-sidan.<br>'.
 			'<span class="small">'.
 			'Tid i sekunder, om "0" så uppdateras sidan inte automatiskt.'.
 			'</span>',
@@ -250,7 +256,7 @@ $sm_lang = array(
 		'email_sent' => 'Email skickat',
 		'email_error' => 'Sändning av email misslyckades',
 		'sms_sent' => 'Sms skickat',
-		'sms_error' => 'Sändning av SMS misslyckades',
+		'sms_error' => 'Sändning av SMS misslyckades. %s',
 		'sms_error_nomobile' => 'Kan inte skicka test-SMS: det finns inget giltigt mobilnummer i din profil.',
 		'pushover_sent' => 'Pushover-meddelande skickat',
 		'pushover_error' => 'Ett fel uppstod vid sändning av Pushover-meddelande: %s',
@@ -260,18 +266,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Antal dagar loggar över meddelande och uptime sparas. 0 innebär att loggrensning är avstängd.',
 		'log_retention_days' => 'dagar',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Server \'%LABEL%\' är NERE: ip=%IP%, port=%PORT%. Fel=%ERROR%',
 		'off_email_subject' => 'VIKTIGT: Server \'%LABEL%\' är NERE',
-		'off_email_body' => "Kunde inte ansluta till följande server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fel: %ERROR%<br/>Tid: %DATE%",
+		'off_email_body' => "Kunde inte ansluta till följande server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fel: %ERROR%<br>Tid: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' är NERE',
-		'off_pushover_message' => "Kunde inte ansluta till följande server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fel: %ERROR%<br/>Tid: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' är UPPE: ip=%IP%, port=%PORT%',
+		'off_pushover_message' => "Kunde inte ansluta till följande server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fel: %ERROR%<br>Tid: %DATE%",
+		'on_sms' => 'Server \'%LABEL%\' är UPPE: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'VIKTIGT: Server \'%LABEL%\' är UPPE',
-		'on_email_body' => "Server '%LABEL%' är uppe igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Tid: %DATE%",
+		'on_email_body' => "Server '%LABEL%' är uppe igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Tid: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' är UPPE',
-		'on_pushover_message' => 'Server \'%LABEL%\' är uppe igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Tid: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' är uppe igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Tid: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Välkommen, %user_name%',
@@ -288,7 +294,7 @@ $sm_lang = array(
 		'password_forgot' => 'Glömt lösenord?',
 		'password_reset' => 'Återställ lösenord',
 		'password_reset_email_subject' => 'Password reset for PHP Server Monitor',
-		'password_reset_email_body' => 'Anv&auml;nd f&ouml;ljande l&auml;nk f&ouml;r att &aring;terst&auml;lla ditt l&ouml;senord. T&auml;nk p&aring; att l&auml;nken bara &auml;r giltig 1 timme.<br/><br/>%link%',
+		'password_reset_email_body' => 'Anv&auml;nd f&ouml;ljande l&auml;nk f&ouml;r att &aring;terst&auml;lla ditt l&ouml;senord. T&auml;nk p&aring; att l&auml;nken bara &auml;r giltig 1 timme.<br><br>%link%',
 		'error_user_incorrect' => 'Användaren kunde inte hittas.',
 		'error_login_incorrect' => 'Informationen är felaktig.',
 		'error_login_passwords_nomatch' => 'Lösenorden stämmer inte överens.',

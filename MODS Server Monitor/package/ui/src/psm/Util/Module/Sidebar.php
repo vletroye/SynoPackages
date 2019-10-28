@@ -21,7 +21,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -88,7 +88,7 @@ class Sidebar implements SidebarInterface {
 	 * @return \psm\Util\Module\Sidebar
 	 */
 	public function addLink($id, $label, $url, $icon = null) {
-		if(!isset($this->items['link'])) {
+		if (!isset($this->items['link'])) {
 			$this->items['link'] = array();
 		}
 
@@ -111,20 +111,19 @@ class Sidebar implements SidebarInterface {
 	 * @param boolean $url_is_onclick if you want onclick rather than url, change this to true
 	 * @return \psm\Util\Module\Sidebar
 	 */
-	public function addButton($id, $label, $url, $icon = null, $btn_class = null, $url_is_onclick = false) {
-		if(!isset($this->items['button'])) {
+	public function addButton($id, $label, $url, $icon = null, $btn_class = 'link', $title = '', $modal_id = null) {
+		if (!isset($this->items['button'])) {
 			$this->items['button'] = array();
-		}
-		if(!$url_is_onclick) {
-			$url = "psm_goTo('" . $url . "');";
 		}
 
 		$this->items['button'][$id] = array(
 			'id' => $id,
 			'label' => $label,
-			'onclick' => str_replace('"', '\"', $url),
+			'url' => str_replace('"', '\"', $url),
 			'icon' => $icon,
 			'btn_class'=> $btn_class,
+			'title'=> $title,
+			'modal_id'=> $modal_id
 		);
 		return $this;
 	}
@@ -139,7 +138,7 @@ class Sidebar implements SidebarInterface {
 	 * @return \psm\Util\Module\Sidebar
 	 */
 	public function addDropdown($id, $label, $options, $icon = null, $btn_class = null) {
-		if(!isset($this->items['dropdown'])) {
+		if (!isset($this->items['dropdown'])) {
 			$this->items['dropdown'] = array();
 		}
 		$this->items['dropdown'][$id] = array(
@@ -160,14 +159,14 @@ class Sidebar implements SidebarInterface {
 		$tpl_data['items'] = array();
 
 		// loop through all types and build their html
-		foreach($types as $type) {
-			if(empty($this->items[$type])) {
+		foreach ($types as $type) {
+			if (empty($this->items[$type])) {
 				// no items for this type
 				continue;
 			}
 
 			// build html for each individual item
-			foreach($this->items[$type] as $id => $item) {
+			foreach ($this->items[$type] as $id => $item) {
 				$item['type'] = $type;
 				$item['class_active'] = ($id === $this->active_id) ? 'active' : '';
 				$tpl_data['items'][] = $item;

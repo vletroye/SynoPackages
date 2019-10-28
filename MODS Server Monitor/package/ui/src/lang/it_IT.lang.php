@@ -21,7 +21,7 @@
  * @author      Marco Gargani <http://www.marcogargani.it>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'No',
 		'insert' => 'Inserisci',
 		'add_new' => 'Aggiungi Nuovo',
-		'update_available' => 'Una nuova versione ({version}) è disponibile su <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Una nuova versione ({version}) è disponibile su <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Torna su',
 		'go_back' => 'Indietro',
 		'ok' => 'OK',
@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'circa un minuto fa',
 		'seconds_ago' => '%d secondi fa',
 		'a_second_ago' => 'un secondo fa',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Configurazione',
@@ -80,7 +92,7 @@ $sm_lang = array(
 		'level' => 'Livello',
 		'level_10' => 'Amministratore',
 		'level_20' => 'Utente',
-		'level_description' => 'Gli <b>Amministratori</b> hanno pieno accesso: possono gestire server, utenti e modificare la configurazione globale.<br/>Gli <b>Utenti</b> possono solo visualizzare ed eseguire l\'aggiornamento per i server a cui sono assegnati.',
+		'level_description' => 'Gli <b>Amministratori</b> hanno pieno accesso: possono gestire server, utenti e modificare la configurazione globale.<br>Gli <b>Utenti</b> possono solo visualizzare ed eseguire l\'aggiornamento per i server a cui sono assegnati.',
 		'mobile' => 'Cellulare',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -113,6 +125,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Nessun log',
+		'clear' => 'Pulisci il registro',
+		'delete_title' => 'Elimina log',
+		'delete_message' => 'Sei sicuro di voler eliminare <b>tutti</b> i registri?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -129,6 +144,7 @@ $sm_lang = array(
 		'pattern_description' => 'Se questo pattern non è trovato nel sito web, il server verrà contrassegnato come fuori linea. Le espressioni regolari sono consentite.',
 		'last_check' => 'Ultimo Controllo',
 		'last_online' => 'Ultima volta Online',
+		'last_offline' => 'Ultima volta offline',
 		'monitoring' => 'Monitoraggio',
 		'no_monitoring' => 'Non monitorato',
 		'email' => 'Email',
@@ -189,17 +205,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Lasciare vuoto per nessuna autentificazione',
 		'sms_status' => 'Permetti invio SMS',
 		'sms_gateway' => 'Gateway da usare per inviare SMS',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Nome Utente Gateway',
 		'sms_gateway_password' => 'Password Gateway',
 		'sms_from' => 'Numero di telefono del mittente',
@@ -207,16 +212,16 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover è un servizio che rende semplice ottenere notifiche in tempo reale. Vedi <a href="https://pushover.net/">il loro sito web</a> per maggiori informazioni.',
 		'pushover_clone_app' => 'Clicca qui per creare la tua Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Prima di poter usare Pushover, devi <a href="%1$s" target="_blank">registrare un\'App</a> nel loro sito web ed inserire la \'App API Token\' qui.',
+		'pushover_api_token_description' => 'Prima di poter usare Pushover, devi <a href="%1$s" target="_blank" rel="noopener">registrare un\'App</a> nel loro sito web ed inserire la \'App API Token\' qui.',
 		'alert_type' => 'Seleziona quando vuoi essere notificato',
-        'alert_type_description' => '<b>Cambio di Stato:</b> '.
-		    'Riceverai una notifica solo quando un server cambierà stato. Quindi da online -> offline oppure da offline -> online.<br/>'.
-		    '<br /><b>Fuori linea:</b> '.
-		    'Riceverai una notifica solo quando un server andrà offline *SOLO LA PRIMA VOLTA*. Per esempio, '.
-		    'Se il tuo cronjob è impostato per controllare ogni 15 min e il tuo server andrà offline dalle 2AM alle 6AM. '.
-		    'Riceverai una sola notifica alle 2AM e nient\'altro.<br/>'.
-		    '<br><b>Sempre:</b> '.
-		    'Riceverai una notifica ogni volta che lo script troverà un server down anche se è stato offline per ore.',
+		'alert_type_description' => '<b>Cambio di Stato:</b> '.
+			'Riceverai una notifica solo quando un server cambierà stato. Quindi da online -> offline oppure da offline -> online.<br>'.
+			'<br /><b>Fuori linea:</b> '.
+			'Riceverai una notifica solo quando un server andrà offline *SOLO LA PRIMA VOLTA*. Per esempio, '.
+			'Se il tuo cronjob è impostato per controllare ogni 15 min e il tuo server andrà offline dalle 2AM alle 6AM. '.
+			'Riceverai una sola notifica alle 2AM e nient\'altro.<br>'.
+			'<br><b>Sempre:</b> '.
+			'Riceverai una notifica ogni volta che lo script troverà un server down anche se è stato offline per ore.',
 		'alert_type_status' => 'Cambio di Stato',
 		'alert_type_offline' => 'Fuori linea',
 		'alert_type_always' => 'Sempre',
@@ -235,8 +240,8 @@ $sm_lang = array(
 		'settings_notification' => 'Impostazioni Notifiche',
 		'settings_log' => 'Impostazioni Log',
 		'auto_refresh' => 'Auto-Aggiornamento',
-		'auto_refresh_servers' =>
-			'Auto-Aggiornamento pagina servers.<br/>'.
+		'auto_refresh_description' =>
+			'Auto-Aggiornamento pagina servers.<br>'.
 			'<span class="small">'.
 			'Tempo in secondi, se impostato a 0 la pagina non si aggiornerà.'.
 			'</span>',
@@ -251,7 +256,7 @@ $sm_lang = array(
 		'email_sent' => 'Email inviata',
 		'email_error' => 'Errore in invio Email',
 		'sms_sent' => 'SMS inviato',
-		'sms_error' => 'Errore in invio SMS',
+		'sms_error' => 'Errore in invio SMS. %s',
 		'sms_error_nomobile' => 'Impossibile inviare SMS: nessun numero di telefono valido inserito nel tuo profilo.',
 		'pushover_sent' => 'Notifica Pushover inviata',
 		'pushover_error' => 'Riscontrato un errore durante l\'invio della notifica Pushover: %s',
@@ -261,18 +266,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Numero di giorni per la conservazione dei log delle notifiche e risultati monitoraggio. Inserire 0 (zero) per disabilitare la cancellazione dei log.',
 		'log_retention_days' => 'giorni',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Server \'%LABEL%\' INATTIVO: ip=%IP%, porta=%PORT%. Errore=%ERROR%',
 		'off_email_subject' => 'IMPORTANTE: Il Server \'%LABEL%\' è INATTIVO',
-		'off_email_body' => "Impossibile connettersi al seguente server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Errore: %ERROR%<br/>Data: %DATE%",
+		'off_email_body' => "Impossibile connettersi al seguente server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Porta: %PORT%<br>Errore: %ERROR%<br>Data: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' INATTIVO',
-		'off_pushover_message' => "Impossibile connettersi al seguente server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Errore: %ERROR%<br/>Data: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' ATTIVO: ip=%IP%, porta=%PORT%',
+		'off_pushover_message' => "Impossibile connettersi al seguente server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Porta: %PORT%<br>Errore: %ERROR%<br>Data: %DATE%",
+		'on_sms' => 'Server \'%LABEL%\' ATTIVO: ip=%IP%, porta=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANTE: Server \'%LABEL%\' è ATTIVO',
-		'on_email_body' => "Server '%LABEL%' è di nuovo attivo:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
+		'on_email_body' => "Server '%LABEL%' è di nuovo attivo, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Porta: %PORT%<br>Data: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' ATTIVO',
-		'on_pushover_message' => "Server '%LABEL%' è di nuovo attivo:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Porta: %PORT%<br/>Data: %DATE%",
+		'on_pushover_message' => "Server '%LABEL%' è di nuovo attivo, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Porta: %PORT%<br>Data: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Benvenuto, %user_name%',
@@ -289,7 +294,7 @@ $sm_lang = array(
 		'password_forgot' => 'Password dimenticata?',
 		'password_reset' => 'Reimposta password',
 		'password_reset_email_subject' => 'Reimpossta la tua password per PHP Server Monitor',
-		'password_reset_email_body' => 'Usa il seguente link per reimpostare la tua password. Ricordati che scade tra un ora.<br/><br/>%link%',
+		'password_reset_email_body' => 'Usa il seguente link per reimpostare la tua password. Ricordati che scade tra un ora.<br><br>%link%',
 		'error_user_incorrect' => 'Il nome utente inserito non è staot trovato.',
 		'error_login_incorrect' => 'Le informazioni sono errate.',
 		'error_login_passwords_nomatch' => 'Le password inserite non sono valide.',

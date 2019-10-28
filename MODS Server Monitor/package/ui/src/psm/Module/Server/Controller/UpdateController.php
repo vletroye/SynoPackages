@@ -22,7 +22,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  * @since		phpservermon 3.0.0
  **/
@@ -43,10 +43,10 @@ class UpdateController extends AbstractController {
 		$autorun = $this->container->get('util.server.updatemanager');
 		$autorun->run();
 
-		header('Location: ' . psm_build_url(array(
+		header('Location: '.psm_build_url(array(
 			'mod' => 'server_status'
 		), true, false));
-		die();
+		trigger_error("Redirect failed.", E_USER_ERROR);
 	}
 
 }

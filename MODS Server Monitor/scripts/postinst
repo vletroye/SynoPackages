@@ -42,7 +42,7 @@ sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
 # link the nginx config to redirect pages accessed on admin port
 rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-sudo synoservicecfg --reload nginx
+#sudo synoservicecfg --reload nginx
 
 # Check port used to access mysql
 PORT=$(/usr/local/mariadb10/bin/mysqlshow --print-defaults | grep -Po "\-\-port=[0-9]*" | grep -Po "[0-9]*")
@@ -68,6 +68,7 @@ echo "$HOST" > "$ETC_DIR/mysql_host"
 echo `date` "Checking access on mysql: $MYSQLSHOW --user=$pkgwizard_admin_account --password=********** | grep -v Wildcard | grep -o mysql"
 RESULT=`$MYSQLSHOW --user=$pkgwizard_admin_account --password=$pkgwizard_admin_password | grep -v Wildcard | grep -o mysql`
 echo `date` "Result: $RESULT"
+cat $ERRLOG
 if [ "$RESULT" != "mysql" ]; then
     echo `date` "Server name, account or password incorrect to access mysql"
     echo "Server name, account or password incorrect to access mysql" > $SYNOPKG_TEMP_LOGFILE
@@ -82,11 +83,13 @@ pkgwizard_admin_password=`sed 's/"/\\"/gp' $$`
 echo `date` "Checking access: $MYSQLSHOW --user=$pkgwizard_admin_account --password=********** | grep -v Wildcard | grep -o $pkgwizard_db_Name"
 RESULT=`$MYSQLSHOW --user=$pkgwizard_admin_account --password=$pkgwizard_admin_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
 echo `date` "Results: $RESULT"
+cat $ERRLOG
 if [ "$RESULT" == "$pkgwizard_db_Name" ]; then
   # Check that the database can be accessed with the given account
   echo `date` "Checking access on $pkgwizard_db_Name: $MYSQLSHOW --user=$pkgwizard_srvmon_account --password=********** $pkgwizard_db_Name | grep -v Wildcard | grep -o $pkgwizard_db_Name"
   RESULT=`$MYSQLSHOW --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
   echo `date` "Results: $RESULT"
+  cat $ERRLOG
   if [ "$RESULT" != "$pkgwizard_db_Name" ]; then
     echo `date` "Existing database $pkgwizard_db_Name cannot be reused with the provided account and password --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password"
     echo "Existing database $pkgwizard_db_Name cannot be reused with the provided account and password" > $SYNOPKG_TEMP_LOGFILE
@@ -103,22 +106,28 @@ fi
 Q1="CREATE DATABASE IF NOT EXISTS $pkgwizard_db_Name COLLATE = utf8_unicode_ci;"
 Q2="GRANT USAGE ON *.* TO $pkgwizard_srvmon_account@localhost IDENTIFIED BY '$pkgwizard_srvmon_password';"
 Q3="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $pkgwizard_srvmon_account@localhost;"
-Q4="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $SYNOPKG_USERNAME@localhost;"
+Q4="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $pkgwizard_admin_account@localhost;"
 Q5="FLUSH PRIVILEGES;"
 SQL="${Q1}${Q2}${Q3}${Q4}${Q5}"
 
 echo `date` "Executing: $MYSQL -vvv -h $pkgwizard_server_name -u $pkgwizard_admin_account --password=********** -e $SQL"
 $MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_admin_account" --password="$pkgwizard_admin_password" -e "$SQL"
-if [ $? -eq 1 ]; then
-  echo `date` "Fail to create $pkgwizard_db_Name  database."
+cat $ERRLOG
+
+echo `date` "Checking that DB '$pkgwizard_db_Name' exists"
+RESULT=`$MYSQLSHOW --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
+cat $ERRLOG
+if [ "$RESULT" != "$pkgwizard_db_Name" ]; then
+  echo `date` "Database '$pkgwizard_db_Name' has not been created successfuly with access for '$pkgwizard_srvmon_account'"
   echo "Fail to create $pkgwizard_db_Name  database." > $SYNOPKG_TEMP_LOGFILE
   exit 1
 fi
+echo `date` "Database '$pkgwizard_db_Name' has been created successfuly with access for '$pkgwizard_srvmon_account'"
 
 ConfigFile="$SYNOPKG_PKGDEST/ui/config.php"
 
 echo "<?php" > "$ConfigFile"
-echo "\$url=(isset(\$_SERVER['HTTPS']) ? 'https' : 'http') . '://' . \$_SERVER[HTTP_HOST] . dirname(\$_SERVER[REQUEST_URI]);" >> "$ConfigFile"
+echo "\$url=(isset(\$_SERVER['HTTPS']) ? 'https' : 'http') . '://' . \$_SERVER['HTTP_HOST'] . dirname(\$_SERVER['REQUEST_URI']);" >> "$ConfigFile"
 echo "define('PSM_DB_PREFIX', 'psm_');" >> "$ConfigFile"
 echo "define('PSM_DB_USER', '$pkgwizard_srvmon_account');" >> "$ConfigFile"
 echo "define('PSM_DB_PASS', '$pkgwizard_srvmon_password');" >> "$ConfigFile"

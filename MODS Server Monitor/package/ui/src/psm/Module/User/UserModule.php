@@ -21,7 +21,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  * @since		phpservermon 3.0
  **/
@@ -40,9 +40,9 @@ class UserModule implements ModuleInterface {
 
 	public function getControllers() {
 		return array(
-			'user' => __NAMESPACE__ . '\Controller\UserController',
-			'login' => __NAMESPACE__ . '\Controller\LoginController',
-			'profile' => __NAMESPACE__ . '\Controller\ProfileController',
+			'user' => __NAMESPACE__.'\Controller\UserController',
+			'login' => __NAMESPACE__.'\Controller\LoginController',
+			'profile' => __NAMESPACE__.'\Controller\ProfileController',
 		);
 
 	}

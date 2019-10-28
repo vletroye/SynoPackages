@@ -21,7 +21,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  * @since		phpservermon 3.0
  **/
@@ -39,7 +39,7 @@ class ConfigModule implements ModuleInterface {
 
 	public function getControllers() {
 		return array(
-			'config' => __NAMESPACE__ . '\Controller\ConfigController',
+			'config' => __NAMESPACE__.'\Controller\ConfigController',
 		);
 
 	}

@@ -21,12 +21,12 @@
  * @author      Loi Le <lploi91@gmail.com>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
-	'name' => 'Tiếng Việt',
+	'name' => 'Tiếng Việt - Vietnamese',
 	'locale' => array('vi_VN.UTF-8', 'vi_VN', 'Việt Nam'),
 	'system' => array(
 		'title' => 'Server Monitor',
@@ -41,7 +41,7 @@ $sm_lang = array(
 		'no' => 'No',
 		'insert' => 'Thêm mới',
 		'add_new' => 'Thêm mới',
-		'update_available' => 'Phiên bản mới ({version}) có săn trên <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Phiên bản mới ({version}) có săn trên <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Lên đầu trang',
 		'go_back' => 'Quay lại',
 		'ok' => 'OK',
@@ -78,7 +78,7 @@ $sm_lang = array(
 		'level' => 'Cấp độ',
 		'level_10' => 'Administrator',
 		'level_20' => 'User',
-		'level_description' => '<b>Administrators</b> có toàn quyền: họ có thể quản lý server, người dùng và chỉnh sửa cấu hình.<br/><b>Users</b> chỉ xem và chạy cập nhật cho servers được giao cho họ.',
+		'level_description' => '<b>Administrators</b> có toàn quyền: họ có thể quản lý server, người dùng và chỉnh sửa cấu hình.<br><b>Users</b> chỉ xem và chạy cập nhật cho servers được giao cho họ.',
 		'mobile' => 'Di động',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -94,7 +94,7 @@ $sm_lang = array(
 		'profile' => 'Hồ sơ',
 		'profile_updated' => 'Hồ sơ của bạn đã được cập nhật.',
 		'error_user_name_bad_length' => 'Tên người dùng phải có từ 2 và 64 ký tự.',
-		'error_user_name_invalid' => 'Tên người dùng chỉ có thể chứa các chữ cái(a-z, A-Z), số (0-9) và dấu gạch dưới (_).',
+		'error_user_name_invalid' => 'Tên người dùng chỉ có thể chứa các chữ cái(a-z, A-Z), số (0-9), dấu chấm (.) và dấu gạch dưới (_).',
 		'error_user_name_exists' => 'Tên người dùng đã tồn tại trong cơ sở dữ liệu.',
 		'error_user_email_bad_length' => 'Địa chỉ email phải từ 5 đến 255 ký tự.',
 		'error_user_email_invalid' => 'Địa chỉ email không hợp lệ.',
@@ -111,6 +111,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'No logs',
+		'clear' => 'Xoá nhật ký',
+		'delete_title' => 'Xoá nhật ký',
+		'delete_message' => 'Bạn có chắc chắn muốn xóa <b>tất</b> cả các bản ghi?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -187,14 +190,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Để trống nếu không có chứng thực',
 		'sms_status' => 'Cho phép gửi tin nhắn văn bản',
 		'sms_gateway' => 'Gateway sử dụng để gửi tin nhắn',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_smsit' => 'Smsit',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Số điện thoại của người gửi',
@@ -202,16 +197,16 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover là một dịch vụ dễ dàng nhận các thông báo theo thời gian thực. Xem <a href="https://pushover.net/">website của họ</a> để biết thêm thông tin.',
 		'pushover_clone_app' => 'Nhấn vào đây để tạo ứng dụng Pushover của bạn',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Trước khi bạn có thể sử dụng Pushover, bạn cần phải <a href="%1$s" target="_blank">đăng ký một ứng dụng</a> tại trang web của họ và nhập Token App API ở đây.',
+		'pushover_api_token_description' => 'Trước khi bạn có thể sử dụng Pushover, bạn cần phải <a href="%1$s" target="_blank" rel="noopener">đăng ký một ứng dụng</a> tại trang web của họ và nhập Token App API ở đây.',
 		'alert_type' => 'Chọn khi bạn muốn được thông báo.',
-        'alert_type_description' => '<b>Thay đổi trạng thái:</b> '.
-		    'Bạn sẽ nhận được thông báo khi một máy chủ có một sự thay đổi trạng thái. Từ online -> offline hoặc offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Bạn sẽ nhận được thông báo khi một máy chủ offline  *MỘT LẦN DUY NHẤT*. Ví dụ, '.
-		    'cronjob của bạn hoạt động mỗi 15 phút và server của bạn down tại 01h00  cho đến 6h00. '.
-		    'Bạn sẽ nhận được 1 thông báo lúc 01h00  và đó là nó.<br/>'.
-		    '<br><b>Always:</b> '.
-		    'Bạn sẽ nhận được thông báo mỗi khi chạy đoạn script và một trang web tắt, ngay cả khi trang web đã được offline trong nhiều giờ.',
+		'alert_type_description' => '<b>Thay đổi trạng thái:</b> '.
+			'Bạn sẽ nhận được thông báo khi một máy chủ có một sự thay đổi trạng thái. Từ online -> offline hoặc offline -> online.<br>'.
+			'<br /><b>Offline:</b> '.
+			'Bạn sẽ nhận được thông báo khi một máy chủ offline *MỘT LẦN DUY NHẤT*. Ví dụ, '.
+			'cronjob của bạn hoạt động mỗi 15 phút và server của bạn down tại 01h00 cho đến 6h00. '.
+			'Bạn sẽ nhận được 1 thông báo lúc 01h00 và đó là nó.<br>'.
+			'<br><b>Always:</b> '.
+			'Bạn sẽ nhận được thông báo mỗi khi chạy đoạn script và một trang web tắt, ngay cả khi trang web đã được offline trong nhiều giờ.',
 		'alert_type_status' => 'Thay đổi trạng thái',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Always',
@@ -230,8 +225,8 @@ $sm_lang = array(
 		'settings_notification' => 'Thiết lặp thông báo',
 		'settings_log' => 'Thiết lặp Log',
 		'auto_refresh' => 'Tự động làm mới',
-		'auto_refresh_servers' =>
-			'Tự động làm mới servers page.<br/>'.
+		'auto_refresh_description' =>
+			'Tự động làm mới servers page.<br>'.
 			'<span class="small">'.
 			'Trong vài giây, nếu 0 trang sẽ không làm mới.'.
 			'</span>',
@@ -246,7 +241,7 @@ $sm_lang = array(
 		'email_sent' => 'Gửi email',
 		'email_error' => 'Lỗi trong khi gửi mail',
 		'sms_sent' => 'Gửi SMS',
-		'sms_error' => 'Lỗi trong khi gửi sms',
+		'sms_error' => 'Lỗi trong khi gửi sms. %s',
 		'sms_error_nomobile' => 'Không thể gửi thử SMS: không có số điện thoại hợp lệ được tìm thấy trong hồ sơ của bạn.',
 		'pushover_sent' => 'Gửi thông báo Pushover',
 		'pushover_error' => 'Một lỗi đã xảy ra trong khi gửi thông báo Pushover: %s',
@@ -256,18 +251,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Số ngày để giữ các bản ghi của các thông báo và tài liệu lưu trữ của thời gian hoạt động máy chủ. Nhập 0 để vô hiệu hóa dọn dẹp log.',
 		'log_retention_days' => 'ngày',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Server \'%LABEL%\' is DOWN: ip=%IP%, cổng=%PORT%. Lỗi=%ERROR%',
 		'off_email_subject' => 'IMPORTANT: Server \'%LABEL%\' is DOWN',
-		'off_email_body' => "Không thể kết nối đến máy chủ sau:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Cổng: %PORT%<br/>Lỗi: %ERROR%<br/>Thời gian: %DATE%",
+		'off_email_body' => "Không thể kết nối đến máy chủ sau:<br><br>Server: %LABEL%<br>IP: %IP%<br>Cổng: %PORT%<br>Lỗi: %ERROR%<br>Thời gian: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' is DOWN',
-		'off_pushover_message' => "Không thể kết nối đến máy chủ:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Cổng: %PORT%<br/>Lỗi: %ERROR%<br/>Thời gian: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%',
+		'off_pushover_message' => "Không thể kết nối đến máy chủ:<br><br>Server: %LABEL%<br>IP: %IP%<br>Cổng: %PORT%<br>Lỗi: %ERROR%<br>Thời gian: %DATE%",
+		'on_sms' => 'Server \'%LABEL%\' is RUNNING: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANT: Server \'%LABEL%\' hoạt động',
-		'on_email_body' => "Server '%LABEL%' hoạt động lại:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Cổng: %PORT%<br/>Thời gian: %DATE%",
+		'on_email_body' => "Server '%LABEL%' hoạt động lại, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Cổng: %PORT%<br>Thời gian: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' hoạt động',
-		'on_pushover_message' => 'Server \'%LABEL%\' hoạt động lại:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Cổng: %PORT%<br/>Thời gian: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' hoạt động lại, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Cổng: %PORT%<br>Thời gian: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Chào mừng, %user_name%',
@@ -284,7 +279,7 @@ $sm_lang = array(
 		'password_forgot' => 'Quên mật khẩu?',
 		'password_reset' => 'Khôi phục mật khẩu',
 		'password_reset_email_subject' => 'Khôi phục lại mật khẩu của bạn cho PHP Server Monitor',
-		'password_reset_email_body' => 'Vui lòng sử dụng liên kết sau đây để thiết lập lại mật khẩu của bạn. Xin lưu ý nó hết hạn trong 1 giờ.<br/><br/>%link%',
+		'password_reset_email_body' => 'Vui lòng sử dụng liên kết sau đây để thiết lập lại mật khẩu của bạn. Xin lưu ý nó hết hạn trong 1 giờ.<br><br>%link%',
 		'error_user_incorrect' => 'Tên người dùng cung cấp không thể tìm thấy.',
 		'error_login_incorrect' => 'Thông tin không đúng.',
 		'error_login_passwords_nomatch' => 'Mật khẩu được cung cấp không phù hợp.',

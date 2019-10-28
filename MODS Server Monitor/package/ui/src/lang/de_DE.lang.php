@@ -21,7 +21,7 @@
  * @author      Jean Pierre Kolb <http://www.jpkc.com/>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Nein',
 		'insert' => 'Einfügen',
 		'add_new' => 'Neuen Eintrag erstellen',
-		'update_available' => 'Eine Aktualisierung ({version}) ist verfügbar unter <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Eine Aktualisierung ({version}) ist verfügbar unter <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'nach oben',
 		'go_back' => 'Zurück',
 		'ok' => 'OK',
@@ -60,6 +60,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'vor über einer Minute',
 		'seconds_ago' => 'vor %d Sekunden',
 		'a_second_ago' => 'vor über einer Sekunde',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Einstellungen',
@@ -80,7 +92,7 @@ $sm_lang = array(
 		'level' => 'Berechtigungsstufe',
 		'level_10' => 'Administrator',
 		'level_20' => 'Benutzer',
-		'level_description' => '<b>Administratoren</b> haben vollen Zugriff — sie können Webseiten, Benutzer und globale Einstellungen verwalten.<br/><b>Benutzer</b> können nur (für ihnen zugeordnete Webseiten) Analysedaten einsehen und deren Aktualisierung veranlassen.',
+		'level_description' => '<b>Administratoren</b> haben vollen Zugriff — sie können Webseiten, Benutzer und globale Einstellungen verwalten.<br><b>Benutzer</b> können nur (für ihnen zugeordnete Webseiten) Analysedaten einsehen und deren Aktualisierung veranlassen.',
 		'mobile' => 'Mobil',
 		'email' => 'E-Mail',
 		'pushover' => 'Pushover',
@@ -96,7 +108,7 @@ $sm_lang = array(
 		'profile' => 'Profileinstellungen',
 		'profile_updated' => 'Ihr Profil wurde aktualisiert.',
 		'error_user_name_bad_length' => 'Benutzernamen müssen zwischen 2 und 64 Zeichen lang sein.',
-		'error_user_name_invalid' => 'Der Benutzername darf nur alphanumerische Zeichen (a-z, A-Z), Zahlen (0-9) und Unterstriche (_) enthalten.',
+		'error_user_name_invalid' => 'Der Benutzername darf nur alphanumerische Zeichen (a-z, A-Z), Zahlen (0-9), Punkte (.) und Unterstriche (_) enthalten.',
 		'error_user_name_exists' => 'Der gewählte Benutzername existiert bereits in der Datenbank.',
 		'error_user_email_bad_length' => 'E-Mail-Adressen müssen zwischen 5 und 255 Zeichen lang sein.',
 		'error_user_email_invalid' => 'Die E-Mail-Adresse ist ungültig.',
@@ -113,6 +125,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Keine Logs vorhanden.',
+		'clear' => 'Protokoll Logs',
+		'delete_title' => 'Protokoll Logs',
+		'delete_message' => 'Bist du sicher, dass du <b>alle</b> logs löschen möchtest?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -130,6 +145,7 @@ $sm_lang = array(
 		'pattern_description' => 'Wenn das gesuchte Muster nicht in der Webseite ist, wird die Seite als offline markiert. Reguläre Ausdrücke sind erlaubt.',
 		'last_check' => 'Letzter Check',
 		'last_online' => 'Zuletzt online',
+		'last_offline' => 'Zuletzt offline',
 		'monitoring' => 'Monitoring',
 		'no_monitoring' => 'Monitoring inaktiv',
 		'email' => 'E-Mail',
@@ -190,17 +206,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Feld leer lassen, bei fehlender Authentifizierung',
 		'sms_status' => 'SMS-Nachrichtenversand erlauben?',
 		'sms_gateway' => 'SMS Gateway',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-        'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway Benutzername',
 		'sms_gateway_password' => 'Gateway Passwort',
 		'sms_from' => 'SMS-Sendernummer',
@@ -208,15 +213,15 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover ist ein Dienst, der es stark vereinfacht, Statusbenachrichtigungen in Echtzeit zu erhalten. Besuchen Sie <a href="https://pushover.net/">pushover.net</a> für weitere Informationen.',
 		'pushover_clone_app' => 'Klicken Sie hier, um Ihre Pushover-Anwendung zu erstellen',
 		'pushover_api_token' => 'Pushover-Anwendungs-API-Token',
-		'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s" target="_blank">Anwendung hier registrieren</a> und Ihren Anwendungs-API-Token hier eingeben.',
+		'pushover_api_token_description' => 'Bevor Sie Pushover verwenden können, müssen Sie Ihre <a href="%1$s" target="_blank" rel="noopener">Anwendung hier registrieren</a> und Ihren Anwendungs-API-Token hier eingeben.',
 		'alert_type' => 'Wann möchten Sie benachrichtigt werden?',
 		'alert_type_description' => '<b>Status geändert:</b> '.
-			'...  wenn sich der Status ändert<br/>'.
-			'z. B. online -> offline oder offline -> online.<br/>'.
-			 '<br/><b>Offline: </b>'.
-			'Sie bekommen eine Benachrichtigung, wenn ein Server offline ist.<br/>'.
-			'Es wird nur eine Mitteilung versendet.<br/>'.
-			'<br/><b>Immer: </b>'.
+			'... wenn sich der Status ändert<br>'.
+			'z. B. online -> offline oder offline -> online.<br>'.
+			 '<br><b>Offline: </b>'.
+			'Sie bekommen eine Benachrichtigung, wenn ein Server offline ist.<br>'.
+			'Es wird nur eine Mitteilung versendet.<br>'.
+			'<br><b>Immer: </b>'.
 			'Sie erhalten jedes Mal eine Benachrichtigung, sobald der CronJob oder das Skript ausgeführt werden, auch wenn der Dienst mehrere Stunden offline sein sollte.',
 		'alert_type_status' => 'Status geändert',
 		'alert_type_offline' => 'Offline',
@@ -236,8 +241,8 @@ $sm_lang = array(
 		'settings_notification' => 'Benachrichtigungseinstellungen',
 		'settings_log' => 'Protokollierungseinstellungen',
 		'auto_refresh' => 'Automatische Aktualisierung',
-		'auto_refresh_servers' =>
-			'Automatische Aktualisierung der Server-Übersichtsseite<br/>'.
+		'auto_refresh_description' =>
+			'Automatische Aktualisierung der Server-Übersichtsseite<br>'.
 			'<span class="small">'.
 			'Zeit in Sekunden - die Ziffer \'0\' deaktiviert die automatische Aktualisierung.'.
 			'</span>',
@@ -252,7 +257,7 @@ $sm_lang = array(
 		'email_sent' => 'E-Mail gesendet.',
 		'email_error' => 'Beim Versand der E-Mail trat ein Fehler auf.',
 		'sms_sent' => 'SMS-Nachricht gesendet.',
-		'sms_error' => 'Beim Versand der SMS-Nachricht trat ein Fehler auf.',
+		'sms_error' => 'Beim Versand der SMS-Nachricht trat ein Fehler auf. %s',
 		'sms_error_nomobile' => 'Versand der SMS-Nachricht nicht möglich: Es wurde keine gültige Telefonnummer in Ihrem Profil hinterlegt.',
 		'pushover_sent' => 'Pushover-Benachrichtigung versendet',
 		'pushover_error' => 'Beim Versand der Pushover-Benachrichtigung trat ein Fehler auf: %s',
@@ -262,18 +267,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Anzahl in Tagen bis zur automatischen Bereinigung/Löschung sämtlicher Protokollierungsdaten im System. Geben Sie die Ziffer \'0\' ein, um die automatische Bereinigung/Löschung zu deaktivieren.',
 		'log_retention_days' => 'Tage',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Dienst/Webseite \'%LABEL%\' ist offline: ip=%IP%, port=%PORT%. Fehler=%ERROR%',
 		'off_email_subject' => 'Warnung: Dienst/Webseite \'%LABEL%\' ist offline.',
-		'off_email_body' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",
+		'off_email_body' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br><br>Dienst/Webseite: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fehler: %ERROR%<br>Datum: %DATE% Uhr",
 		'off_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist offline.',
-		'off_pushover_message' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br/><br/>Dienst/Webseite: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fehler: %ERROR%<br/>Datum: %DATE% Uhr",
-		'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%',
+		'off_pushover_message' => "Kann keine funktionierende Verbindung zum Dienst bzw. der Webseite aufbauen:<br><br>Dienst/Webseite: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fehler: %ERROR%<br>Datum: %DATE% Uhr",
+		'on_sms' => 'Dienst/Webseite \'%LABEL%\' ist wieder online: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'Hinweis: Dienst/Webseite \'%LABEL%\' ist wieder online.',
-		'on_email_body' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
+		'on_email_body' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum: %DATE% Uhr",
 		'on_pushover_title' => 'Dienst/Webseite \'%LABEL%\' ist wieder online.',
-		'on_pushover_message' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Datum: %DATE% Uhr",
+		'on_pushover_message' => "Dienst/Webseite '%LABEL%' ist wieder erreichbar, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Datum: %DATE% Uhr",
 	),
 	'login' => array(
 		'welcome_usermenu' => '%user_name%',
@@ -290,7 +295,7 @@ $sm_lang = array(
 		'password_forgot' => 'Passwort vergessen?',
 		'password_reset' => 'Passwort zurücksetzen',
 		'password_reset_email_subject' => 'Setzen Sie Ihr Zugangspasswort für den Server Monitor',
-		'password_reset_email_body' => 'Benutzen Sie bitte den folgenden Link, um Ihr Zugangspasswort zurückzusetzen. Bitte beachten Sie: Der Link verfällt in 1 Stunde.<br/><br/>%link%',
+		'password_reset_email_body' => 'Benutzen Sie bitte den folgenden Link, um Ihr Zugangspasswort zurückzusetzen. Bitte beachten Sie: Der Link verfällt in 1 Stunde.<br><br>%link%',
 		'error_user_incorrect' => 'Der angegebene Benutzername konnte nicht gefunden werden.',
 		'error_login_incorrect' => 'Die angegebenen Informationen sind leider nicht korrekt.',
 		'error_login_passwords_nomatch' => 'Die angegebenen Passwörter stimmen nicht überein.',

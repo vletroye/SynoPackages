@@ -21,7 +21,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 3.0.0
  **/
@@ -29,19 +29,19 @@
 /**
  * Current PSM version
  */
-define('PSM_VERSION', '3.2.0');
+define('PSM_VERSION', '3.4.5');
 
 /**
  * URL to check for updates. Will not be checked if turned off on config page.
  * @see psm_update_available()
  */
-define('PSM_UPDATE_URL', 'http://www.phpservermonitor.org/version.php');
+define('PSM_UPDATE_URL', 'https://api.github.com/repos/phpservermon/phpservermon/releases/latest');
 
 /**
- * Default update interval (1 week). Only applicable when updates are enabled.
+ * Default update interval (1 day). Only applicable when updates are enabled.
  * @see psm_update_available()
  */
-define('PSM_UPDATE_INTERVAL', 7 * 24 * 60 * 60);
+define('PSM_UPDATE_INTERVAL', 1 * 24 * 60 * 60);
 
 /**
  * Configuration for: Hashing strength
@@ -108,19 +108,22 @@ define('PSM_CURL_TIMEOUT', 10);
 define('PSM_PUSHOVER_CLONE_URL', 'https://pushover.net/apps/clone/php_server_monitor');
 
 /**
+ * Get chat id for Telegram service.
+ */
+define('PSM_TELEGRAM_GET_ID_URL', 'https://telegram.me/cid_bot');
+
+/**
  * By defining the PSM_BASE_URL, you will force the psm_build_url() to use this.
  * Useful for cronjobs if it cannot be auto-detected.
  */
 //define('PSM_BASE_URL', null);
 
-if(!defined('PSM_MODULE_DEFAULT')) {
+if (!defined('PSM_MODULE_DEFAULT')) {
 	/**
 	 * Default theme
 	 */
 	define('PSM_THEME', 'default');
-}
 
-if(!defined('PSM_MODULE_DEFAULT')) {
 	/**
 	 * Default module (if none given or invalid one)
 	 */

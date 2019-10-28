@@ -21,12 +21,12 @@
  * @author      Richard A.
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
-	'name' => 'Estonian - Eesti keel',
+	'name' => 'Eesti keel - Estonian',
 	'locale' => array('et_ET.UTF-8', 'et_ET', 'estonian'),
 	'locale_tag' => 'et',
 	'locale_dir' => 'ltr',
@@ -43,7 +43,7 @@ $sm_lang = array(
 		'no' => 'Ei',
 		'insert' => 'Sisesta',
 		'add_new' => 'Lisa uus',
-		'update_available' => 'Uus versioon ({version}) on saadaval <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Uus versioon ({version}) on saadaval <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Tagasi üles',
 		'go_back' => 'Mine tagasi',
 		'ok' => 'OK',
@@ -80,7 +80,7 @@ $sm_lang = array(
 		'level' => 'Tase',
 		'level_10' => 'Administraator',
 		'level_20' => 'Kasutaja',
-		'level_description' => '<b>Administraatoritel</b> on täielik ligipääs: nad saavad hallata servereid, kasutajaid ja muuta globaalset konfiguratsiooni.<br/><b>Kasutajad</b> saavad ainult näha ja uuendada neid servereid, mis on neile määratud.',
+		'level_description' => '<b>Administraatoritel</b> on täielik ligipääs: nad saavad hallata servereid, kasutajaid ja muuta globaalset konfiguratsiooni.<br><b>Kasutajad</b> saavad ainult näha ja uuendada neid servereid, mis on neile määratud.',
 		'mobile' => 'Mobiil',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -96,7 +96,7 @@ $sm_lang = array(
 		'profile' => 'Profiil',
 		'profile_updated' => 'Sinu profiil on uuendatud.',
 		'error_user_name_bad_length' => 'Kasutajanimi peab olema 2 kuni 64 tähemärki pikk.',
-		'error_user_name_invalid' => 'Kasutajanimi võib koosneda ainult tähenumbrilistest kombinatsioonidest (a-z, A-Z), numbritest (0-9) ja alakriipsust (_).',
+		'error_user_name_invalid' => 'Kasutajanimi võib koosneda ainult tähenumbrilistest kombinatsioonidest (a-z, A-Z), numbritest (0-9), punktid (.) ja alakriipsust (_).',
 		'error_user_name_exists' => 'Antud kasutaja juba eksisteerib andmebaasis.',
 		'error_user_email_bad_length' => 'Email võib olla 5 kuni 255 tähemärki pikk.',
 		'error_user_email_invalid' => 'Emaili aadress on kehtetu.',
@@ -113,6 +113,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Logisid ei eksisteeri',
+		'clear' => 'Puhasta logig',
+		'delete_title' => 'Kustuta logi',
+		'delete_message' => 'Kas olete kindel, et soovite kustutada <b>kõik</b> logid?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -189,15 +192,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Jäta tühjaks, et jätkata ilma autentimiseta',
 		'sms_status' => 'Luba sõnumite saatmine',
 		'sms_gateway' => 'Väravad sõnumite saatmiseks',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Värava kasutajanimi',
 		'sms_gateway_password' => 'Värava parool',
 		'sms_from' => 'Saatja telefoni number',
@@ -205,16 +199,16 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover on teenus, mis teeb reaalaja teavitused imelihtsaks. Vaata <a href="https://pushover.net/">nende kodulehte</a> rohkema info jaoks.',
 		'pushover_clone_app' => 'Kliki siia, et teha oma Pushover äpp',
 		'pushover_api_token' => 'Pushover Äppi API Žetoon',
-		'pushover_api_token_description' => 'Enne, kui saad Pushoverida pead sa <a href="%1$s" target="_blank">regristreerima äpi</a> nende kodulehel ja sisestama API žetooni siia.',
+		'pushover_api_token_description' => 'Enne, kui saad Pushoverida pead sa <a href="%1$s" target="_blank" rel="noopener">regristreerima äpi</a> nende kodulehel ja sisestama API žetooni siia.',
 		'alert_type' => 'Vali, millal sa sooviksid olla teavitatud.',
-        'alert_type_description' => '<b>Staatuse muutus:</b> '.
-		    'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br/>'.
-		    '<br /><b>Võrgust väljas:</b> '.
-		    'Saate teavituse kui server läheb võrgust välja *ESIMEST KORDA*. Näiteks, '.
-		    'sinu cronjob on iga 15 minuti tagant ja sulgub kell 1 öösel kuni kella 6ni hommikul. '.
-		    'Saate 1 teavituse kell 1 öösel ja see on kõik.<br/>'.
-		    '<br><b>Alati:</b> '.
-		    'Saate teavituse iga kord kui staatust uuendatakse, isegi kui leht on olnud maas juba tunde.',
+		'alert_type_description' => '<b>Staatuse muutus:</b> '.
+			'Saate teavituse kui serveri staatuses toimub muudatusi. Seega kättesaadav -> võrgust väljas või võrgust väljas -> kättesaadav.<br>'.
+			'<br /><b>Võrgust väljas:</b> '.
+			'Saate teavituse kui server läheb võrgust välja *ESIMEST KORDA*. Näiteks, '.
+			'sinu cronjob on iga 15 minuti tagant ja sulgub kell 1 öösel kuni kella 6ni hommikul. '.
+			'Saate 1 teavituse kell 1 öösel ja see on kõik.<br>'.
+			'<br><b>Alati:</b> '.
+			'Saate teavituse iga kord kui staatust uuendatakse, isegi kui leht on olnud maas juba tunde.',
 		'alert_type_status' => 'Staatuse muutus',
 		'alert_type_offline' => 'Võrgust väljas',
 		'alert_type_always' => 'Alati',
@@ -233,8 +227,8 @@ $sm_lang = array(
 		'settings_notification' => 'Teavituste seaded',
 		'settings_log' => 'Logi seaded',
 		'auto_refresh' => 'Automaatne värskendamine',
-		'auto_refresh_servers' =>
-			'Värskenda lehte automaatselt.<br/>'.
+		'auto_refresh_description' =>
+			'Värskenda lehte automaatselt.<br>'.
 			'<span class="small">'.
 			'Aeg sekundites, kui 0 siis lehte ei värskendata.'.
 			'</span>',
@@ -249,7 +243,7 @@ $sm_lang = array(
 		'email_sent' => 'Email saadetud',
 		'email_error' => 'Emaili saatmisel esines error',
 		'sms_sent' => 'Sms saadetud',
-		'sms_error' => 'Smsi saatmisel esines error',
+		'sms_error' => 'Smsi saatmisel esines error. %s',
 		'sms_error_nomobile' => 'Test SMSi ei saadetud: kehtivat telefoni numbrit ei leitud.',
 		'pushover_sent' => 'Pushover teavitus saadetud',
 		'pushover_error' => 'Pushover teavituse saatmisel esines error: %s',
@@ -259,18 +253,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Arv päevi, mil hoida logid alles. Sisesta 0, et keelata logide puhastus.',
 		'log_retention_days' => 'päeva',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Server \'%LABEL%\' on MAAS: ip=%IP%, port=%PORT%. Error=%ERROR%',
 		'off_email_subject' => 'TÄHTIS: Server \'%LABEL%\' is MAAS',
-		'off_email_body' => "Ühendus järgnevasse serverisse ebaõnnestus:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Kuupäev: %DATE%",
+		'off_email_body' => "Ühendus järgnevasse serverisse ebaõnnestus:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Kuupäev: %DATE%",
 		'off_pushover_title' => 'Server \'%LABEL%\' on MAAS',
-		'off_pushover_message' => "Ühendus järgnevasse serverisse ebaõnnestus:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Error: %ERROR%<br/>Kuupäev: %DATE%",
-		'on_sms' => 'Server \'%LABEL%\' on KÄTTESAADAV: ip=%IP%, port=%PORT%',
+		'off_pushover_message' => "Ühendus järgnevasse serverisse ebaõnnestus:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Error: %ERROR%<br>Kuupäev: %DATE%",
+		'on_sms' => 'Server \'%LABEL%\' on KÄTTESAADAV: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'TÄHTIS: Server \'%LABEL%\' on kättesaadav',
-		'on_email_body' => "Server '%LABEL%' on jälle kättesaadav:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Kuupäev: %DATE%",
+		'on_email_body' => "Server '%LABEL%' on jälle kättesaadav, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Kuupäev: %DATE%",
 		'on_pushover_title' => 'Server \'%LABEL%\' on kättesaadav',
-		'on_pushover_message' => 'Server \'%LABEL%\' on jälle kättesaadav:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Kuupäev: %DATE%',
+		'on_pushover_message' => 'Server \'%LABEL%\' on jälle kättesaadav, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Kuupäev: %DATE%',
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Teretulemast, %user_name%',
@@ -287,7 +281,7 @@ $sm_lang = array(
 		'password_forgot' => 'Unustasid salasõna?',
 		'password_reset' => 'Lähtesta parool',
 		'password_reset_email_subject' => 'Lähtestage oma PHP Serveri Monitori parool',
-		'password_reset_email_body' => 'Palun kasutage järgnevat linki oma parooli lähtestamiseks. Palume tähendada, et see aegub 1 tunni jooksul.<br/><br/>%link%',
+		'password_reset_email_body' => 'Palun kasutage järgnevat linki oma parooli lähtestamiseks. Palume tähendada, et see aegub 1 tunni jooksul.<br><br>%link%',
 		'error_user_incorrect' => 'Antud kasutaja ei ole kehtiv.',
 		'error_login_incorrect' => 'Informatsioon ei ole õige.',
 		'error_login_passwords_nomatch' => 'Sisestatud paroolid ei kattu.',

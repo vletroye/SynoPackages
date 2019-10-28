@@ -21,7 +21,7 @@
  * @author      nerdalertdk
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.2.0
+ * @version     Release: 3.4.5
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -41,7 +41,7 @@ $sm_lang = array(
 		'no' => 'Nej',
 		'insert' => 'Indsæt',
 		'add_new' => 'Tilføj ny',
-		'update_available' => 'En ny version ({version}) er tilgængelig på <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'En ny version ({version}) er tilgængelig på <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Til toppen',
 		'go_back' => 'Tilbage',
 		'ok' => 'OK',
@@ -58,6 +58,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'omkring et minut siden',
 		'seconds_ago' => '%d sekunder siden',
 		'a_second_ago' => 'et sekund siden',
+		'year' => 'year',
+		'years' => 'years',
+		'month' => 'month',
+		'months' => 'months',
+		'day' => 'day',
+		'days' => 'days',
+		'hour' => 'hour',
+		'hours' => 'hours',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'second',
+		'seconds' => 'seconds',
 	),
 	'menu' => array(
 		'config' => 'Indstillinger',
@@ -78,7 +90,7 @@ $sm_lang = array(
 		'level' => 'Niveau',
 		'level_10' => 'Administrator',
 		'level_20' => 'Bruger',
-		'level_description' => '<b>Administratorer</b> har fuld adgang: De kan styre servere, brugere og indstillinger.<br/><b>Brugere</b> kan kun se og opdatere servere som er de har adgang til.',
+		'level_description' => '<b>Administratorer</b> har fuld adgang: De kan styre servere, brugere og indstillinger.<br><b>Brugere</b> kan kun se og opdatere servere som er de har adgang til.',
 		'mobile' => 'Mobil',
 		'email' => 'E-mail',
 		'pushover' => 'Pushover',
@@ -94,7 +106,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Din profil er opdateret.',
 		'error_user_name_bad_length' => 'Brugernavn skal være mellem 2 til 64 tegn.',
-		'error_user_name_invalid' => 'Brugernavn må kun indholde alfabetiske tegn (a-z, A-Z), tal (0-9) og (_).',
+		'error_user_name_invalid' => 'Brugernavn må kun indholde alfabetiske tegn (a-z, A-Z), tal (0-9), prikker (.) og (_).',
 		'error_user_name_exists' => 'Det valgte brugernavn findes allerede.',
 		'error_user_email_bad_length' => 'E-mail addresser skal være mellem 5 til 255 tegn.',
 		'error_user_email_invalid' => 'Den valgte e-mail er ugyldig.',
@@ -111,6 +123,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Intet i loggen',
+		'clear' => 'Ryd log',
+		'delete_title' => 'Slet log',
+		'delete_message' => 'Er du sikker på, at du vil slette <b>alle</b> logfiler?',
 	),
 	'servers' => array(
 		'server' => 'Server',
@@ -127,6 +142,7 @@ $sm_lang = array(
 		'pattern_description' => 'Hvis dette mønster ikke findes på hjemmesiden, vil serveren blive markeret som værende offline. Regulære udtryk er tilladt.',
 		'last_check' => 'Sidst kontrolleret',
 		'last_online' => 'Sidst online',
+		'last_offline' => 'Sidst offline',
 		'monitoring' => 'Overvågning',
 		'no_monitoring' => 'Ingen overvågning',
 		'email' => 'E-mail',
@@ -187,16 +203,6 @@ $sm_lang = array(
 		'email_smtp_noauth' => 'Efterlad blank hvis det ikke er krævet',
 		'sms_status' => 'Tillad at sende SMS beskeder',
 		'sms_gateway' => 'SMS Gateway',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_nexmo' => 'Nexmo',
 		'sms_gateway_username' => 'Gateway brugernavn/apikey',
 		'sms_gateway_password' => 'Gateway adgangskode',
 		'sms_from' => 'Afsenderens navn.',
@@ -204,16 +210,16 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover er en service det gør det nemt at modtage real-time notifikationer. Se <a href="https://pushover.net/">deres website</a> for yderligere information.',
 		'pushover_clone_app' => 'Klik her for at oprette din Pushover app',
 		'pushover_api_token' => 'Pushover App API Token',
-		'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank">registrere en app</a> på deres website og indtaste en App API Token her.',
+		'pushover_api_token_description' => 'Før du kan benytte Pushover, skal du <a href="%1$s" target="_blank" rel="noopener">registrere en app</a> på deres website og indtaste en App API Token her.',
 		'alert_type' => 'Vælg hvornår du vil modtage beskeden',
 		'alert_type_description' => '<b>Status ændring:</b> '.
-		    'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br/>'.
-		    '<br /><b>Offline:</b> '.
-		    'Du vil modtage en meddelelse, når en server går offline for første gang. Eksempelvis '.
-		    'hvis dit cronjob kører hvert kvarter, og din server går ned kl 01 og kommer først op kl 06, '.
-		    ' vil du kun modtage en mail kl 01.<br/>'.
-		    '<br><b>Altid:</b> '.
-		    'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
+			'Du vil modtage en notifkation når en server har en ændring i status. Fra online -> offline eller offline -> online.<br>'.
+			'<br /><b>Offline:</b> '.
+			'Du vil modtage en meddelelse, når en server går offline for første gang. Eksempelvis '.
+			'hvis dit cronjob kører hvert kvarter, og din server går ned kl 01 og kommer først op kl 06, '.
+			' vil du kun modtage en mail kl 01.<br>'.
+			'<br><b>Altid:</b> '.
+			'Du vil modtage en besked, hver gang scriptet kører og et websted er nede, selvom site har været offline i flere timer.',
 		'alert_type_status' => 'Status ændret',
 		'alert_type_offline' => 'Offline',
 		'alert_type_always' => 'Altid',
@@ -232,8 +238,8 @@ $sm_lang = array(
 		'settings_notification' => 'Meddelelse indstillinger',
 		'settings_log' => 'Log indstillinger',
 		'auto_refresh' => 'Genopfrisk automatisk',
-		'auto_refresh_servers' =>
-			'Genopfrisk automatisk serversider.<br/>'.
+		'auto_refresh_description' =>
+			'Genopfrisk automatisk serversider.<br>'.
 			'<span class="small">'.
 			'Tid i sekunder. Hvis 0 vil siden ikke genopfriske automatisk'.
 			'</span>',
@@ -248,7 +254,7 @@ $sm_lang = array(
 		'email_sent' => 'E-mail sendt',
 		'email_error' => 'Fejl ved afsendelse af e-mail',
 		'sms_sent' => 'Sms sendt',
-		'sms_error' => 'Fejl ved afsendelse af SMS',
+		'sms_error' => 'Fejl ved afsendelse af SMS. %s',
 		'sms_error_nomobile' => 'Ikke muligt at sende SMS: Intet gyldigt telefonnummer blev fundet i din profil.',
 		'pushover_sent' => 'Pushover notifikation blev sendt',
 		'pushover_error' => 'En fejl opstod under afsendelse af Pushover notifikation: %s',
@@ -258,18 +264,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Antal dage over hvor længe logs med notifikationer og arkiverede serveres oppetid skal gemmes. Indtast 0 for at deaktivere logoprydning.',
 		'log_retention_days' => 'dage',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Serveren \'%LABEL%\' er NEDE: ip=%IP%, port=%PORT%. Fejl=%ERROR%',
 		'off_email_subject' => 'VIGTIGT: Server \'%LABEL%\' er NEDE',
-		'off_email_body' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fejl: %ERROR%<br/>Dato: %DATE%",
+		'off_email_body' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fejl: %ERROR%<br>Dato: %DATE%",
 		'off_pushover_title' => 'Serveren \'%LABEL%\' er NEDE',
-		'off_pushover_message' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Fejl: %ERROR%<br/>Dato: %DATE%",
-		'on_sms' => 'Serveren \'%LABEL%\' KØRER: ip=%IP%, port=%PORT%',
+		'off_pushover_message' => "Det lykkedes ikke at oprette forbindelse til følgende server:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Fejl: %ERROR%<br>Dato: %DATE%",
+		'on_sms' => 'Serveren \'%LABEL%\' KØRER: ip=%IP%, port=%PORT%, it was down for %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'VIGTIGT: Serveren \'%LABEL%\' KØRER',
-		'on_email_body' => "Serveren '%LABEL%' kører igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
+		'on_email_body' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%",
 		'on_pushover_title' => 'Serveren \'%LABEL%\' KØRER',
-		'on_pushover_message' => "Serveren '%LABEL%' kører igen:<br/><br/>Server: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Dato: %DATE%",
+		'on_pushover_message' => "Serveren '%LABEL%' kører igen, it was down for %LAST_OFFLINE_DURATION%:<br><br>Server: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Dato: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Velkommen, %user_name%',
@@ -286,7 +292,7 @@ $sm_lang = array(
 		'password_forgot' => 'Glemt adgangskode?',
 		'password_reset' => 'Nulstil adgangskode',
 		'password_reset_email_subject' => 'Nulstil din adgangskode for PHP Server Monitor',
-		'password_reset_email_body' => 'Brug venligst følgende link for at nulstille din adgangskode. Bemærk at linkets gyldighed udløber efter en time.<br/><br/>%link%',
+		'password_reset_email_body' => 'Brug venligst følgende link for at nulstille din adgangskode. Bemærk at linkets gyldighed udløber efter en time.<br><br>%link%',
 		'error_user_incorrect' => 'Det angivet brugernavn kunne ikke findes.',
 		'error_login_incorrect' => 'Oplysningerne stemmer ikke overens.',
 		'error_login_passwords_nomatch' => 'De angivne adgangskoder er ikke ens.',
