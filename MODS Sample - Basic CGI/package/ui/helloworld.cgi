@@ -9,4 +9,4 @@ echo `date` "helloworld.cgi has been called" >> /var/log/MODS_BasicTestCGI
 SCRIPT_FILENAME=$(pwd)/helloworld.php export SCRIPT_FILENAME
 echo `date` "it will execute" $SCRIPT_FILENAME >> /var/log/MODS_BasicTestCGI
 
-/usr/local/bin/php56-cgi -d open_basedir=none $SCRIPT_FILENAME 2>&1
+/usr/local/bin/php73-cgi -c /etc/php/php.ini -d open_basedir=none $SCRIPT_FILENAME $SCRIPT_PARAMETERS 2>&1
