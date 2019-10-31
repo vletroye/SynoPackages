@@ -1,6 +1,6 @@
 #!/bin/sh
 
-LOG="/var/log/@SYNOPKG_PKGNAME@"
+#LOG="/var/log/@SYNOPKG_PKGNAME@"
 
 # the web server account (Ex.: http) must be granted write access
 if [ -w $LOG ]; then
@@ -47,8 +47,9 @@ else
   fi
   
   if [ -w $LOG ]; then
-    echo `date` "EXECUTE:" "/usr/local/bin/php73-cgi -c /etc/php/php.ini -d open_basedir=none "$SCRIPT_FILENAME" "$SCRIPT_PARAMETERS" 2>&1" >> $LOG
+    #echo `date` "EXECUTE:" "/usr/local/bin/php56-cgi -c /etc/php/php.ini -d open_basedir=none "$SCRIPT_FILENAME" "$SCRIPT_PARAMETERS" 2>&1" >> $LOG    
+	echo `date` "EXECUTE:" "/usr/local/bin/php73-cgi -c /usr/local/etc/php73/cli/php.ini -d open_basedir=none "$SCRIPT_FILENAME" "$SCRIPT_PARAMETERS" 2>&1" >> $LOG
   fi
-  /usr/local/bin/php73-cgi -c /etc/php/php.ini -d open_basedir=none $SCRIPT_FILENAME $SCRIPT_PARAMETERS 2>&1
-fi
+  #/usr/local/bin/php56-cgi -c /etc/php/php.ini -d open_basedir=none $SCRIPT_FILENAME $SCRIPT_PARAMETERS 2>&1
+  /usr/local/bin/php73-cgi -c /usr/local/etc/php73/cli/php.ini -d open_basedir=none $SCRIPT_FILENAME $SCRIPT_PARAMETERS 2>&1
 fi
