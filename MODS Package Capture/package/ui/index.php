@@ -46,7 +46,7 @@
 	}	
 	</style>
 </head>
-<body>
+<body style="background-color:grey;">
 <script type="text/javascript"> 
 //<![CDATA[ 
 
@@ -69,22 +69,55 @@ $(function () {
 		var volume = $("#volume").find('option:selected').val();
         $.fileDownload("services.php?service=capture&parameters="+volume, {
             successCallback: function (url) { 
-                $("#preparing-file-modal").dialog('close');
+				cancel=true;
+                //$("#preparing-file-modal").dialog('close');
+				$(".ui-dialog-content").dialog("close");
             },
             failCallback: function (responseHtml, url) {
-                $("#preparing-file-modal").dialog('close');
-				if (cancel==true)
+                //$("#preparing-file-modal").dialog('close');
+				$(".ui-dialog-content").dialog("close");
+				if (responseHtml=="Cancelled") {
 					$("#cancel-modal").dialog('close');
-				else
+				} else if (cancel==true) {
+				} else if (responseHtml=="Timeout") {
+					cancel=true;
+					$("#timeout-modal").dialog({ modal: true });
+				} else if (responseHtml=="Not Found") {
+					cancel=true;
+					$("#notfound-modal").dialog({ modal: true });
+				} else {
+					cancel=true;
 					$("#error-modal").dialog({ modal: true });
+				}
+            }
+        });
+        return false; //this is critical to stop the click event which will trigger a normal file download!
+    });
+	
+    $(document).on("click", "a.recover", function () { 
+        $("#recovering-file-modal").dialog({ modal: true });
+		cancel=true;
+		
+		var volume = $("#volume").find('option:selected').val();
+        $.fileDownload("services.php?service=recover&parameters="+volume, {
+            successCallback: function (url) { 
+				$(".ui-dialog-content").dialog("close");
+                //$("#recovering-file-modal").dialog('close');
+            },
+            failCallback: function (responseHtml, url) {
+				$(".ui-dialog-content").dialog("close");
+                //$("#recovering-file-modal").dialog('close');
+				$("#error-modal").dialog({ modal: true });
             }
         });
         return false; //this is critical to stop the click event which will trigger a normal file download!
     });
 	
 	$(document).on("click", "span.ui-icon-closethick", function () {
-		if (cancel==false) {
+		if (cancel==false) {			
 		  cancel=true;
+		  //$("#recovering-file-modal").dialog('close');
+		  $(".ui-dialog-content").dialog("close");
 	      $("#cancel-modal").dialog({ modal: true });
 		  $.getJSON( "services.php", { service: "cancel", parameters: "volume1" } )
 		}
@@ -110,16 +143,35 @@ $(function () {
 	<a class="fileDownload" href="#">Click here to<br/> start the capture</a>
   </div>
 </div>
+<br />
+<div align="right">
+	<a class="recover" href="#">Click here to recover</a>
+<div>
 </div>
 
 <div id="preparing-file-modal" title="Capturing..." style="display: none;">
-    Please, install now your package. If it cannot be captured within 2 minutes, this process will die.
+    Please, install now your package. If it cannot be captured within 3 minutes, this process will die.
  
     <div class="ui-progressbar-value ui-corner-left ui-corner-right" style="width: 100%; height:22px; margin-top: 20px;"></div>
+</div>
+
+<div id="recovering-file-modal" title="Recovering..." style="display: none;">
+    Please wait while looking if an SPK is available in the Capture folder.
+	
+	<div class="ui-progressbar-value ui-corner-left ui-corner-right" style="width: 100%; height:22px; margin-top: 20px;"></div>
 </div>
  
 <div id="error-modal" title="Error" style="display: none;">
     There was a problem when capturing your package. Please look into the log file for more details.
+</div>
+
+<div id="timeout-modal" title="Time Out" style="display: none;">
+    The SPK has not been found within the limit of 2 minutes.
+</div>
+
+<div id="notfound-modal" title="Not Found" style="display: none;">
+    There was a problem when capturing your package. The SPK is there but couldn't be captured ?!?.
+	Look for it, using a SSH console, into the folder <volumex>\@tmp\SynoCapture.
 </div>
 
 <div id="cancel-modal" title="Cancelled" style="display: none;">
