@@ -1897,7 +1897,7 @@ class TerminalApplication(GOApplication):
         Sends the bell sound data to the client in in the form of a data::URI.
         """
         bell_path = resource_filename(
-            'gateone.applications.terminal', '/static/bell.ogg')
+            'gateone.applications.terminal', '/static/TingPopupPixels.wav')
         try:
             bell_data_uri = create_data_uri(bell_path)
         except (IOError, MimeTypeFail): # There's always the fallback

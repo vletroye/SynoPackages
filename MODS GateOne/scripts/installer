@@ -248,6 +248,16 @@ postinst ()
 	rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 	ln -s $SYNOPKG_PKGDEST/app/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf	
 	
+	#define Access Port and Protocol
+	sed -i -e "s|@MODS_PORT@|$GateOne_Port|g" "$SYNOPKG_PKGDEST/var/conf.d/90custom.conf"
+	sed -i -e "s|@MODS_HTTP@|$GateOne_Protocol_Http|g" "$SYNOPKG_PKGDEST/var/conf.d/90custom.conf"
+	sed -i -e "s|@MODS_PORT@|$GateOne_Port|g" "$SYNOPKG_PKGDEST/app/index.php"
+	sed -i -e "s|@MODS_HTTP@|$GateOne_Protocol_Http|g" "$SYNOPKG_PKGDEST/app/index.php"
+	
+	#define Default SSH Port and User
+	sed -i -e "s|@GATEONE_SSH_PORT@|$GateOne_SSH_Port|g" "$SYNOPKG_PKGDEST/share/gateone/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py"
+	sed -i -e "s|@GATEONE_SSH_USER@|$GateOne_SSH_User|g" "$SYNOPKG_PKGDEST/share/gateone/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py"
+	
     # Link for backward compatibility of binaries location
     $LN "${SYNOPKG_PKGDEST}" "/usr/local/${SYNOPKG_PKGNAME}" >> ${INST_LOG}
 

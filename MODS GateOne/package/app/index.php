@@ -1,5 +1,10 @@
 <?php
-$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
-$server = $protocol.$_SERVER['SERVER_NAME'].':8271';
+if ( "@MODS_HTTP@" == "true") {
+	$protocol="http";
+} else {
+	$protocol="https";
+}
+
+$server = $protocol.$_SERVER['SERVER_NAME'].':@MODS_PORT@';
 header('Location:'.$server,TRUE,301);
 ?>

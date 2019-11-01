@@ -214,7 +214,7 @@ def get_identities(users_ssh_dir, only_defaults=False):
 def openssh_connect(
         user,
         host,
-        port=22,
+        port=@GATEONE_SSH_PORT@,
         config=None,
         command=None,
         password=None,
@@ -712,11 +712,18 @@ def main():
     )
     parser.add_option("--default_port",
         dest="default_port",
-        default='22',
+        default='@GATEONE_SSH_PORT@',
         help=_("The default port that will be used for outbound connections if "
-               "no port is provided.  Default: 22"),
+               "no port is provided.  Default: @GATEONE_SSH_PORT@"),
         metavar="'<port>'"
     )
+    parser.add_option("--default_user",
+        dest="default_user",
+        default='@GATEONE_SSH_USER@',
+        help=_("The default user that will be used for outbound connections if "
+               "no user is provided.  Default: @GATEONE_SSH_USER@"),
+        metavar="'<user>'"
+    )	
     parser.add_option("--auth_only",
         dest="auth_only",
         default=False,
@@ -744,8 +751,8 @@ def main():
                     additional_args=options.additional_args,
                     socket=options.socket,
                     debug=parsed.get('debug', False)
-                )
-        elif len(args) == 2: # No port given, assume 22
+                )				
+        elif len(args) == 2: # No port given, assume the default is used
             openssh_connect(args[0], args[1], options.default_port,
                 command=options.command,
                 sshfp=options.sshfp,
@@ -795,6 +802,7 @@ def main():
             'Error:  You must enter a valid username.')
         default_host_str = " [%s]" % options.default_host
         default_port_str = "Port [%s]" % options.default_port
+        default_user_str = "User [%s]" % options.default_user
         if options.default_host == "":
             default_host_str = ""
         # Set a pre-connection title
@@ -870,9 +878,11 @@ def main():
         validated = False
         while not validated:
             if not user:
-                user = raw_input("User: ")
+                user = raw_input(_("%s: " % default_user_str))
+                # user = raw_input("User: ")
                 if not user:
-                    continue
+                    user = options.default_user
+                    #continue
             if bad_chars(user):
                 raw_input(invalid_user_err)
                 user = None
