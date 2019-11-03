@@ -2,7 +2,7 @@
 
 PKG_NAME=phpMyAdmin
 WEB_PHPMYADMIN="/var/services/web/$PKG_NAME"
-TARGET_PATH="/var/packages/$PKG_NAME/target"
+TARGET_PATH="/var/packages/$SYNOPKG_PKGNAME/target"
 TOOL_DIR="$TARGET_PATH/tool/"
 PHPMYADMIN_NIGNX_CONF="$TARGET_PATH/nginx_conf"
 

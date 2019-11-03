@@ -16,6 +16,25 @@ else
     blowfish_secret=$(/usr/bin/openssl rand -base64 32)
 fi
 sed -i "s|__BLOWFISH_SECRET__|$blowfish_secret|" "$WEB_PHPMYADMIN/config.inc.php"
+
+if [ "$MODS_Http" == "true" ]; then
+	MODS_Protocol="http"
+else
+	MODS_Protocol="https"
+fi
+
+if [ -z "$MODS_Port" ]; then
+	if [ "$MODS_Protocol" == "http" ]; then
+		MODS_Port=80
+	else
+		MODS_Port=443
+	fi
+fi
+
+sed -i "s|\"protocol\":.*$|\"protocol\": \"$MODS_Protocol\",|" "$TARGET_PATH/ui/config"
+sed -i "s|\"url\":.*$|\"url\": \"/$PKG_NAME/\",|" "$TARGET_PATH/ui/config"
+sed -i "s|\"port\":.*$|\"port\": $MODS_Port,|" "$TARGET_PATH/ui/config"
+
 mkdir -p /usr/syno/etc/packages/phpMyAdmin/nginx
 
 "$TOOL_DIR"/serverchoicetool.php INIT

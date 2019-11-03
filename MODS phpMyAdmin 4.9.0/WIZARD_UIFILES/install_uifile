@@ -1,0 +1,37 @@
+[
+  {
+    "step_title": "Configure access to phpMyAdmin",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "singleselect",
+        "desc": "Select a protocol:",
+        "subitems": [
+          {
+            "key": "MODS_Http",
+            "defaultValue": "true",
+            "desc": "Http"
+          },
+          {
+            "key": "MODS_Https",
+            "defaultValue": "false",
+            "desc": "Https"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Enter a port (keep empty to use the 80 or 443):",
+        "subitems": [
+          {
+            "key": "MODS_Port",
+            "defaultValue": "",
+            "validator": {
+              "allowBlank": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
