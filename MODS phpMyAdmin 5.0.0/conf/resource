@@ -1,0 +1,29 @@
+{
+	"php73": {
+		"php-ini": [{
+		"relpath": "php_conf/phpMyAdmin.ini",
+		"destpath": "/usr/local/etc/php73/conf.d"
+		}]
+	},
+	"sdk-plugin": {
+		"plugins": [{
+			"event": "mariadb5_start",
+			"relpath": "tool/mariadb5_start_phpMyAdmin"
+		}, {
+			"event": "mariadb5_stop",
+			"relpath": "tool/mariadb5_stop_phpMyAdmin"
+		}, {
+			"event": "mariadb10_start",
+			"relpath": "tool/mariadb10_start_phpMyAdmin"
+		}, {
+			"event": "mariadb10_stop",
+			"relpath": "tool/mariadb10_stop_phpMyAdmin"
+		}]
+	},
+	"indexdb": {
+		"app-index": {
+			"conf-relpath": "ui/index.conf",
+			"db-relpath": "indexdb/appindexdb"
+		}
+	}
+}

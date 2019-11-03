@@ -1,0 +1,7 @@
+
+# Copyright (c) 2000-2018 Synology Inc. All rights reserved.
+
+[app]
+app_name	=	"phpMyAdmin"
+description	=	"phpMyAdmin är ett kostnadsfritt programverktyg som utvecklats för hantering av MySQL-databaser. Hantera MySQL-databaser som lagras i din DiskStation genom att installera det här paketet."
+

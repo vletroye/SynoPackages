@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rm -f /tmp/pMA.upgrade
+
+exit 0

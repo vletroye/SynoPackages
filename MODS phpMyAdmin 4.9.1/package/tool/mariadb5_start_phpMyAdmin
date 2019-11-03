@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/var/packages/phpMyAdmin/target/tool/serverchoicetool.php ADDM5

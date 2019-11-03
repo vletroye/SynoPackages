@@ -1,0 +1,12 @@
+#!/bin/sh
+
+PKG_NAME=phpMyAdmin
+WEB_PHPMYADMIN="/var/services/web/$PKG_NAME"
+TARGET_PATH="/var/packages/$PKG_NAME/target"
+TOOL_DIR="$TARGET_PATH/tool/"
+PHPMYADMIN_NIGNX_CONF="$TARGET_PATH/nginx_conf"
+
+
+NGINX_CONF_DIR="/usr/local/etc/nginx/conf.d/"
+NGINX_ENALBE_CONF="www.phpMyAdmin.enable.conf"
+NGINX_DISABLE_CONF="www.phpMyAdmin.disabled.conf"

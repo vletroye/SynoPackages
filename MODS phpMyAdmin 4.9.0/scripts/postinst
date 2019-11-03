@@ -1,0 +1,28 @@
+#!/bin/sh
+
+. "$(dirname $0)"/common
+
+rm -rf "$WEB_PHPMYADMIN"
+mv "$TARGET_PATH/phpMyAdmin" "$WEB_PHPMYADMIN"
+cp "$WEB_PHPMYADMIN/config.sample.inc.php" "$WEB_PHPMYADMIN/config.inc.php"
+cp "$TARGET_PATH/html/disabled.html" "$WEB_PHPMYADMIN"
+
+ln -sf "$TARGET_PATH/www.phpMyAdmin.disabled.conf" /usr/local/etc/nginx/conf.d/
+
+# generate a random blowfish_secret encryption key
+if [ "$SYNOPKG_PKG_STATUS" = "UPGRADE" ]; then
+    blowfish_secret=$(cat /tmp/pMA.upgrade)
+else
+    blowfish_secret=$(/usr/bin/openssl rand -base64 32)
+fi
+sed -i "s|__BLOWFISH_SECRET__|$blowfish_secret|" "$WEB_PHPMYADMIN/config.inc.php"
+mkdir -p /usr/syno/etc/packages/phpMyAdmin/nginx
+
+"$TOOL_DIR"/serverchoicetool.php INIT
+[ -f /var/packages/MariaDB/enabled ] && "$TOOL_DIR"/serverchoicetool.php ADDM5
+[ -f /var/packages/MariaDB10/enabled ] && "$TOOL_DIR"/serverchoicetool.php ADDM10
+
+rm -rf "${NGINX_CONF_DIR}/${NGINX_ENALBE_CONF}"
+ln -sf "${PHPMYADMIN_NIGNX_CONF}/${NGINX_DISABLE_CONF}" "${NGINX_CONF_DIR}"
+
+exit 0

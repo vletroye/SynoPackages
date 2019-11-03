@@ -1,0 +1,7 @@
+
+# Copyright (c) 2000-2018 Synology Inc. All rights reserved.
+
+[app]
+app_name	=	"phpMyAdmin"
+description	=	"A phpMyAdmin egy ingyenes szoftver, ami a MySQL adatbázisok kezelésére szolgál. Kezelje a DiskStation-ön tárolt MySQL adatbázisokat a csomag telepítését követően."
+

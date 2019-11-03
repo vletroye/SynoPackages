@@ -1,0 +1,21 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.phpMyAdmin.phpMyAdmin": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": false,
+      "title": "phpMyAdmin",
+      "desc": "app:app_name",
+      "icon": "images/phpMyAdmin_{0}.png",
+      "protocol": "http",
+      "url": "/phpMyAdmin/",
+      "port": 80,
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

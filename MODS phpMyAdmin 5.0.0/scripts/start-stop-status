@@ -1,0 +1,26 @@
+#!/bin/sh
+
+. "$(dirname $0)"/common
+
+case "$1" in
+	start)
+		rm -rf "${NGINX_CONF_DIR}/${NGINX_DISABLE_CONF}"
+		ln -sf "${PHPMYADMIN_NIGNX_CONF}/${NGINX_ENALBE_CONF}" "${NGINX_CONF_DIR}"
+		;;
+	stop)
+		rm -rf "${NGINX_CONF_DIR}/${NGINX_ENALBE_CONF}"
+		ln -sf "${PHPMYADMIN_NIGNX_CONF}/${NGINX_DISABLE_CONF}" "${NGINX_CONF_DIR}"
+		;;
+	status)
+		if [ ! -d "$WEB_PHPMYADMIN" ]; then
+			exit 150
+		fi
+		exit 0
+		;;
+	*)
+		exit 1
+		;;
+esac
+
+exit 0
+

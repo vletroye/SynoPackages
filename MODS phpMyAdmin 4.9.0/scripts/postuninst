@@ -1,0 +1,9 @@
+#!/bin/sh
+
+. "$(dirname $0)"/common
+
+rm -rf "$WEB_PHPMYADMIN"
+rm -rf ${NGINX_CONF_DIR}/${NGINX_ENALBE_CONF}
+rm -rf ${NGINX_CONF_DIR}/${NGINX_DISABLE_CONF}
+
+exit 0

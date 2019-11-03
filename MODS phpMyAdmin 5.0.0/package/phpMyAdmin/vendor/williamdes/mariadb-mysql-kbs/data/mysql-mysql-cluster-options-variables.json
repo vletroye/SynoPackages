@@ -1,0 +1,621 @@
+{
+  "data": [
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndbcluster",
+      "name": "ndbcluster"
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-allow-copying-alter-table",
+      "name": "ndb-allow-copying-alter-table",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-batch-size",
+      "name": "ndb-batch-size",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-cluster-connection-pool",
+      "name": "ndb-cluster-connection-pool",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-cluster-connection-pool-nodeids",
+      "name": "ndb-cluster-connection-pool-nodeids",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-blob-read-batch-bytes",
+      "name": "ndb-blob-read-batch-bytes",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-blob-write-batch-bytes",
+      "name": "ndb-blob-write-batch-bytes",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-connectstring",
+      "name": "ndb-connectstring"
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-default-column-format",
+      "name": "ndb-default-column-format",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-deferred-constraints",
+      "name": "ndb-deferred-constraints",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-distribution",
+      "name": "ndb-distribution",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-log-apply-status",
+      "name": "ndb-log-apply-status",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-log-empty-epochs",
+      "name": "ndb-log-empty-epochs",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-log-empty-update",
+      "name": "ndb-log-empty-update",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-log-exclusive-reads",
+      "name": "ndb-log-exclusive-reads",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-log-orig",
+      "name": "ndb-log-orig",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-log-transaction-id",
+      "name": "ndb-log-transaction-id",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-log-update-minimal",
+      "name": "ndb-log-update-minimal",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-mgmd-host",
+      "name": "ndb-mgmd-host"
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-nodeid",
+      "name": "ndb-nodeid",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "option_mysqld_ndb-optimization-delay",
+      "name": "ndb-optimization-delay",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-recv-thread-activation-threshold",
+      "name": "ndb-recv-thread-activation-threshold"
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-recv-thread-cpu-mask",
+      "name": "ndb-recv-thread-cpu-mask"
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-transid-mysql-connection-map",
+      "name": "ndb-transid-mysql-connection-map"
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-wait-connected",
+      "name": "ndb-wait-connected",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_ndb-wait-setup",
+      "name": "ndb-wait-setup",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_server-id-bits",
+      "name": "server-id-bits",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "option_mysqld_skip-ndbcluster",
+      "name": "skip-ndbcluster"
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_autoincrement_prefetch_sz",
+      "name": "ndb_autoincrement_prefetch_sz",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_cache_check_time",
+      "name": "ndb_cache_check_time",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_clear_apply_status",
+      "name": "ndb_clear_apply_status",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_data_node_neighbour",
+      "name": "ndb_data_node_neighbour",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_default_column_format",
+      "name": "ndb_default_column_format",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_deferred_constraints",
+      "name": "ndb_deferred_constraints",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_distribution",
+      "name": "ndb_distribution",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_eventbuffer_free_percent",
+      "name": "ndb_eventbuffer_free_percent",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_eventbuffer_max_alloc",
+      "name": "ndb_eventbuffer_max_alloc",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_extra_logging",
+      "name": "ndb_extra_logging",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_force_send",
+      "name": "ndb_force_send",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_fully_replicated",
+      "name": "ndb_fully_replicated",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_index_stat_enable",
+      "name": "ndb_index_stat_enable",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_index_stat_option",
+      "name": "ndb_index_stat_option",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_join_pushdown",
+      "name": "ndb_join_pushdown",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndb_log_apply_status",
+      "name": "ndb_log_apply_status",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_log_bin",
+      "name": "ndb_log_bin",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_log_binlog_index",
+      "name": "ndb_log_binlog_index",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_log_empty_epochs",
+      "name": "ndb_log_empty_epochs",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_log_empty_update",
+      "name": "ndb_log_empty_update",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_log_exclusive_reads",
+      "name": "ndb_log_exclusive_reads",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndb_log_orig",
+      "name": "ndb_log_orig",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndb_log_transaction_id",
+      "name": "ndb_log_transaction_id",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndb_optimized_node_selection",
+      "name": "ndb_optimized_node_selection",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_read_backup",
+      "name": "ndb_read_backup",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndb_recv_thread_activation_threshold",
+      "name": "ndb_recv_thread_activation_threshold"
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_recv_thread_cpu_mask",
+      "name": "ndb_recv_thread_cpu_mask",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_report_thresh_binlog_epoch_slip",
+      "name": "ndb_report_thresh_binlog_epoch_slip",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_report_thresh_binlog_mem_usage",
+      "name": "ndb_report_thresh_binlog_mem_usage",
+      "scope": [
+        "global"
+      ],
+      "type": "boolean"
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_row_checksum",
+      "name": "ndb_row_checksum",
+      "scope": [
+        "global"
+      ],
+      "type": "integer"
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_slave_allow_batching",
+      "name": "slave_allow_batching",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_show_foreign_key_mock_tables",
+      "name": "ndb_show_foreign_key_mock_tables",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_slave_conflict_role",
+      "name": "ndb_slave_conflict_role",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_table_no_logging",
+      "name": "ndb_table_no_logging",
+      "scope": [
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_table_temporary",
+      "name": "ndb_table_temporary",
+      "scope": [
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndb_use_copying_alter_table",
+      "name": "ndb_use_copying_alter_table",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_use_exact_count",
+      "name": "ndb_use_exact_count",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndb_use_transactions",
+      "name": "ndb_use_transactions",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndb_version",
+      "name": "ndb_version",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndb_version_string",
+      "name": "ndb_version_string",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_server_id_bits",
+      "name": "server_id_bits",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_transaction_allow_batching",
+      "name": "transaction_allow_batching",
+      "scope": [
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndbinfo_database",
+      "name": "ndbinfo_database",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndbinfo_max_bytes",
+      "name": "ndbinfo_max_bytes",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndbinfo_max_rows",
+      "name": "ndbinfo_max_rows",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndbinfo_offline",
+      "name": "ndbinfo_offline",
+      "scope": [
+        "global"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndbinfo_show_hidden",
+      "name": "ndbinfo_show_hidden",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": true,
+      "id": "sysvar_ndbinfo_table_prefix",
+      "name": "ndbinfo_table_prefix",
+      "scope": [
+        "global",
+        "session"
+      ]
+    },
+    {
+      "dynamic": false,
+      "id": "sysvar_ndbinfo_version",
+      "name": "ndbinfo_version",
+      "scope": [
+        "global"
+      ]
+    }
+  ],
+  "name": "mysql-cluster-options-variables",
+  "url": "https://dev.mysql.com/doc/refman/5.7/en/mysql-cluster-options-variables.html"
+}
