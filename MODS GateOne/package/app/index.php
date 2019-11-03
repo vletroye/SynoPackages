@@ -1,8 +1,8 @@
 <?php
 if ( "@MODS_HTTP@" == "true") {
-	$protocol="http";
+	$protocol="http://";
 } else {
-	$protocol="https";
+	$protocol="https://";
 }
 
 $server = $protocol.$_SERVER['SERVER_NAME'].':@MODS_PORT@';
