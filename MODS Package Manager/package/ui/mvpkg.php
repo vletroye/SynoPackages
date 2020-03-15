@@ -187,7 +187,7 @@ if ($action != '') {
 		});
 		
 		$("#move").click(function () {
-			$("#loadingspinner").text("Moving Packages...");
+			$("#loadingspinner").text("Moving Package...");
 			waitAndSubmit();
 		});		
 	});
@@ -290,7 +290,7 @@ if ($action != '') {
 $packages = shell_exec('ls -la /var/packages/*/target');
 foreach(preg_split("/((\r?\n)|(\r\n?))/", $packages) as $package){
 	$out = null;
-	if ( preg_match('/(\\/var\\/packages\\/([^\\/]*)\\/target) -> (\\/(volume\\d+)\\/@appstore\\/\\2)/', $package, $out) ) {
+	if ( preg_match('/(\\/var\\/packages\\/([^\\/]*)\\/target) -> (\\/(volume(USB)?\\d+)\\/@appstore\\/\\2)/', $package, $out) ) {
 		$link = $out[1];
 		$name = $out[2];
 		$path = $out[3];
@@ -318,7 +318,7 @@ $volumeNames = shell_exec('df -la --output=target | grep volume');
 
 foreach(preg_split("/((\r?\n)|(\r\n?))/", $volumeNames) as $volumeName){
 	$out = null;
-	if ( preg_match('/volume\\d+/', $volumeName, $out) ) {
+	if ( preg_match('/volume(USB)?\\d+/', $volumeName, $out) ) {
 		$volume = $out[0];
 		$volumes[$volume] = $volume;
 	}

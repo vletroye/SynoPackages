@@ -29,8 +29,8 @@ else
 	#find the current volume of the package and its link
 	output=$( ls -la /var/packages/*/target | grep "/$PACKAGE/")
 	
-	volume=$(echo $output | grep -oP "volume\d*")
-	path=$(echo $output | grep -oP "\/volume.*")
+	volume=$(echo $output | grep -oP "volume(USB)?\d*")
+	path=$(echo $output | grep -oP "\/volume(USB)?.*")
 	
 	local="/usr/syno/synoman/webman/3rdparty/$PACKAGE"
 	if [ -L "$local" ]; then

@@ -6,15 +6,15 @@ PACKAGE=$2
 if [[ $PACKAGE == "" ]]
 then
 	echo "Usage: mvpkg Target Package"
-	echo "       Target must be like 'volumex' where x is a numeric."
+	echo "       Target must be like 'volumex' or 'volumeUSBx' where x is a numeric."
 	echo "       Package must be the name of a package."
 	exit
 fi
 
-if [[ $TARGET != volume[0-9]* ]]
+if [[ $TARGET != volume?(USB)[0-9]* ]]
 then
 	echo "Usage: mvpkg Target Package"
-	echo "       Target must be like 'volumex' where x is a numeric."
+	echo "       Target must be like 'volumex' or 'volumeUSBx' where x is a numeric."
 	echo "       Package [$PACKAGE] must be the name of a package."
 	exit
 fi
@@ -31,8 +31,8 @@ else
 	output=$( ls -la /var/packages/*/target | grep "/$PACKAGE/")
 	
 	link=$(echo $output | grep -oP "\/var/packages/.*/target")
-	volume=$(echo $output | grep -oP "volume\d*")
-	path=$(echo $output | grep -oP "\/volume.*")
+	volume=$(echo $output | grep -oP "volume(USB)?\d*")
+	path=$(echo $output | grep -oP "\/volume(USB)?.*")
 	
 	if [[ $link != "/var/packages/$PACKAGE/target"* ]]
 	then
@@ -89,7 +89,20 @@ else
 		rm -f "$local"
 		ln -s "/$TARGET/@appstore/$PACKAGE" "$local"
 	fi
-	
+
+	#Replace link also in 3rdparty if pointing at @appstore
+	trdparty="/usr/syno/synoman/webman/3rdparty/$PACKAGE"
+	if [ -L "$trdparty" ]; then
+		#check the link of the 3rdparty
+		output=$( ls -la $trdparty | grep "/$volume/@appstore")
+
+		if [[ ! -z "output" ]]
+		then
+			rm -f "$trdparty"
+			ln -s "/$TARGET/@appstore/$PACKAGE" "$trdparty"
+		fi
+	fi
+			
 	#update settings
 	sed -i "s/$volume/$TARGET/" "/usr/syno/etc/packages/$PACKAGE/*" &>/dev/null
 	
