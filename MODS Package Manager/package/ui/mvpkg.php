@@ -46,6 +46,9 @@ if ($action != '') {
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+   window.jQuery || document.write('<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"><\/script>');
+</script>
 <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body style="display:none">
