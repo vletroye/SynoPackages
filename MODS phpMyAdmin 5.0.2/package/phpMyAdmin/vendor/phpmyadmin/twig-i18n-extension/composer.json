@@ -1,0 +1,36 @@
+{
+    "name": "phpmyadmin/twig-i18n-extension",
+    "description": "Internationalization support for Twig via the gettext library",
+    "keywords": ["i18n","gettext"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabien Potencier",
+            "email": "fabien@symfony.com"
+        },
+        {
+            "name": "The phpMyAdmin Team",
+            "email": "developers@phpmyadmin.net",
+            "homepage": "https://www.phpmyadmin.net/team/"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "twig/twig": "^1.42.3|^2.0"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^4.2|^5.0"
+    },
+    "autoload": {
+        "psr-4": { "PhpMyAdmin\\Twig\\Extensions\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "PhpMyAdmin\\Tests\\Twig\\Extensions\\": "test/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}

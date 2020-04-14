@@ -1,0 +1,21 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_phpMyAdmin_502.phpMyAdmin_5_0_2": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": false,
+      "title": "phpMyAdmin 5.0.2",
+      "desc": "app:app_name",
+      "icon": "images/phpMyAdmin_5_0_2_{0}.png",
+      "protocol": "http",
+      "url": "/phpMyAdmin/",
+      "port": 80,
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

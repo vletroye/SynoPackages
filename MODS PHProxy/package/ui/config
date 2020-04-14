@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_PHProxy.Mods_PHProxy": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Mods PHProxy",
+      "desc": "A very simple php Webproxy",
+      "icon": "images/Mods_PHProxy_{0}.png",
+      "url": "/webman/3rdparty/MODS_PHProxy/index.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
