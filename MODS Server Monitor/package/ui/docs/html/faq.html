@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Frequently Asked Questions &#8212; PHP Server Monitor 3.5.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Developers" href="developers.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="developers.html" title="Developers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="frequently-asked-questions">
+<span id="faq"></span><h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="users">
+<h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-are-the-differences-between-the-user-levels">
+<h3>What are the differences between the user levels?<a class="headerlink" href="#what-are-the-differences-between-the-user-levels" title="Permalink to this headline">¶</a></h3>
+<p>There are 2 user levels available: regular user and administrator.</p>
+<p>Administrators:</p>
+<ul class="simple">
+<li><p>Manage servers.</p></li>
+<li><p>Manage users.</p></li>
+<li><p>Edit global configuration.</p></li>
+</ul>
+<p>Regular users:</p>
+<ul class="simple">
+<li><p>View the status of their assigned servers.</p></li>
+<li><p>View the history and logs of their assigned servers.</p></li>
+<li><p>Run the updater on their assigned servers.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="servers">
+<h2>Servers<a class="headerlink" href="#servers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-the-difference-between-a-service-and-a-website">
+<h3>What is the difference between a service and a website?<a class="headerlink" href="#what-is-the-difference-between-a-service-and-a-website" title="Permalink to this headline">¶</a></h3>
+<p>For websites, the monitor attempts to open a regular web page, just like you do in your browser.
+It will attempt to retrieve its contents, and also check the HTTP status code (for example “404 not found” will cause an error).
+You can then even add a check to make sure the content of the website includes a certain string or matches a certain regular expression.
+Please note, it only retrieves the contents and does not execute any Javascript. Your search pattern will not work if it depends on Javascript being executed.</p>
+<p>For services, the monitor only attempts to connect to the IP address and specified port to check whether the server is listening on that port.
+For example, if you are running a webserver it will usually listen on port 80 for incoming connections.
+So if the monitor is able to connect to the server on port 80, you know the webserver is running and accepting connections.
+It does not, however, mean that your website is available to your users, because it might have PHP errors or database problems.
+This can be monitored using the website type with a pattern search as described above.</p>
+</div>
+<div class="section" id="are-requests-made-by-the-monitor-included-in-my-website-statistics">
+<h3>Are requests made by the monitor included in my website statistics?<a class="headerlink" href="#are-requests-made-by-the-monitor-included-in-my-website-statistics" title="Permalink to this headline">¶</a></h3>
+<p>There are two different ways to gather statistics.
+One way is to include a piece of Javascript in your HTML, e.g. for Google Analytics and Piwik.
+The other way is to parse the access logs created by your webserver software, which does not require any changes to your code, and is done by tools like Awstats.</p>
+<p>When using tools such as Google Analytics, the monitor requests will not show up in your statistics, because the monitor does not execute any Javascript.
+Tools that parse your raw access logs like Awstats, will include the requests made by the monitor.
+To make sure these requests can be identified, the monitor uses a custom user agent, which you can usually filter out. The user agent of the monitor looks like:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">Mozilla/5.0 (compatible; phpservermon/3.0.1; +http://www.phpservermonitor.org)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-is-the-log-retention-period">
+<h3>What is the log retention period?<a class="headerlink" href="#what-is-the-log-retention-period" title="Permalink to this headline">¶</a></h3>
+<p>The monitor uses 2 different tables in the database to store history information regarding servers.
+The first one is called the “uptime” table. This one keeps full track of the past 7 days, so that detailed information is available (e.g. which checks failed/passed etc).
+This allows the monitor to create a detailed graph on the server info page.
+In order to prevent the uptime table growing beyond reasonable, after a week the uptime records are archived to a different table.
+Archiving means that per day only one record is stored with averages. This still allows some basic statistics, although they are not as detailed as the uptime records.</p>
+<p>The retention period tells the monitor how long to keep records in the archive table.</p>
+</div>
+<div class="section" id="how-to-disable-caching">
+<h3>How to disable caching?<a class="headerlink" href="#how-to-disable-caching" title="Permalink to this headline">¶</a></h3>
+<p>Caching can be stopt by using a unique url. Place <cite>%cachebuster%</cite> in the url,
+this will be replaced with the value of time().
+Example: <a class="reference external" href="https://example.com">https://example.com</a>?%cachebuster% will run as <a class="reference external" href="https://example.com?571768757">https://example.com?571768757</a>.</p>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-can-i-change-the-text-of-the-email-sms">
+<h3>How can I change the text of the email / SMS?<a class="headerlink" href="#how-can-i-change-the-text-of-the-email-sms" title="Permalink to this headline">¶</a></h3>
+<p>Go to the folder “src/lang”, open the language file that corresponds to the selected language
+(default is English (“en_US.lang.php”)). Scroll all the way to the bottom until you spot this line:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&#39;notifications&#39; =&gt; array(</span>
+</pre></div>
+</div>
+<p>After that you will see the lines that hold the notification messages. For example:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&#39;off_sms&#39; =&gt; &#39;Server \&#39;%LABEL%\&#39; is DOWN: ip=%IP%, port=%PORT%. Error=%ERROR%&#39;,</span>
+</pre></div>
+</div>
+<p>The first part of this line, ‘off_sms’, is the name of the notification. You should not change this.
+The second part is the actual message. There are a few variables you can use in your message:</p>
+<ul class="simple">
+<li><p>%LABEL% - The name of the server</p></li>
+<li><p>%IP% - The ip of the server</p></li>
+<li><p>%PORT% - The port of the server</p></li>
+<li><p>%ERROR% - This one only works for the off_* messages and contains the error returned by the monitor</p></li>
+</ul>
+</div>
+<div class="section" id="after-upgrading-my-email-stopped-working">
+<h3>After upgrading, my email stopped working.<a class="headerlink" href="#after-upgrading-my-email-stopped-working" title="Permalink to this headline">¶</a></h3>
+<p>Run ‘php composer.phar update’ and you should be good to go!</p>
+</div>
+</div>
+<div class="section" id="notifications">
+<h2>Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="i-m-not-recieving-a-notification-after-my-server-went-down">
+<h3>I’m not recieving a notification after my server went down.<a class="headerlink" href="#i-m-not-recieving-a-notification-after-my-server-went-down" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Check if you have setup the noticication method correctly on the config tab.</p></li>
+<li><p>Check if you have added the user to the server you want to monitor. This can be found under permissions while editting the server.</p></li>
+<li><p>Check if you have enabled the notification method for the server. This can be changed on the server edit page.</p></li>
+</ol>
+</div>
+<div class="section" id="how-do-i-setup-telegram">
+<h3>How do I setup Telegram?<a class="headerlink" href="#how-do-i-setup-telegram" title="Permalink to this headline">¶</a></h3>
+<p>A few steps are required to get Telegram notifications working.
+You need to be an administrator for this part.</p>
+<ol class="arabic simple">
+<li><p>Go to &#64;botfather (<a class="reference external" href="https://t.me/BotFather">https://t.me/BotFather</a>) and type /start .</p></li>
+<li><p>Type /newbot and give your bot an unique name.</p></li>
+<li><p>Save the API token.</p></li>
+<li><p>Login to PhpServerMonitor dashboard &gt; config &gt; Telegram &gt; put your api token into Telegram API Token’s column.</p></li>
+</ol>
+</div>
+<div class="section" id="how-do-i-sent-telegram-notifications-to-a-person">
+<h3>How do I sent Telegram notifications to a person?<a class="headerlink" href="#how-do-i-sent-telegram-notifications-to-a-person" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Go to &#64;cid_bot (<a class="reference external" href="https://t.me/cid_bot">https://t.me/cid_bot</a>) and start.</p></li>
+<li><p>Save your chat id.</p></li>
+<li><p>Login to PhpServerMonitor dashboard then open user profile page, then put your chat id into Telegram chat id’s column.</p></li>
+<li><p>Press save then activate Telegram notifications button.</p></li>
+<li><p>Go to your chat with the bot and press start of type /start.</p></li>
+</ol>
+</div>
+<div class="section" id="how-do-i-sent-telegram-notifications-to-a-group">
+<h3>How do I sent Telegram notifications to a group?<a class="headerlink" href="#how-do-i-sent-telegram-notifications-to-a-group" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Add &#64;cid_bot (<a class="reference external" href="https://t.me/cid_bot">https://t.me/cid_bot</a>) to the group.</p></li>
+<li><p>Save the chat id (including the -).</p></li>
+<li><p>Remove &#64;cid_bot from the group.</p></li>
+<li><p>Add your bot to the group.</p></li>
+</ol>
+</div>
+<div class="section" id="how-do-i-sent-telegram-notifications-to-a-channel">
+<h3>How do I sent Telegram notifications to a channel?<a class="headerlink" href="#how-do-i-sent-telegram-notifications-to-a-channel" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Create a public channel.</p></li>
+<li><p>Add the bot as an administator to the channel.</p></li>
+<li><p>Save chat id as: &#64;channelname.</p></li>
+</ol>
+</div>
+<div class="section" id="what-is-the-username-of-my-bot">
+<h3>What is the username of my bot?<a class="headerlink" href="#what-is-the-username-of-my-bot" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Go to profile on the monitor.</p></li>
+<li><p>Press activate.</p></li>
+<li><p>A button will appear, this will direct you to your Telegram bot.</p></li>
+</ol>
+</div>
+<div class="section" id="how-do-i-setup-jabber-notifications-from-google-account">
+<h3>How do I setup Jabber notifications from Google account?<a class="headerlink" href="#how-do-i-setup-jabber-notifications-from-google-account" title="Permalink to this headline">¶</a></h3>
+<p>A few steps are required to get Jabber notifications working for Google account.
+You need to be an administrator for this part.</p>
+<ol class="arabic simple">
+<li><p>Go into you Google Account Security settings (<a class="reference external" href="https://myaccount.google.com/security">https://myaccount.google.com/security</a>).</p></li>
+<li><p>Check that you have two factor auth enabled. If not, activate it.</p></li>
+<li><p>Add new app password - copy it.</p></li>
+<li><p>Login to PhpServerMonitor dashboard &gt; config &gt; Jabber and use password from step 3 with your Google account in PhpServerMonitor jabber settings.</p></li>
+<li><p>As host use <cite>talk.google.com</cite>.</p></li>
+<li><p>As username use your whole Google account (for example <cite>example&#64;google.com</cite>).</p></li>
+<li><p>As port use <cite>5223</cite> (really, not typo error …).</p></li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Frequently Asked Questions</a><ul>
+<li><a class="reference internal" href="#users">Users</a><ul>
+<li><a class="reference internal" href="#what-are-the-differences-between-the-user-levels">What are the differences between the user levels?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#servers">Servers</a><ul>
+<li><a class="reference internal" href="#what-is-the-difference-between-a-service-and-a-website">What is the difference between a service and a website?</a></li>
+<li><a class="reference internal" href="#are-requests-made-by-the-monitor-included-in-my-website-statistics">Are requests made by the monitor included in my website statistics?</a></li>
+<li><a class="reference internal" href="#what-is-the-log-retention-period">What is the log retention period?</a></li>
+<li><a class="reference internal" href="#how-to-disable-caching">How to disable caching?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#how-can-i-change-the-text-of-the-email-sms">How can I change the text of the email / SMS?</a></li>
+<li><a class="reference internal" href="#after-upgrading-my-email-stopped-working">After upgrading, my email stopped working.</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#notifications">Notifications</a><ul>
+<li><a class="reference internal" href="#i-m-not-recieving-a-notification-after-my-server-went-down">I’m not recieving a notification after my server went down.</a></li>
+<li><a class="reference internal" href="#how-do-i-setup-telegram">How do I setup Telegram?</a></li>
+<li><a class="reference internal" href="#how-do-i-sent-telegram-notifications-to-a-person">How do I sent Telegram notifications to a person?</a></li>
+<li><a class="reference internal" href="#how-do-i-sent-telegram-notifications-to-a-group">How do I sent Telegram notifications to a group?</a></li>
+<li><a class="reference internal" href="#how-do-i-sent-telegram-notifications-to-a-channel">How do I sent Telegram notifications to a channel?</a></li>
+<li><a class="reference internal" href="#what-is-the-username-of-my-bot">What is the username of my bot?</a></li>
+<li><a class="reference internal" href="#how-do-i-setup-jabber-notifications-from-google-account">How do I setup Jabber notifications from Google account?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="developers.html"
+                        title="next chapter">Developers</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/faq.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="developers.html" title="Developers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; <a href="copyright.html">Copyright</a> 2008-2017, Pepijn Over.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

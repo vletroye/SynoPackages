@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -21,7 +22,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 3.2
  **/
@@ -32,22 +33,27 @@ use psm\Module\User\UserEvents;
 use psm\Module\User\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class UserSubscriber implements EventSubscriberInterface {
+class UserSubscriber implements EventSubscriberInterface
+{
 
-	public static function getSubscribedEvents() {
-		return array(
-			UserEvents::USER_ADD => array('onUserAdd', 0),
-			UserEvents::USER_EDIT => array('onUserEdit', 0),
-			UserEvents::USER_DELETE => array('onUserDelete', 0),
-		);
-	}
+    public static function getSubscribedEvents()
+    {
+        return array(
+            UserEvents::USER_ADD => array('onUserAdd', 0),
+            UserEvents::USER_EDIT => array('onUserEdit', 0),
+            UserEvents::USER_DELETE => array('onUserDelete', 0),
+        );
+    }
 
-	public function onUserAdd(UserEvent $event) {
-	}
+    public function onUserAdd(UserEvent $event)
+    {
+    }
 
-	public function onUserEdit(UserEvent $event) {
-	}
+    public function onUserEdit(UserEvent $event)
+    {
+    }
 
-	public function onUserDelete(UserEvent $event) {
-	}
+    public function onUserDelete(UserEvent $event)
+    {
+    }
 }

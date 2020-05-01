@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -22,16 +23,17 @@
  * @author      Jérôme Cabanis <jerome@lauraly.com>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
  **/
 
 namespace psm\Util\Module;
 
-interface ModalInterface {
+interface ModalInterface
+{
 
-	public function __construct(\Twig_Environment $twig);
+    public function __construct(\Twig_Environment $twig);
 
-	public function getModalID();
-	public function createHTML();
+    public function getModalID();
+    public function createHTML();
 }

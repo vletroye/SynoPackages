@@ -11,11 +11,12 @@
 
 namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\DecoratorServicePass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class DecoratorServicePassTest extends \PHPUnit_Framework_TestCase
+class DecoratorServicePassTest extends TestCase
 {
     public function testProcessWithoutAlias()
     {
@@ -122,6 +123,72 @@ class DecoratorServicePassTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($barDefinition->getDecoratedService());
         $this->assertNull($bazDefinition->getDecoratedService());
         $this->assertNull($quxDefinition->getDecoratedService());
+    }
+
+    public function testProcessMovesTagsFromDecoratedDefinitionToDecoratingDefinition()
+    {
+        $container = new ContainerBuilder();
+        $container
+            ->register('foo')
+            ->setTags(['bar' => ['attr' => 'baz']])
+        ;
+        $container
+            ->register('baz')
+            ->setTags(['foobar' => ['attr' => 'bar']])
+            ->setDecoratedService('foo')
+        ;
+
+        $this->process($container);
+
+        $this->assertEmpty($container->getDefinition('baz.inner')->getTags());
+        $this->assertEquals(['bar' => ['attr' => 'baz'], 'foobar' => ['attr' => 'bar']], $container->getDefinition('baz')->getTags());
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testProcessMergesAutowiringTypesInDecoratingDefinitionAndRemoveThemFromDecoratedDefinition()
+    {
+        $container = new ContainerBuilder();
+
+        $container
+            ->register('parent')
+            ->addAutowiringType('Bar')
+        ;
+
+        $container
+            ->register('child')
+            ->setDecoratedService('parent')
+            ->addAutowiringType('Foo')
+        ;
+
+        $this->process($container);
+
+        $this->assertEquals(['Bar', 'Foo'], $container->getDefinition('child')->getAutowiringTypes());
+        $this->assertEmpty($container->getDefinition('child.inner')->getAutowiringTypes());
+    }
+
+    public function testProcessMovesTagsFromDecoratedDefinitionToDecoratingDefinitionMultipleTimes()
+    {
+        $container = new ContainerBuilder();
+        $container
+            ->register('foo')
+            ->setPublic(true)
+            ->setTags(['bar' => ['attr' => 'baz']])
+        ;
+        $container
+            ->register('deco1')
+            ->setDecoratedService('foo', null, 50)
+        ;
+        $container
+            ->register('deco2')
+            ->setDecoratedService('foo', null, 2)
+        ;
+
+        $this->process($container);
+
+        $this->assertEmpty($container->getDefinition('deco1')->getTags());
+        $this->assertEquals(['bar' => ['attr' => 'baz']], $container->getDefinition('deco2')->getTags());
     }
 
     protected function process(ContainerBuilder $container)

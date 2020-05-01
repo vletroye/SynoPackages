@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -22,31 +23,34 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 3.0.0
+ * @since       phpservermon 3.0.0
  **/
 
 namespace psm\Module\Server\Controller;
+
 use psm\Module\AbstractController;
 use psm\Service\Database;
 
-class UpdateController extends AbstractController {
+class UpdateController extends AbstractController
+{
 
-	function __construct(Database $db, \Twig_Environment $twig) {
-		parent::__construct($db, $twig);
+    public function __construct(Database $db, \Twig_Environment $twig)
+    {
+        parent::__construct($db, $twig);
 
-		$this->setActions('index', 'index');
-	}
+        $this->setActions('index', 'index');
+    }
 
-	protected function executeIndex() {
-		$autorun = $this->container->get('util.server.updatemanager');
-		$autorun->run();
+    protected function executeIndex()
+    {
+        $autorun = $this->container->get('util.server.updatemanager');
+        $autorun->run();
 
-		header('Location: '.psm_build_url(array(
-			'mod' => 'server_status'
-		), true, false));
-		trigger_error("Redirect failed.", E_USER_ERROR);
-	}
-
+        header('Location: ' . psm_build_url(array(
+            'mod' => 'server_status'
+        ), true, false));
+        die();
+    }
 }

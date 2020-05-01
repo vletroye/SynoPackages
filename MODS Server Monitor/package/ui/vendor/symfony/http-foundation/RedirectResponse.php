@@ -23,20 +23,17 @@ class RedirectResponse extends Response
     /**
      * Creates a redirect response so that it conforms to the rules defined for a redirect status code.
      *
-     * @param string $url     The URL to redirect to
+     * @param string $url     The URL to redirect to. The URL should be a full URL, with schema etc.,
+     *                        but practically every browser redirects on paths only as well
      * @param int    $status  The status code (302 by default)
      * @param array  $headers The headers (Location is always set to the given URL)
      *
      * @throws \InvalidArgumentException
      *
-     * @see http://tools.ietf.org/html/rfc2616#section-10.3
+     * @see https://tools.ietf.org/html/rfc2616#section-10.3
      */
-    public function __construct($url, $status = 302, $headers = array())
+    public function __construct($url, $status = 302, $headers = [])
     {
-        if (empty($url)) {
-            throw new \InvalidArgumentException('Cannot redirect to an empty URL.');
-        }
-
         parent::__construct('', $status, $headers);
 
         $this->setTargetUrl($url);
@@ -44,12 +41,22 @@ class RedirectResponse extends Response
         if (!$this->isRedirect()) {
             throw new \InvalidArgumentException(sprintf('The HTTP status code is not a redirect ("%s" given).', $status));
         }
+
+        if (301 == $status && !\array_key_exists('cache-control', array_change_key_case($headers, \CASE_LOWER))) {
+            $this->headers->remove('cache-control');
+        }
     }
 
     /**
-     * {@inheritdoc}
+     * Factory method for chainability.
+     *
+     * @param string $url     The url to redirect to
+     * @param int    $status  The response status code
+     * @param array  $headers An array of response headers
+     *
+     * @return static
      */
-    public static function create($url = '', $status = 302, $headers = array())
+    public static function create($url = '', $status = 302, $headers = [])
     {
         return new static($url, $status, $headers);
     }
@@ -69,7 +76,7 @@ class RedirectResponse extends Response
      *
      * @param string $url The URL to redirect to
      *
-     * @return RedirectResponse The current response.
+     * @return $this
      *
      * @throws \InvalidArgumentException
      */
@@ -86,7 +93,7 @@ class RedirectResponse extends Response
 <html>
     <head>
         <meta charset="UTF-8" />
-        <meta http-equiv="refresh" content="1;url=%1$s" />
+        <meta http-equiv="refresh" content="0;url=\'%1$s\'" />
 
         <title>Redirecting to %1$s</title>
     </head>

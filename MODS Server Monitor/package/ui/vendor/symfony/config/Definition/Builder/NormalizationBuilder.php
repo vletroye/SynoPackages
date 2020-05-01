@@ -19,14 +19,9 @@ namespace Symfony\Component\Config\Definition\Builder;
 class NormalizationBuilder
 {
     protected $node;
-    public $before = array();
-    public $remappings = array();
+    public $before = [];
+    public $remappings = [];
 
-    /**
-     * Constructor.
-     *
-     * @param NodeDefinition $node The related node
-     */
     public function __construct(NodeDefinition $node)
     {
         $this->node = $node;
@@ -38,11 +33,11 @@ class NormalizationBuilder
      * @param string $key    The key to remap
      * @param string $plural The plural of the key in case of irregular plural
      *
-     * @return NormalizationBuilder
+     * @return $this
      */
     public function remap($key, $plural = null)
     {
-        $this->remappings[] = array($key, null === $plural ? $key.'s' : $plural);
+        $this->remappings[] = [$key, null === $plural ? $key.'s' : $plural];
 
         return $this;
     }
@@ -50,9 +45,7 @@ class NormalizationBuilder
     /**
      * Registers a closure to run before the normalization or an expression builder to build it if null is provided.
      *
-     * @param \Closure $closure
-     *
-     * @return ExprBuilder|NormalizationBuilder
+     * @return ExprBuilder|$this
      */
     public function before(\Closure $closure = null)
     {

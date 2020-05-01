@@ -78,14 +78,14 @@
       },
       {
         "type": "textfield",
-        "desc": "Enter a Password for this account (will be visible in Server Monitor's config.php)",
+        "desc": "Enter a Password for this account (will be visible in Server Monitor's config.php). The password must be compliant with your mySQL policies!",
         "subitems": [
           {
             "validator": {
               "allowBlank": false
             },
             "key": "pkgwizard_srvmon_password",
-            "defaultValue": "ServerMonitor!",
+            "defaultValue": "ServerMon350!",
             "desc": "Password"
           }
         ]

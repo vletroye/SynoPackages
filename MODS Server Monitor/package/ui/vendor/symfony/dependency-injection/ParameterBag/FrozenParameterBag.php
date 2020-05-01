@@ -21,8 +21,6 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 class FrozenParameterBag extends ParameterBag
 {
     /**
-     * Constructor.
-     *
      * For performance reasons, the constructor assumes that
      * all keys are already lowercased.
      *
@@ -30,7 +28,7 @@ class FrozenParameterBag extends ParameterBag
      *
      * @param array $parameters An array of parameters
      */
-    public function __construct(array $parameters = array())
+    public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
         $this->resolved = true;

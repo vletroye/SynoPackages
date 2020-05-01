@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -21,12 +22,14 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
  **/
 
-define('PSM_INSTALL', true);
+namespace {
+    define('PSM_INSTALL', true);
 
-require __DIR__.'/src/bootstrap.php';
+    require __DIR__ . '/src/bootstrap.php';
 
-$router->run('install');
+    $router->run('install');
+}

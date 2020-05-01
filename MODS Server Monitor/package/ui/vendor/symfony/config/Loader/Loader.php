@@ -57,7 +57,7 @@ abstract class Loader implements LoaderInterface
      * @param mixed       $resource A resource
      * @param string|null $type     The resource type or null if unknown
      *
-     * @return LoaderInterface A LoaderInterface instance
+     * @return $this|LoaderInterface
      *
      * @throws FileLoaderLoadException If no loader is found
      */
@@ -70,7 +70,7 @@ abstract class Loader implements LoaderInterface
         $loader = null === $this->resolver ? false : $this->resolver->resolve($resource, $type);
 
         if (false === $loader) {
-            throw new FileLoaderLoadException($resource);
+            throw new FileLoaderLoadException($resource, null, null, null, $type);
         }
 
         return $loader;

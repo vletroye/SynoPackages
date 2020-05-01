@@ -11,9 +11,10 @@
 
 namespace Symfony\Component\Config\Tests\Resource;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Resource\FileResource;
 
-class FileResourceTest extends \PHPUnit_Framework_TestCase
+class FileResourceTest extends TestCase
 {
     protected $resource;
     protected $file;
@@ -21,7 +22,7 @@ class FileResourceTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->file = realpath(sys_get_temp_dir()).'/tmp.xml';
+        $this->file = sys_get_temp_dir().'/tmp.xml';
         $this->time = time();
         touch($this->file, $this->time);
         $this->resource = new FileResource($this->file);
@@ -29,6 +30,10 @@ class FileResourceTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
+        if (!file_exists($this->file)) {
+            return;
+        }
+
         unlink($this->file);
     }
 
@@ -37,9 +42,22 @@ class FileResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(realpath($this->file), $this->resource->getResource(), '->getResource() returns the path to the resource');
     }
 
+    public function testGetResourceWithScheme()
+    {
+        $resource = new FileResource('file://'.$this->file);
+        $this->assertSame('file://'.$this->file, $resource->getResource(), '->getResource() returns the path to the schemed resource');
+    }
+
     public function testToString()
     {
         $this->assertSame(realpath($this->file), (string) $this->resource);
+    }
+
+    public function testResourceDoesNotExist()
+    {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('/The file ".*" does not exist./');
+        new FileResource('/____foo/foobar'.mt_rand(1, 999999));
     }
 
     public function testIsFresh()
@@ -47,14 +65,18 @@ class FileResourceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->resource->isFresh($this->time), '->isFresh() returns true if the resource has not changed in same second');
         $this->assertTrue($this->resource->isFresh($this->time + 10), '->isFresh() returns true if the resource has not changed');
         $this->assertFalse($this->resource->isFresh($this->time - 86400), '->isFresh() returns false if the resource has been updated');
+    }
 
-        $resource = new FileResource('/____foo/foobar'.mt_rand(1, 999999));
-        $this->assertFalse($resource->isFresh($this->time), '->isFresh() returns false if the resource does not exist');
+    public function testIsFreshForDeletedResources()
+    {
+        unlink($this->file);
+
+        $this->assertFalse($this->resource->isFresh($this->time), '->isFresh() returns false if the resource does not exist');
     }
 
     public function testSerializeUnserialize()
     {
-        $unserialized = unserialize(serialize($this->resource));
+        unserialize(serialize($this->resource));
 
         $this->assertSame(realpath($this->file), $this->resource->getResource());
     }

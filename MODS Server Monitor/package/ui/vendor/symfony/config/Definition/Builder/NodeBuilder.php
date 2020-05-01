@@ -21,12 +21,9 @@ class NodeBuilder implements NodeParentInterface
     protected $parent;
     protected $nodeMapping;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
-        $this->nodeMapping = array(
+        $this->nodeMapping = [
             'variable' => __NAMESPACE__.'\\VariableNodeDefinition',
             'scalar' => __NAMESPACE__.'\\ScalarNodeDefinition',
             'boolean' => __NAMESPACE__.'\\BooleanNodeDefinition',
@@ -34,15 +31,13 @@ class NodeBuilder implements NodeParentInterface
             'float' => __NAMESPACE__.'\\FloatNodeDefinition',
             'array' => __NAMESPACE__.'\\ArrayNodeDefinition',
             'enum' => __NAMESPACE__.'\\EnumNodeDefinition',
-        );
+        ];
     }
 
     /**
      * Set the parent node.
      *
-     * @param ParentNodeDefinitionInterface $parent The parent node
-     *
-     * @return NodeBuilder This node builder
+     * @return $this
      */
     public function setParent(ParentNodeDefinitionInterface $parent = null)
     {
@@ -66,7 +61,7 @@ class NodeBuilder implements NodeParentInterface
     /**
      * Creates a child scalar node.
      *
-     * @param string $name the name of the node
+     * @param string $name The name of the node
      *
      * @return ScalarNodeDefinition The child node
      */
@@ -90,7 +85,7 @@ class NodeBuilder implements NodeParentInterface
     /**
      * Creates a child integer node.
      *
-     * @param string $name the name of the node
+     * @param string $name The name of the node
      *
      * @return IntegerNodeDefinition The child node
      */
@@ -102,7 +97,7 @@ class NodeBuilder implements NodeParentInterface
     /**
      * Creates a child float node.
      *
-     * @param string $name the name of the node
+     * @param string $name The name of the node
      *
      * @return FloatNodeDefinition The child node
      */
@@ -138,7 +133,7 @@ class NodeBuilder implements NodeParentInterface
     /**
      * Returns the parent node.
      *
-     * @return ParentNodeDefinitionInterface The parent node
+     * @return NodeDefinition&ParentNodeDefinitionInterface The parent node
      */
     public function end()
     {
@@ -148,8 +143,8 @@ class NodeBuilder implements NodeParentInterface
     /**
      * Creates a child node.
      *
-     * @param string $name The name of the node
-     * @param string $type The type of the node
+     * @param string|null $name The name of the node
+     * @param string      $type The type of the node
      *
      * @return NodeDefinition The child node
      *
@@ -180,9 +175,7 @@ class NodeBuilder implements NodeParentInterface
      *         ->end()
      *     ;
      *
-     * @param NodeDefinition $node
-     *
-     * @return NodeBuilder This node builder
+     * @return $this
      */
     public function append(NodeDefinition $node)
     {
@@ -207,7 +200,7 @@ class NodeBuilder implements NodeParentInterface
      * @param string $type  The name of the type
      * @param string $class The fully qualified name the node definition class
      *
-     * @return NodeBuilder This node builder
+     * @return $this
      */
     public function setNodeClass($type, $class)
     {

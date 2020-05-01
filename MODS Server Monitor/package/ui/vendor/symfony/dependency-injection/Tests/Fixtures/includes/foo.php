@@ -4,16 +4,21 @@ namespace Bar;
 
 class FooClass
 {
-    public $foo, $moo;
+    public $foo;
+    public $moo;
 
-    public $bar = null, $initialized = false, $configured = false, $called = false, $arguments = array();
+    public $bar = null;
+    public $initialized = false;
+    public $configured = false;
+    public $called = false;
+    public $arguments = [];
 
-    public function __construct($arguments = array())
+    public function __construct($arguments = [])
     {
         $this->arguments = $arguments;
     }
 
-    public static function getInstance($arguments = array())
+    public static function getInstance($arguments = [])
     {
         $obj = new self($arguments);
         $obj->called = true;

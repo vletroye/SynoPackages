@@ -14,6 +14,7 @@ exec 2>>$ERRLOG
 
 if [[ "$SYNOPKG_PKG_STATUS" == "INSTALL" ]]; then
 
+echo "-----------------------------------------------------------------------"
 echo `date` "POST INSTALL PKG VERSION: $SYNOPKG_PKGVER"
 
 ETC_DIR="/var/packages/$SYNOPKG_PKGNAME/etc"
@@ -136,6 +137,8 @@ echo "define('PSM_DB_HOST', '$HOST');" >> "$ConfigFile"
 echo "define('PSM_DB_PORT', '$PORT');" >> "$ConfigFile"
 echo "define('PSM_BASE_URL', \$url);" >> "$ConfigFile"
 echo "" >> "$ConfigFile"
+
+cat $LOG | grep ERROR >> $ERRLOG
 
 if [ -s "$ERRLOG" ]; then
   echo `date` "----------------------------------------------------"

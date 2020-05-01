@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -21,7 +22,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 3.2
  **/
@@ -30,22 +31,26 @@ namespace psm\Module\User\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class UserEvent extends Event {
+class UserEvent extends Event
+{
 
-	protected $user_id;
+    protected $user_id;
 
-	protected $user_id_by;
+    protected $user_id_by;
 
-	public function __construct($user_id, $user_id_by = null) {
-		$this->user_id = $user_id;
-		$this->user_id_by = $user_id_by;
-	}
+    public function __construct($user_id, $user_id_by = null)
+    {
+        $this->user_id = $user_id;
+        $this->user_id_by = $user_id_by;
+    }
 
-	public function getUserId() {
-		return $this->user_id;
-	}
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
 
-	public function getUserIdBy() {
-		return $this->user_id_by;
-	}
+    public function getUserIdBy()
+    {
+        return $this->user_id_by;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -21,33 +22,35 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 2.1
+ * @since       phpservermon 2.1
  **/
 
 namespace psm\Module;
+
 use psm\Service\Database;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-interface ControllerInterface extends ContainerAwareInterface {
+interface ControllerInterface extends ContainerAwareInterface
+{
 
-	public function __construct(Database $db, \Twig_Environment $twig);
+    public function __construct(Database $db, \Twig_Environment $twig);
 
-	/**
-	 * Run the controller
-	 */
-	public function run();
+    /**
+     * Run the controller
+     */
+    public function run();
 
-	/**
-	 * Get the minimum required user level for this controller
-	 * @return int
-	 */
-	public function getMinUserLevelRequired();
+    /**
+     * Get the minimum required user level for this controller
+     * @return int
+     */
+    public function getMinUserLevelRequired();
 
-	/**
-	 * Get custom key for CSRF validation
-	 * @return string
-	 */
-	public function getCSRFKey();
+    /**
+     * Get custom key for CSRF validation
+     * @return string
+     */
+    public function getCSRFKey();
 }

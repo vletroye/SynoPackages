@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -21,7 +22,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 3.1
  **/
@@ -31,16 +32,17 @@ namespace psm\Module\Error;
 use psm\Module\ModuleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ErrorModule implements ModuleInterface {
+class ErrorModule implements ModuleInterface
+{
 
-	public function load(ContainerBuilder $container) {
+    public function load(ContainerBuilder $container)
+    {
+    }
 
-	}
-
-	public function getControllers() {
-		return array(
-			'error' => __NAMESPACE__.'\Controller\ErrorController',
-		);
-
-	}
+    public function getControllers()
+    {
+        return array(
+            'error' => __NAMESPACE__ . '\Controller\ErrorController',
+        );
+    }
 }

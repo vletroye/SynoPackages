@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -21,17 +22,17 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
  **/
 
 namespace psm\Txtmsg;
 
-interface TxtmsgInterface {
+interface TxtmsgInterface
+{
 
-	public function setLogin($username, $password);
-	public function setOriginator($originator);
-	public function addRecipients($recipient);
-	public function sendSMS($message);
-
+    public function setLogin($username, $password);
+    public function setOriginator($originator);
+    public function addRecipients($recipient);
+    public function sendSMS($message);
 }

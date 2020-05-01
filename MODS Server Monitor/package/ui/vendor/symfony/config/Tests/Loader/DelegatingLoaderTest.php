@@ -11,14 +11,15 @@
 
 namespace Symfony\Component\Config\Tests\Loader;
 
-use Symfony\Component\Config\Loader\LoaderResolver;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Loader\DelegatingLoader;
+use Symfony\Component\Config\Loader\LoaderResolver;
 
-class DelegatingLoaderTest extends \PHPUnit_Framework_TestCase
+class DelegatingLoaderTest extends TestCase
 {
     public function testConstructor()
     {
-        $loader = new DelegatingLoader($resolver = new LoaderResolver());
+        new DelegatingLoader($resolver = new LoaderResolver());
         $this->assertTrue(true, '__construct() takes a loader resolver as its first argument');
     }
 
@@ -33,36 +34,34 @@ class DelegatingLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testSupports()
     {
-        $loader1 = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
-        $loader1->expects($this->once())->method('supports')->will($this->returnValue(true));
-        $loader = new DelegatingLoader(new LoaderResolver(array($loader1)));
+        $loader1 = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
+        $loader1->expects($this->once())->method('supports')->willReturn(true);
+        $loader = new DelegatingLoader(new LoaderResolver([$loader1]));
         $this->assertTrue($loader->supports('foo.xml'), '->supports() returns true if the resource is loadable');
 
-        $loader1 = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
-        $loader1->expects($this->once())->method('supports')->will($this->returnValue(false));
-        $loader = new DelegatingLoader(new LoaderResolver(array($loader1)));
+        $loader1 = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
+        $loader1->expects($this->once())->method('supports')->willReturn(false);
+        $loader = new DelegatingLoader(new LoaderResolver([$loader1]));
         $this->assertFalse($loader->supports('foo.foo'), '->supports() returns false if the resource is not loadable');
     }
 
     public function testLoad()
     {
-        $loader = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
-        $loader->expects($this->once())->method('supports')->will($this->returnValue(true));
+        $loader = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
+        $loader->expects($this->once())->method('supports')->willReturn(true);
         $loader->expects($this->once())->method('load');
-        $resolver = new LoaderResolver(array($loader));
+        $resolver = new LoaderResolver([$loader]);
         $loader = new DelegatingLoader($resolver);
 
         $loader->load('foo');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Config\Exception\FileLoaderLoadException
-     */
     public function testLoadThrowsAnExceptionIfTheResourceCannotBeLoaded()
     {
-        $loader = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
-        $loader->expects($this->once())->method('supports')->will($this->returnValue(false));
-        $resolver = new LoaderResolver(array($loader));
+        $this->expectException('Symfony\Component\Config\Exception\FileLoaderLoadException');
+        $loader = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
+        $loader->expects($this->once())->method('supports')->willReturn(false);
+        $resolver = new LoaderResolver([$loader]);
         $loader = new DelegatingLoader($resolver);
 
         $loader->load('foo');

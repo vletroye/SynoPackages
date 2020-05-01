@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -21,28 +22,28 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
  * @since       phpservermon 3.2
  **/
 
 namespace psm\Module\User;
 
-final class UserEvents {
+final class UserEvents
+{
 
-	/**
-	 * @var string
-	 */
-	const USER_ADD = 'user.add';
+    /**
+     * @var string
+     */
+    public const USER_ADD = 'user.add';
 
-	/**
-	 * @var string
-	 */
-	const USER_EDIT = 'user.edit';
+    /**
+     * @var string
+     */
+    public const USER_EDIT = 'user.edit';
 
-	/**
-	 * @var string
-	 */
-	const USER_DELETE = 'user.delete';
-
+    /**
+     * @var string
+     */
+    public const USER_DELETE = 'user.delete';
 }

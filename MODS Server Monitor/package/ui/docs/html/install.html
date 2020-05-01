@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Installation &#8212; PHP Server Monitor 3.5.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
+    <link rel="prev" title="Requirements" href="requirements.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Install<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="upload-files">
+<h3>Upload files<a class="headerlink" href="#upload-files" title="Permalink to this headline">¶</a></h3>
+<p>The first step is to upload your files to your webserver where you can reach them.
+You can rename the folder of the server monitor without any problems.</p>
+</div>
+<div class="section" id="run-install-php">
+<h3>Run install.php<a class="headerlink" href="#run-install-php" title="Permalink to this headline">¶</a></h3>
+<p>You can now run the install.php script located in the root dir.</p>
+<p>The install script will guide you through setting up your configuration file and create the required database tables.
+If for some reason you can not generate your configuration file, you can do it manually using the steps below.
+Rename the config.php.sample file to config.php, then open the config.php file with a plain text editor such as Notepad.
+In this file you need to change the database information, which is stored using php’s define() function.
+To change these values correctly, only update the second parameter of the function:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">define(&#39;PSM_DB_HOST&#39;, &#39;db_host&#39;);</span>
+<span class="x">define(&#39;PSM_DB_NAME&#39;, &#39;db_name&#39;);</span>
+<span class="x">define(&#39;PSM_DB_USER&#39;, &#39;db_user&#39;);</span>
+<span class="x">define(&#39;PSM_DB_PASS&#39;, &#39;db_user_password&#39;);</span>
+<span class="x">define(&#39;PSM_DB_PORT&#39;, &#39;most likely 3306, may also be empty&#39;);</span>
+</pre></div>
+</div>
+<p>For example: to change your username you should ONLY change the ‘db_user’ part.
+Do NOT remove the quotes around your username as that will result in an error.
+After you have created the config.php, run the install.php again to create the database structure.</p>
+</div>
+<div class="section" id="configure-your-installation">
+<h3>Configure your installation<a class="headerlink" href="#configure-your-installation" title="Permalink to this headline">¶</a></h3>
+<p>Open the main page of the server monitor, by simply navigating to index.php. In the menu on the top find “Config”,
+it will open a page where you can change the necessary information for your tool.</p>
+</div>
+</div>
+<div class="section" id="upgrade">
+<h2>Upgrade<a class="headerlink" href="#upgrade" title="Permalink to this headline">¶</a></h2>
+<p>For a regular upgrade, follow these steps:</p>
+<ul class="simple">
+<li><p>Replace all files except(!) config.php</p></li>
+<li><p>Navigate to install.php</p></li>
+<li><p>Follow the steps</p></li>
+<li><p>Enjoy</p></li>
+</ul>
+<div class="section" id="from-2-0">
+<h3>From 2.0<a class="headerlink" href="#from-2-0" title="Permalink to this headline">¶</a></h3>
+<p>The structure of the project has changed quite a bit since 2.0, but if you have not made any local changes the upgrade is quite easy.
+The best thing to do is to replace all your current files with the new release, except for the config.inc.php file.
+The config file has actually been renamed since 2.0, but if you keep it there while upgrading the install script will use it to prefill your database information.
+The rest of the steps are identical to a regular upgrade (see above), except that you can remove the old config.inc.php file afterwards.</p>
+</div>
+<div class="section" id="from-2-1">
+<h3>From 2.1<a class="headerlink" href="#from-2-1" title="Permalink to this headline">¶</a></h3>
+<p>One of the new features introduced in 3.0 is a user authentication system. Because the users in previous versions do not have a password, after upgrading you would not be able to login.
+For that reason the upgrade script will ask you to create a new account during the upgrade, which you can then use to change the password for the existing accounts.
+If, for whatever reason this does not work, the upgrade script automatically changes the username of all existing users to their email addresses, which you could use for the forgot password screen.</p>
+</div>
+</div>
+<div class="section" id="installing-from-github">
+<h2>Installing from GitHub<a class="headerlink" href="#installing-from-github" title="Permalink to this headline">¶</a></h2>
+<p>If you have downloaded the source from GitHub (and not a pre-built package), the dependencies are not included.
+To be able to run an installation from the repo, you need to run the following command to install the dependencies:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">php composer.phar install</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-a-cronjob">
+<h2>Setting up a cronjob<a class="headerlink" href="#setting-up-a-cronjob" title="Permalink to this headline">¶</a></h2>
+<p>In order to keep the server monitor up to date, the status updater has to run regularly.
+If you’re running this on a linux machine, the easiest way is to add a cronjob.
+If it is your own server or you have shell access and permission to open the crontab, locate the “crontab” file
+(usually in /etc/crontab, but depends on distro). Open the file (vi /etc/crontab), and add the following
+(change the paths to match your installation directories) to run it every 15 minutes:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">*/15 * * * * root /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php</span>
+</pre></div>
+</div>
+<p>As you can see, this line will run the status.cron.php script every 15 minutes. Change the line to suit your needs.
+If you do not have shell access, ask your web hosting provider to set it up for you.</p>
+<p>Please note that some distros have user-specific crontabs (e.g. Debian). If that is the case, you need to omit the user part:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">*/15 * * * * /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php</span>
+</pre></div>
+</div>
+<p>If you want to check in different intervals online and offline servers you can use attribute <cite>-s</cite> (or <cite>–status</cite>) with value <cite>on</cite> or <cite>off</cite>.
+So for example you want to check your servers which are online every 10 minutes and offline every 5 seconds. So configure two cron jobs:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">*/10 * * * * /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php -s on</span>
+<span class="x">*/1 * * * * /usr/bin/php /var/www/html/phpservermon/cron/status.cron.php -s off</span>
+</pre></div>
+</div>
+<p>By default <cite>off</cite> servers are checked every 5 seconds. If you want to change it add into your config file this constant with required value in seconds:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">define(&#39;CRON_DOWN_INTERVAL&#39;, 1); // every 1 second call update</span>
+</pre></div>
+</div>
+<p>The update script has been designed to prevent itself from running multiple times. It has a maximum timeout of 10 minutes.
+After that the script is assumed dead and the cronjob will run again.
+If you want to change the 10 minutes timeout, find the constant “PSM_CRON_TIMEOUT” in src/includes/psmconfig.inc.php.
+You can also provide it as an argument (in seconds!). The following example would change to timeout to 10 seconds:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">php status.cron.php --timeout=10</span>
+</pre></div>
+</div>
+<p>By default, no URLs are generated for notifications created in the cronjob.
+To specify the base url to your monitor installation, use the “–uri” argument, like so:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">php status.cron.php --uri=&quot;http://www.phpservermonitor.org/mymonitor/&quot;</span>
+</pre></div>
+</div>
+<div class="section" id="cpanel">
+<h3>CPanel<a class="headerlink" href="#cpanel" title="Permalink to this headline">¶</a></h3>
+<p>If you’re work with cPanel you can follow these steps:</p>
+<ol class="arabic simple">
+<li><p>Log into your cPanel account</p></li>
+<li><p>Go to cron jobs</p></li>
+<li><p>Add a new cronjob</p></li>
+</ol>
+<ul class="simple">
+<li><p>Type <cite>*/15</cite> in the minute field</p></li>
+<li><p>Type <cite>*</cite> in the other field</p></li>
+<li><p>Type <cite>php /home2/&lt;Type here your cPanel username&gt;/public_html/phpservermon/cron/status.cron.php</cite> in the command field</p></li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><p>Submit</p></li>
+</ol>
+</div>
+<div class="section" id="cronjob-over-web">
+<h3>Cronjob over web<a class="headerlink" href="#cronjob-over-web" title="Permalink to this headline">¶</a></h3>
+<p>To allow scheduled status updates over the web, the commandline check is extended with a check on allowed IP address(es).</p>
+<p>In config.php add following line:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// PHP 7.0.0 and higher</span>
+<span class="x">define(&#39;PSM_CRON_ALLOW&#39;, array(&quot;xxx.xxx.xxx.xxx&quot;, &quot;yyy.yyy.yyy.yyy&quot;, &quot;zzz.zzz.zzz.zzz&quot;));</span>
+<span class="x">// lower versions</span>
+<span class="x">define(&#39;PSM_CRON_ALLOW&#39;, serialize(array(&quot;xxx.xxx.xxx.xxx&quot;, &quot;yyy.yyy.yyy.yyy&quot;, &quot;zzz.zzz.zzz.zzz&quot;)));</span>
+</pre></div>
+</div>
+<p>After that, you can hit the url http(s)://”yourmonitor.com”/cron/status.cron.php over the web from your allowed IP.</p>
+<p>Alternatively, define a secret key to allow the update over the web:</p>
+<p>In config.php add following line:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">define(&#39;PSM_WEBCRON_KEY&#39;, &#39;YOURKEY&#39;);</span>
+</pre></div>
+</div>
+<p>After that, you can hit the url http(s)://”yourmonitor.com”/cron/status.cron.php?webcron_key=YOURKEY .</p>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>If you have problems setting up or accessing your monitor and do not know why, enable debug mode to turn on error reporting.
+To enable debug mode, add the following line to your config.php file:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">define(&#39;PSM_DEBUG&#39;, true);</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#id1">Install</a><ul>
+<li><a class="reference internal" href="#upload-files">Upload files</a></li>
+<li><a class="reference internal" href="#run-install-php">Run install.php</a></li>
+<li><a class="reference internal" href="#configure-your-installation">Configure your installation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#upgrade">Upgrade</a><ul>
+<li><a class="reference internal" href="#from-2-0">From 2.0</a></li>
+<li><a class="reference internal" href="#from-2-1">From 2.1</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installing-from-github">Installing from GitHub</a></li>
+<li><a class="reference internal" href="#setting-up-a-cronjob">Setting up a cronjob</a><ul>
+<li><a class="reference internal" href="#cpanel">CPanel</a></li>
+<li><a class="reference internal" href="#cronjob-over-web">Cronjob over web</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="requirements.html"
+                        title="previous chapter">Requirements</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="next chapter">Frequently Asked Questions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/install.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; <a href="copyright.html">Copyright</a> 2008-2017, Pepijn Over.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

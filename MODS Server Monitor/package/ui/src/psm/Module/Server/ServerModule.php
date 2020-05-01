@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Server Monitor
  * Monitor your servers and websites.
@@ -21,9 +22,9 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: 3.4.5
+ * @version     Release: v3.5.0
  * @link        http://www.phpservermonitor.org/
- * @since		phpservermon 3.0
+ * @since       phpservermon 3.0
  **/
 
 namespace psm\Module\Server;
@@ -31,19 +32,20 @@ namespace psm\Module\Server;
 use psm\Module\ModuleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ServerModule implements ModuleInterface {
+class ServerModule implements ModuleInterface
+{
 
-	public function load(ContainerBuilder $container) {
+    public function load(ContainerBuilder $container)
+    {
+    }
 
-	}
-
-	public function getControllers() {
-		return array(
-			'server' => __NAMESPACE__.'\Controller\ServerController',
-			'log' => __NAMESPACE__.'\Controller\LogController',
-			'status' => __NAMESPACE__.'\Controller\StatusController',
-			'update' => __NAMESPACE__.'\Controller\UpdateController',
-		);
-
-	}
+    public function getControllers()
+    {
+        return array(
+            'server' => __NAMESPACE__ . '\Controller\ServerController',
+            'log' => __NAMESPACE__ . '\Controller\LogController',
+            'status' => __NAMESPACE__ . '\Controller\StatusController',
+            'update' => __NAMESPACE__ . '\Controller\UpdateController',
+        );
+    }
 }

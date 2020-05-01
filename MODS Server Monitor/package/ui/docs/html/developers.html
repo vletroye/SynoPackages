@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Developers &#8212; PHP Server Monitor 3.5.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Credits" href="credits.html" />
+    <link rel="prev" title="Frequently Asked Questions" href="faq.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="credits.html" title="Credits"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="developers">
+<span id="id1"></span><h1>Developers<a class="headerlink" href="#developers" title="Permalink to this headline">¶</a></h1>
+<p>The code is available from <a class="reference external" href="https://github.com/phpservermon/phpservermon">https://github.com/phpservermon/phpservermon</a>.
+There is a master branch, which is stable and always reflects the latest release.
+The develop branch is used for ongoing development and should not be considered stable.
+If you would like to contribute a patch or feature, please fork the develop branch and send a pull request.</p>
+<div class="section" id="languages">
+<h2>Languages<a class="headerlink" href="#languages" title="Permalink to this headline">¶</a></h2>
+<p>The server monitor uses language files, which are stored in the directory “src/lang”.
+The name of the language file consists of the language code (ISO 639-1) and the country code (ISO 3166-1), separated by an underscore.
+The extension is “.lang.php”.</p>
+<div class="section" id="locales">
+<h3>Locales<a class="headerlink" href="#locales" title="Permalink to this headline">¶</a></h3>
+<p>Each language file should contain a ‘locale’ key which can be used for formatting dates and times. This ‘locale’ key must include the locales for different server environments:</p>
+<ul class="simple">
+<li><p>Linux / OS X: same as filename (language code and country code separated by underscore)</p></li>
+<li><p>Windows: <a class="reference external" href="http://msdn.microsoft.com/en-US/library/39cwe7zf%28v=vs.80%29.aspx">http://msdn.microsoft.com/en-US/library/39cwe7zf%28v=vs.80%29.aspx</a></p></li>
+</ul>
+<p>For more information, see <a class="reference external" href="http://www.php.net/manual/en/function.setlocale.php">http://www.php.net/manual/en/function.setlocale.php</a></p>
+<p>For display purposes, the language file should also provide the text direction (ltr / rtl) and language subtag.
+Unfortunately they do not match 1:1 with the locales used for the server.
+Valid language subtags can be found on <a class="reference external" href="http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry</a>.</p>
+</div>
+<div class="section" id="adding-a-new-language">
+<h3>Adding a new language<a class="headerlink" href="#adding-a-new-language" title="Permalink to this headline">¶</a></h3>
+<p>To add a new language, follow these steps:</p>
+<ul class="simple">
+<li><p>Create a new file in the directory “src/lang” named “{locale}.lang.php”.</p></li>
+<li><p>Copy the contents of the file “en_US.lang.php” to your new file.</p></li>
+<li><p>Your new language should now be available on the config page.</p></li>
+<li><p>Translate :-)</p></li>
+<li><p>Please send a pull request on github (<a class="reference external" href="https://github.com/phpservermon/phpservermon">https://github.com/phpservermon/phpservermon</a>) so it can be included in the next release :-)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="vagrant">
+<h3>Vagrant<a class="headerlink" href="#vagrant" title="Permalink to this headline">¶</a></h3>
+<p>If you are not familiar with Vagrant, have a look at <a class="reference external" href="https://www.vagrantup.com/">https://www.vagrantup.com/</a> for more information (it is awesome).
+To ease development, a Vagrantfile has been included along with a full provisioning profile generated using PuPHPet (<a class="reference external" href="https://puphpet.com">https://puphpet.com</a>).
+The Vagrantfile is configured to set up a CentOS 6.5 box with PHP 5.6 and MySQL installed, with a local port forward on port 8080.
+To set up the development environment, make sure you have Vagrant and VirtualBox (<a class="reference external" href="https://www.virtualbox.org/">https://www.virtualbox.org/</a>) installed, then run:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">vagrant up</span>
+</pre></div>
+</div>
+<p>The initial setup may take some time as the virtual machine needs to be provisioned.
+After that, you can access your development environment by navigating to <a class="reference external" href="http://localhost:8080/psm/">http://localhost:8080/psm/</a> or <a class="reference external" href="http://192.158.56.101/psm/">http://192.158.56.101/psm/</a>.
+The config.php file has been created automatically, but the first time you do need to run through the install wizard.</p>
+</div>
+<div class="section" id="code">
+<h3>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h3>
+<p>All code related to phpservermon lives in the “psm” namespace, which can be found under “src/psm”.</p>
+<p>The Router (<a class="reference external" href="https://github.com/phpservermon/phpservermon/blob/develop/src/psm/Router.class.php">https://github.com/phpservermon/phpservermon/blob/develop/src/psm/Router.class.php</a>) is used to load the modules.
+All modules are registered inside the Router class with a unique ID (see getModules()), and can either be loaded manually ($router-&gt;run(‘mod’)), or if no module is given it will attempt to discover the module from the $_GET[‘mod’] var.
+If no valid module or controller is found, it will fall back to the default module.</p>
+<p>The module var may exist of 2 parts, separated by an underscore. The first part is the ID of the module, and the second part is the ID of the controller registered in the module.
+If no controller ID is found, it will attempt to load the controller with the same ID as the module.</p>
+<p>Examples</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$router-&gt;run(&#39;config&#39;); // module ID &quot;config&quot; and controller ID also &quot;config&quot; (same as $router-&gt;run(&#39;config_config&#39;))</span>
+<span class="x">$router-&gt;run(&#39;server_status&#39;); // module ID &quot;server&quot; and controller ID &quot;status&quot;</span>
+</pre></div>
+</div>
+<p>If the user is not logged in and login is required, it will automatically load the user login controller without throwing an error.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Developers</a><ul>
+<li><a class="reference internal" href="#languages">Languages</a><ul>
+<li><a class="reference internal" href="#locales">Locales</a></li>
+<li><a class="reference internal" href="#adding-a-new-language">Adding a new language</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-started">Getting started</a><ul>
+<li><a class="reference internal" href="#vagrant">Vagrant</a></li>
+<li><a class="reference internal" href="#code">Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="previous chapter">Frequently Asked Questions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="credits.html"
+                        title="next chapter">Credits</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/developers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="credits.html" title="Credits"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; <a href="copyright.html">Copyright</a> 2008-2017, Pepijn Over.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

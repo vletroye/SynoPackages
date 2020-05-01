@@ -27,8 +27,6 @@ interface SessionBagInterface
 
     /**
      * Initializes the Bag.
-     *
-     * @param array $array
      */
     public function initialize(array &$array);
 
@@ -42,7 +40,7 @@ interface SessionBagInterface
     /**
      * Clears out data from bag.
      *
-     * @return mixed Whatever data was contained.
+     * @return mixed Whatever data was contained
      */
     public function clear();
 }

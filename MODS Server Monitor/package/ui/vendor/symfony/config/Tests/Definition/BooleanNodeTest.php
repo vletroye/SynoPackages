@@ -11,9 +11,10 @@
 
 namespace Symfony\Component\Config\Tests\Definition;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\BooleanNode;
 
-class BooleanNodeTest extends \PHPUnit_Framework_TestCase
+class BooleanNodeTest extends TestCase
 {
     /**
      * @dataProvider getValidValues
@@ -39,35 +40,35 @@ class BooleanNodeTest extends \PHPUnit_Framework_TestCase
 
     public function getValidValues()
     {
-        return array(
-            array(false),
-            array(true),
-        );
+        return [
+            [false],
+            [true],
+        ];
     }
 
     /**
      * @dataProvider getInvalidValues
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidTypeException
      */
     public function testNormalizeThrowsExceptionOnInvalidValues($value)
     {
+        $this->expectException('Symfony\Component\Config\Definition\Exception\InvalidTypeException');
         $node = new BooleanNode('test');
         $node->normalize($value);
     }
 
     public function getInvalidValues()
     {
-        return array(
-            array(null),
-            array(''),
-            array('foo'),
-            array(0),
-            array(1),
-            array(0.0),
-            array(0.1),
-            array(array()),
-            array(array('foo' => 'bar')),
-            array(new \stdClass()),
-        );
+        return [
+            [null],
+            [''],
+            ['foo'],
+            [0],
+            [1],
+            [0.0],
+            [0.1],
+            [[]],
+            [['foo' => 'bar']],
+            [new \stdClass()],
+        ];
     }
 }

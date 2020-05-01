@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Introduction &#8212; PHP Server Monitor 3.5.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Requirements" href="requirements.html" />
+    <link rel="prev" title="Welcome to the PHP Server Monitor documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the PHP Server Monitor documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<span id="intro"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>PHP Server Monitor is a script that checks whether your websites and servers are up and running.
+It comes with a web based user interface where you can manage your services and websites,
+and you can manage users for each server with a mobile number and email address.</p>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Monitor services and websites (see below).</p></li>
+<li><p>Email, SMS, Pushover, Telegram and Jabber notifications.</p></li>
+<li><p>View history graphs of uptime and latency.</p></li>
+<li><p>User authentication with 2 levels (administrator and regular user).</p></li>
+<li><p>Logs of connection errors, outgoing emails and text messages.</p></li>
+<li><p>Easy cronjob implementation to automatically check your servers.</p></li>
+</ul>
+<div class="section" id="servers">
+<h3>Servers<a class="headerlink" href="#servers" title="Permalink to this headline">¶</a></h3>
+<p>There are two different ways to monitor a server:</p>
+<ul>
+<li><p>Service</p>
+<p>A connection will be made to the entered ip or domain, on the given port.
+This way you can check if certain services on your machine are still running.
+To check your IMAP service for example, enter port 143.</p>
+</li>
+<li><p>Website</p>
+<p>You can enter a link to a website, it will then use cURL to open the website and check the HTTP status code.
+If the HTTP status code is in the 4xx range, it means an error occurred and the website is not accessible to the public.
+You can also set a regular expression to match for content on the page itself.
+If the regular expression returns no matches, the website is considered down.
+In both cases the script will return a “status offline”, and will start sending out notifications.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="notifications">
+<h3>Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline">¶</a></h3>
+<p>Each server has its own settings regarding notification.
+You can choose for email, text message (SMS), Pushover.net, Telegram and Jabber notifications.
+The following SMS gateways are currently available:</p>
+<ul class="simple">
+<li><p>Clickatell - &lt;<a class="reference external" href="https://www.clickatell.com">https://www.clickatell.com</a>&gt;</p></li>
+<li><p>Inetworx - &lt;<a class="reference external" href="https://www.inetworx.ch">https://www.inetworx.ch</a>&gt;</p></li>
+<li><p>Messagebird - &lt;<a class="reference external" href="https://www.messagebird.com">https://www.messagebird.com</a>&gt;</p></li>
+<li><p>Mosms - &lt;<a class="reference external" href="https://www.mosms.com">https://www.mosms.com</a>&gt;</p></li>
+<li><p>Smsglobal - &lt;<a class="reference external" href="https://smsglobal.com/">https://smsglobal.com/</a>&gt;</p></li>
+<li><p>SMSit - &lt;<a class="reference external" href="https://www.smsit.dk/">https://www.smsit.dk/</a>&gt;</p></li>
+<li><p>Spryng - &lt;<a class="reference external" href="https://www.spryng.nl">https://www.spryng.nl</a>&gt;</p></li>
+<li><p>Textmarketer - &lt;<a class="reference external" href="https://www.textmarketer.co.uk">https://www.textmarketer.co.uk</a>&gt;</p></li>
+<li><p>FreeVoipDeal - &lt;<a class="reference external" href="https://www.freevoipdeal.com">https://www.freevoipdeal.com</a>&gt;</p></li>
+<li><p>Nexmo - &lt;<a class="reference external" href="https://www.nexmo.com/">https://www.nexmo.com/</a>&gt;</p></li>
+<li><p>OctoPush - &lt;<a class="reference external" href="https://www.octopush.com/">https://www.octopush.com/</a>&gt;</p></li>
+<li><p>FreeMobile (FR) - &lt;<a class="reference external" href="https://mobile.free.fr/">https://mobile.free.fr/</a>&gt;</p></li>
+<li><p>Twilio - &lt;<a class="reference external" href="https://twilio.com">https://twilio.com</a>&gt;</p></li>
+<li><p>CM Telecom - &lt;<a class="reference external" href="https://www.cm.com/">https://www.cm.com/</a>&gt;</p></li>
+<li><p>GatewayAPI - &lt;<a class="reference external" href="https://gatewayapi.com/">https://gatewayapi.com/</a>&gt;</p></li>
+<li><p>SolutionsInfini - &lt;<a class="reference external" href="https://solutionsinfini.com/">https://solutionsinfini.com/</a>&gt;</p></li>
+<li><p>Plivo - &lt;<a class="reference external" href="https://www.plivo.com/">https://www.plivo.com/</a>&gt;</p></li>
+<li><p>Callr - &lt;<a class="reference external" href="https://www.callr.com/">https://www.callr.com/</a>&gt;</p></li>
+</ul>
+<p>Please note: for these gateways you will need an account with sufficient credits.</p>
+</div>
+</div>
+<div class="section" id="download">
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
+<p>The latest version can be downloaded from <a class="reference external" href="http://www.phpservermonitor.org/">http://www.phpservermonitor.org/</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#features">Features</a><ul>
+<li><a class="reference internal" href="#servers">Servers</a></li>
+<li><a class="reference internal" href="#notifications">Notifications</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#download">Download</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to the PHP Server Monitor documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="requirements.html"
+                        title="next chapter">Requirements</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/intro.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="requirements.html" title="Requirements"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the PHP Server Monitor documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">PHP Server Monitor 3.5.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; <a href="copyright.html">Copyright</a> 2008-2017, Pepijn Over.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>
