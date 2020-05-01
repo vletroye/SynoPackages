@@ -2,6 +2,8 @@
 // https://code.google.com/p/php-mobile-detect
 require_once 'mobile_detect.php';
 
+$lastExecVendor=time();
+
 class Settings {
 	var $refreshDelay;
 	var $actionDisplay;
@@ -251,13 +253,22 @@ function Ping($ip) {
 	if ($ip == "0.0.0.0") {
 		$response = 0;
 	} else {
-		//$exist = exec('if [ -f /opt/bin/inetutils-ping ] ; then echo 1; else echo 0; fi');
-		$exist = "1";
+		$cmd = "ping";
+		$exist = exec('if [ -f /bin/ping ] ; then echo 1; else echo 0; fi');
+		
+		if ($exist == "0") {
+			$cmd = "inet";
+			$exist = exec('if [ -f /opt/bin/inetutils-ping ] ; then echo 1; else echo 0; fi');
+		}
 		
 		if ($exist == "1") {
-			`/bin/ping -c1 -n -r -q $ip > ./temp/ACPI.ping.$ip & WPID=\$!; sleep 1 && kill \$WPID > /dev/null 2>&1 & wait \$WPID`;
+			if ($cmd == "inet") {
+				`/opt/bin/inetutils-ping -c1 -n -r -q $ip > ./temp/ACPI.ping.$ip & WPID=\$!; sleep 1 && kill \$WPID > /dev/null 2>&1 & wait \$WPID`;
+			} else {
+				`ping -c1 -n -r -q -W 1 $ip > ./temp/ACPI.ping.$ip`;
+			}
 			$result = trim(`grep transmitted ./temp/ACPI.ping.$ip | cut -f3 -d"," | cut -f1 -d"%"`);
-			`rm -f ./temp/ACPI.ping.$ip`;	
+			`rm -f ./temp/ACPI.ping.$ip`;
 			
 			if ($result == "0") {
 				$response = 1;
@@ -314,11 +325,14 @@ function SaveBroadcastInfo($computers) {
 }
 
 function FindHostname($ip) {
-	`nmblookup -A $ip > ./temp/ACPI.hostname.$ip & WPID=\$!; sleep 1 && kill \$WPID > /dev/null 2>&1 & wait \$WPID`;
-	$host = `grep '#00' ./temp/ACPI.hostname.$ip | grep -v GROUP | awk '{print $1}'`;
-	`rm -f ./temp/ACPI.hostname.$ip`;	
-	$host = CleanValue($host); // remove all control chars
-	return FixHostCase($host);
+	$host = '';
+	if ($p != '0.0.0.0') {
+		`nmblookup -A $ip > ./temp/ACPI.hostname.$ip & WPID=\$!; sleep 1 && kill \$WPID > /dev/null 2>&1 & wait \$WPID`;
+		$host = `grep '#00' ./temp/ACPI.hostname.$ip | grep -v GROUP | awk '{print $1}'`;
+		`rm -f ./temp/ACPI.hostname.$ip`;
+		$host = FixHostCase(CleanValue($host)); // remove all control chars
+	}
+	return $host;
 }
 
 function FixHostCase($host) {
@@ -350,8 +364,17 @@ function InitComputers() {
 			$interfaces->add($address_ovs1);
 		}					
 	}
-	else
-		{
+	else {
+		$address_bond0 = ScanEthernet('bond0');
+		if ($address_bond0) {
+			$interfaces->add($address_bond0);
+		}
+		
+		$address_bond1 = ScanEthernet('bond1');
+		if ($address_bond1) {
+			$interfaces->add($address_bond1);
+		}		
+
 		$address0 = ScanEthernet('eth0');
 		if ($address0) {
 			$interfaces->add($address0);
@@ -372,16 +395,6 @@ function InitComputers() {
 			$address_3->nas=1;
 			$interfaces->add($address3);
 		}
-		
-		$address_bond0 = ScanEthernet('bond0');
-		if ($address_bond0) {
-			$interfaces->add($address_bond0);
-		}
-		
-		$address_bond1 = ScanEthernet('bond1');
-		if ($address_bond1) {
-			$interfaces->add($address_bond1);
-		}		
 	}
 	return $interfaces;
 }
@@ -465,7 +478,7 @@ function UpdateComputersFromArp($computers) {
 	return $newComputers;
 }
 
-function NewComputersFromArp($computers) {
+function NewComputersFromArp($computers, $max = 999999) {
 	$KnowMac = $computers->NetMAC;
 	$newComputers = new Computers();
 	
@@ -479,7 +492,7 @@ function NewComputersFromArp($computers) {
 	$arpTable = `$location -n`;
 	
 	// Split the output so every line is an entry of the $arpSplitted array 
-	$arpSplitted = explode("\n",$arpTable); 
+	$arpSplitted = explode("\n",$arpTable);
 
 	// Initialize On-Lan-computers' state
 	foreach ($arpSplitted as $value) {	
@@ -500,7 +513,7 @@ function NewComputersFromArp($computers) {
 					"(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/i",$value,$matches)) {
 						$IP=$matches[0];
 						
-						$host = FindHostname($IP);
+						if (Ping($IP) == 1) $host = FindHostname($IP);
 				}
 								
 				//echo $MAC.":".$IP."<br/>";
@@ -525,8 +538,10 @@ function NewComputersFromArp($computers) {
 					$computer->hostname="[".$vendor."]";
 				
 				$newComputers->add($computer);
-			}
+			}			
 		}
+		
+		if ($newComputers->count() > $max) break;
 	}	
 	return $newComputers;
 }
@@ -542,14 +557,23 @@ function GetVendor($MAC) {
   curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization )); // **Inject Token into Header**
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+  
+  //Max one call per second
+  $elapseExecVendor = time()-$lastExecVendor;
+  if ($elapseExecVendor<1) sleep(1);
   $data = curl_exec($ch);
+  $lastExecVendor=time();
   $vendor = json_decode($data);
-  if (isset($vendor->data))
+  if (isset($vendor->data)) {
 	$response = $vendor->data->organization_name;
+	if ($response=="Vendor not found")
+		$response = "Unknown";
+  }
+  else if (isset($vendor->errors)) {
+	$response = $vendor->errors->detail;
+  }
   else
 	$response = "Unknown";
-  if ($response=="Vendor not found")
-	  $response="Unknown";
   return $response;
 }
 

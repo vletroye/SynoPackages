@@ -75,6 +75,20 @@
 			} else {
 				$computer = $computers->GetByIp($ip);
 			}
+			
+			//Check IP first
+			if ($computer->nas == 1)
+			{
+				$eth = $computer->ethernet;
+				$ip = CleanValue(`ifconfig $eth | grep inet | awk '{print $2}' | cut -f2 -d":"`);
+			}
+			else
+				$ip = GetCurrentIP($computer->mac);			
+			
+			if ($ip != "" && $ip != '0.0.0.0')
+				$computer->ip = $ip;
+			
+			//Check next ACPI state
 			$result = CheckAcpiOnLan($computer->ip);
 			$computer->acpiOnLan = $result["returnCode"];
 			if (!$computer->os) {
@@ -87,6 +101,35 @@
 			ReleaseLock($fp);
 			$response = $computer;
 			break;			
+
+		case "CheckIp":
+			$id = $_GET["id"];
+			$fp = GetLock();
+			$computers = LoadComputers();
+			$computer = $computers->GetById($id);			
+						
+			if ($computer->nas == 1)
+			{
+				$eth = $computer->ethernet;
+				$result = CleanValue(`ifconfig $eth | grep inet | awk '{print $2}' | cut -f2 -d":"`);
+			}
+			else
+				$result = GetCurrentIP($computer->mac);
+			
+			$computer->ip = $result;
+			SaveComputers($computers);
+			if ($result == '0.0.0.0') {
+				//Check if last known IP is reused
+				foreach ($computers->items as $other) {
+					if (($computer->ip == $other->ip) && ($computer->mac == $other->mac)) {
+						$computer->ip = '0.0.0.0';
+						break;
+					}
+				}
+			}			
+			ReleaseLock($fp);
+			$response = $computer;
+			break;
 			
 		case "NetCall":
 			$id = $_GET["id"];
@@ -308,6 +351,31 @@
 			ReleaseLock($fp);
 			break;
 			
+		case "InitComputers":
+			if (!file_exists(TEMPPATH)) {
+				mkdir(TEMPPATH, 0777, true);
+				file_put_contents(TEMPPATH.LOCK, "");
+			}
+			if (!file_exists(TEMPPATH.LOCK)) {
+				file_put_contents(TEMPPATH.LOCK, "");
+			}			
+			$fp = GetLock();
+			
+			$computers = LoadComputers();
+			$newcomputers = NewComputersFromArp($computers, rand(2,5));
+			foreach ($newcomputers->items as $computer) {						
+				//echo "Add ".$computer->mac." with ".$computer->ip."<br>";
+				$computers->add($computer);
+			}			
+			SaveComputers($computers);
+			$items = $computers->count();
+			if ($newcomputers->count() == 0) $items=0;
+			
+			$response = array('newItems' => $items);
+
+			ReleaseLock($fp);
+			break;
+			
 		case "Flush":
 			//echo 'Delete All <BR />';
 			//echo 'ip  neigh  flush  all<BR />';
@@ -362,36 +430,7 @@
 		
 		case "LogOut":
 			unset($_SESSION['AcpiOnLanUser']);
-			break;
-			
-		case "CheckIp":
-			$id = $_GET["id"];
-			$fp = GetLock();
-			$computers = LoadComputers();
-			$computer = $computers->GetById($id);			
-						
-			if ($computer->nas == 1)
-			{
-				$eth = $computer->ethernet;
-				$result = CleanValue(`ifconfig $eth | grep inet | awk '{print $2}' | cut -f2 -d":"`);
-			}
-			else
-				$result = GetCurrentIP($computer->mac);
-			
-			$computer->ip = $result;
-			SaveComputers($computers);
-			if ($result == '0.0.0.0') {
-				//Check if last known IP is reused
-				foreach ($computers->items as $other) {
-					if (($computer->ip == $other->ip) && ($computer->mac == $other->mac)) {
-						$computer->ip = '';
-						break;
-					}
-				}
-			}			
-			ReleaseLock($fp);
-			$response = $computer;
-			break;
+			break;		
 			
 		case "Backup":
 			if (file_exists("./config/Computers.json")) {
@@ -447,6 +486,6 @@
 	
 	header('Content-Type: application/json');
 	$return = json_encode($response);
-	
+			
 	echo $return;
 ?>

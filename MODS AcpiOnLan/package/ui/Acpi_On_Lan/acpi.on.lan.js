@@ -1,5 +1,5 @@
 var computers; //list of Computers on the LAN
-var refreshIndex; //index of Computer that status is currently being refreshed.
+var refreshIndex=999999; //index of Computer that status is currently being refreshed.
 var notifications = 0; //current number of event notifications displayed;
 var maxNotifications = 10; //max event notifications that can be displayed simultaneously
 var features = ['hib', 'slp', 'stb', 'shd', 'rst', 'wol'];
@@ -12,6 +12,8 @@ var lastError; // Last Ajax error
 var concurrentCheck = 2;  //number of Computers to be check simultaneously with the current one
 var currentCheck = 0;
 var subnet = "192.168.0.";
+var searchValue = "";
+var searchIndex = 0;
 
 var mouseMove = 0;
 
@@ -68,6 +70,26 @@ $(document).ready(function(){
 	LoadComputers();
 });
 
+
+function InitialLoadComputers() {
+	$.getJSON( "acpi.services.php", { service: 'InitComputers'} )
+	.done(function( data ) {
+		var cell = document.getElementById('InitWaitText');
+		if (data.newItems == 0) {
+			window.location.reload();
+		} else {
+			if (cell)
+				cell.innerHTML = data.newItems + " devices found.";
+			InitialLoadComputers();
+		}
+	}).fail(function (jqXHR, textStatus, errorThrown) {
+		var cell = document.getElementById('InitWaitText');
+		LoadImage('InitWaitSpin', 'blocked.png', '');
+		cell.innerHTML = "Initialization failed";
+		DisplayError(jqXHR, textStatus, errorThrown);
+	});
+}
+
 function LoadComputers() {
 	$.getJSON( "acpi.services.php", { service: 'Computers' } )
 	.done(function( data ) {
@@ -79,11 +101,13 @@ function LoadComputers() {
 				var cell = document.getElementById('InitWaitText');
 				if ($.isEmptyObject(data.items)) {
 					LoadImage('InitWaitSpin', 'blocked.png', '');
-					cell.innerHTML = "Initialization didn't find any network access";
+					if (cell)
+						cell.innerHTML = "Initialization didn't find any network access";
 				} else {
 					LoadImage('InitWaitSpin', 'processing.gif', '');
-					cell.innerHTML = "Please wait while scanning your network(s)";
-					window.location.reload();
+					if (cell)
+						cell.innerHTML = "Please wait while scanning your network(s)";
+					InitialLoadComputers();						
 				}
 			}).fail(function (jqXHR, textStatus, errorThrown) {
 				var cell = document.getElementById('InitWaitText');
@@ -102,35 +126,37 @@ function LoadComputers() {
 }
 
 function RefreshNextComputer() {
-	var key = Object.keys(computers.items)[refreshIndex];
-	refreshIndex += 1;
-	var computer = computers.items[key];
-	if (computer) {
-		var row = $('#row'+computer.id);
-		if (row.is(':visible')) {
-			// Update only "visible" Computers
-			// Update the status only if the last update is older than a specified delay.
-			var update = new Date(computer.update);
-			if (isValidDate(update)) {
-				update.setMinutes(update.getMinutes() + refreshDelay);
-			} else {
-				update = new Date();
-			}
-			var now = new Date();
-			if (update < now) {
-				CheckComputerState(computer);
-				if (currentCheck < concurrentCheck) {
+	if (refreshIndex != 999999) {
+		var key = Object.keys(computers.items)[refreshIndex];
+		refreshIndex += 1;
+		var computer = computers.items[key];
+		if (computer) {
+			var row = $('#row'+computer.id);
+			if (row.is(':visible')) {
+				// Update only "visible" Computers
+				// Update the status only if the last update is older than a specified delay.
+				var update = new Date(computer.update);
+				if (isValidDate(update)) {
+					update.setMinutes(update.getMinutes() + refreshDelay);
+				} else {
+					update = new Date();
+				}
+				var now = new Date();
+				if (update < now) {
+					CheckComputerState(computer);
+					if (currentCheck < concurrentCheck) {
+						RefreshNextComputer();
+					}
+				} else {
 					RefreshNextComputer();
 				}
 			} else {
+				// Skip "hidden" Computers
 				RefreshNextComputer();
 			}
 		} else {
-			// Skip "hidden" Computers
-			RefreshNextComputer();
+			//Notification.show("Status update completed", "Success");
 		}
-	} else {
-		//Notification.show("Status update completed", "Success");
 	}
 }
 
@@ -141,8 +167,10 @@ function isValidDate(d) {
 }
 
 function StopUpdate() {
-	refreshIndex = 999999;
-	Notification.show("Stopping the update of devices' status", "Warning");
+	if (refreshIndex != 999999) {
+		refreshIndex = 999999;
+		Notification.show("Stopping the update of devices' status", "Warning");
+	}
 }
 
 function ForcedUpdate() {
@@ -454,12 +482,84 @@ $(function(){
 			pingDevice: {
 				name: "Ping a Device",
 				callback: function(key, options) {
+					StopUpdate();
 					PingDevice();
+				}
+			},
+			Backup: {
+				name: "Backup",
+				callback: function(key, options) {
+					StopUpdate();
+					Backup();
+				}
+			},
+			Restore: {
+				name: "Restore",
+				callback: function(key, options) {
+					StopUpdate();
+					Restore();
+				}
+			},
+			Import: {
+				name: "Import",
+				callback: function(key, options) {
+					StopUpdate();
+					Import();
+				}
+			},
+			Ethernet: {
+				name: "Refresh Eth",
+				callback: function(key, options) {
+					StopUpdate();
+					RefreshEth();
+				}
+			},
+			Icon: {
+				name: "Upload Icon",
+				callback: function(key, options) {
+					StopUpdate();
+					UploadIcon();
+				}
+			}
+		}
+    });
+});
+
+$(function(){
+    $('#devices').on('click', function(e) {
+        e.preventDefault();
+        $('.context-menu-devices').contextMenu();
+    });
+	
+    $.contextMenu({
+        selector: '.context-menu-devices',
+		trigger: 'none',
+        items: {		
+			Flush: {
+				name: "Flush",
+				callback: function(key, options) {
+					StopUpdate();
+					Flush();
+				}
+			},
+			Reload: {
+				name: "Reload",
+				callback: function(key, options) {
+					StopUpdate();
+					Reload();
+				}
+			},
+			Update: {
+				name: "Update",
+				callback: function(key, options) {
+					StopUpdate();
+					LocalUpdate();
 				}
 			},
 			ForcedCheck: {
 				name: "Update All",
 				callback: function(key, options) {
+					StopUpdate();
 					ForcedUpdate();
 				}
 			},
@@ -472,37 +572,8 @@ $(function(){
 			ResetAll: {
 				name: "Reset All",
 				callback: function(key, options) {
+					StopUpdate();
 					ResetAll();
-				}
-			},
-			Backup: {
-				name: "Backup",
-				callback: function(key, options) {
-					Backup();
-				}
-			},
-			Restore: {
-				name: "Restore",
-				callback: function(key, options) {
-					Restore();
-				}
-			},
-			Import: {
-				name: "Import",
-				callback: function(key, options) {
-					Import();
-				}
-			},
-			Ethernet: {
-				name: "Refresh Eth",
-				callback: function(key, options) {
-					RefreshEth();
-				}
-			},
-			Icon: {
-				name: "Upload Icon",
-				callback: function(key, options) {
-					UploadIcon();
 				}
 			}
 		}
@@ -513,15 +584,17 @@ function PingDevice() {
 	HideMenus();
 	$.acpiZoom.disable( true );
 	bootbox.prompt({
-		title: "Please enter an IP address", 
+		title: "Please enter an ! IP address", 
 		value: subnet,
 		callback: function(ip) {
 			$.acpiZoom.enable( true );
 			ShowMenus();
-			if (!ValidateIPaddress(ip)) {
-				Notification.show("not a valid IP", "Warning");
-			} else {
-				Ping(ip);
+			if(ip!=null) {
+				if (!ValidateIPaddress(ip)) {
+					Notification.show("not a valid IP", "Warning");
+				} else {
+					Ping(ip);
+				}
 			}
 		}
 	});	
@@ -596,6 +669,60 @@ function LogOut() {
 		Notification.show("Log Out failed", "Error");
 		DisplayError(jqXHR, textStatus, errorThrown);
 	});
+}
+
+function Search() {
+	StopUpdate();
+	HideMenus();
+	$.acpiZoom.disable( true );
+	bootbox.prompt({
+		title: "Search", 
+		value: searchValue,
+		callback: function(text){
+			if(text!=null) {
+				if (searchValue == text) {
+					searchIndex++;
+				} else {
+					searchIndex=0;
+				}
+				searchValue = text;
+				if (!searchAndHighlight(text)) {
+					alert(text + " not found");
+					searchValue="";
+				}
+			} else {
+				searchValue = "";
+			}					
+			$.acpiZoom.enable( true );
+			ShowMenus();
+			
+			if (searchValue=='') {
+				var next = $('#searchNext');
+				next.fadeOut();
+				var previous = $('#searchPrevious');
+				previous.fadeOut();
+			} else {
+				var next = $('#searchNext');
+				next.fadeIn();
+				var previous = $('#searchPrevious');
+				previous.fadeIn();
+			}
+		}
+	});	
+}
+
+function SearchNext() {
+	if (searchValue) {
+		searchIndex++;
+		searchAndHighlight(searchValue);
+	}
+}
+
+function SearchPrevious() {
+	if (searchValue && searchIndex>0) {
+		searchIndex--;
+		searchAndHighlight(searchValue);
+	}
 }
 
 function Reload() {
@@ -694,13 +821,13 @@ function AcpiOnLanAnswer(computer, os, hostname) {
 function CheckIpAnswer(computer, ip) {
 	var cell = document.getElementById('ip'+computer.id);
 	LoadImage('img'+computer.id, computer.icon);
-	if (ip == computer.ip) {
-		SetIPOn(computer.id);
-		Notification.show("IP unchanged for "+computer.mac, 'Info');
-	} else if (ip == '') {
+	if (ip == '' || ip == '0.0.0.0') {
 		SetIPOff(computer.id);
 		Notification.show("No IP assigned for "+computer.mac, 'Info');
 		ComputerWithoutPing(computer.id);
+	} else if (ip == computer.ip) {
+		SetIPOn(computer.id);
+		Notification.show("IP unchanged for "+computer.mac, 'Info');
 	} else if (ip != '0.0.0.0') {
 		SetIPOn(computer.id);
 		cell.innerHTML = htmlEncode(ip);
@@ -1508,4 +1635,51 @@ function DisplayError(jqXHR, textStatus, errorThrown) {
 
 function ShowLastError() {
 	alert(lastError.responseText);
+}
+
+function searchAndHighlight(searchTerm) {
+    if (searchTerm) {
+		var aTags = document.getElementsByTagName("tr");
+		var found=-1;
+		var firstFound=-1;
+		var item;
+		var previousItem;
+		var match=0;
+
+		for (var i = 0; i < aTags.length; i++) {
+		  aTags[i].classList.remove('highlighted');
+		  if (aTags[i].style.display != 'none' && aTags[i].textContent.toLowerCase().includes(searchTerm.toLowerCase())) {			  
+			if (firstFound==-1)
+				firstFound=i;
+			if (match == searchIndex) {
+				found = i;
+			}
+			match++;
+		  }
+		}		
+
+		if(found==-1 && firstFound>=0) {
+			found=firstFound;
+			searchIndex=1;
+		}
+
+		if (found>=0) {
+			item = aTags[found];
+
+			previousItem = document.getElementById("headRow");
+			var previous = 0;
+			for(var i = found-1;i >= 0; i--) {
+				if (aTags[i].id.startsWith("row") && aTags[i].style.display != 'none') {
+					previousItem = aTags[i];
+					previous++;
+					if (previous > 3) break;
+				}
+			}
+		
+			item.classList.add('highlighted');
+			previousItem.scrollIntoView();
+            //$(window).scrollTop(found.offsetTop);
+		}
+    }
+    return (found>0);
 }

@@ -53,7 +53,7 @@
 	<link href="acpi.on.lan.css.php" rel="stylesheet" type="text/css" />	
 </head>
 
-<!-- oncontextmenu="return false;" is used to disable the context menu -->
+<!-- oncontextmenu="return false;" is used to disable the context menu (= mouse right-click) -->
 <body id='acpi-on-lan' oncontextmenu="return false;">
 <!--body id='acpi-on-lan' style:visibility="hidden"-->
 <?php
@@ -105,11 +105,7 @@
 		if ($skipInit == 0) {		
 			// List of Computers available => Look for changes
 			// ------------------------------------------------------------------------------------
-			if ($computers->count() == 0) {
-				$computers = SearchNewComputers($computers->NetMAC);
-			} else {
-				$computers = UpdateComputers($computers);
-			}
+			$computers = UpdateComputers($computers);
 			SaveComputers($computers);
 		}
 		
@@ -288,7 +284,7 @@ function ShowComputers($computers, $settings) {
 	echo "\r\n<br/><br/><br/>";
 	echo "\r\n<table cellspacing='5' class='ACPItable'>";
 	echo "\r\n<thead>";
-	echo "\r\n<tr>";
+	echo "\r\n<tr id='headRow'>";
 		echo "\r\n<th>Device<br/><br/></th>";
 		echo "\r\n<th></th>";
 		if ($mobileView == 0) {
@@ -450,37 +446,39 @@ function ShowComputers($computers, $settings) {
 		$visibility = "style='display:none'";
 	}
 	if ($mobileView == 0) {
-		$MenuReload="Reload";
-		$MenuFlush="Flush";
-		$MenuUpdate="Update";
+		$MenuDevices="Devices";
 		$MenuShow="Show All";
 		$MenuHide="Hide";
 		$MenuLogout="Log Out";
+		$MenuLogout="Log Out";
+		$MenuSearchPrevious="<";
+		$MenuSearch="Search";
+		$MenuSearchNext=">";
 		$MenuAdvanced="Advanced";
 		$MenuHelp="Help";
 	} else {
-		$MenuReload="Reload";
-		$MenuFlush="Flush";
-		$MenuUpdate="Upd";
+		$MenuDevices="Devices";
 		$MenuShow="Show";
 		$MenuHide="Hide";
 		$MenuLogout="Exit";
+		$MenuSearchPrevious="<";
+		$MenuSearch="Find";
+		$MenuSearchNext=">";
 		$MenuAdvanced="Adv";
 		$MenuHelp="Help";
 	}
 	echo "\r\n<div class='menus' id='ACPImenus'>";
-	echo "\r\n<div id='reload' class='menu ACPIHaptic'><a href='#' onclick='Reload(); return false' title='Reload an updated list of devices'>".$MenuReload."</a></div> ";
-	echo "\r\n<div id='flush' class='menu ACPIHaptic'><a href='#' onclick='Flush(); return false' title='Flush the network [clear ARP table]'>".$MenuFlush."</a></div> ";
-	echo "\r\n<div id='localUpdate' class='menu ACPIHaptic'><a href='#' onclick='LocalUpdate(); return false' title='Update only status older than 10 minutes'>".$MenuUpdate."</a></div> ";
-	//echo "\r\n<div id='forcedUpdate' class='menu ACPIHaptic'><a href='#' onclick='ForcedUpdate(); return false' title='Update all status'>Forced Update</a></div> ";
-	//echo "\r\n<div id='resetAll' class='menu ACPIHaptic'><a href='#' onclick='ResetAll(); return false' title='Delete all devices in the list'>Reset All</a></div> ";
+	echo "\r\n<div id='devices' class='menu context-menu-devices ACPIHaptic'><a href='#' onclick='return false' title='Devices'>".$MenuDevices."</a></div> ";
 	echo "\r\n<div id='showAll' class='menu ACPIHaptic' ".$visibility."><a href='#' onclick='ShowAll(); return false'>".$MenuShow."</a></div> ";
 	echo "\r\n<div id='hideAll' class='menu ACPIHaptic' style='display:none'><a href='#' onclick='HideAll(); return false'>".$MenuHide."</a></div> ";
 	if (file_exists("service/AcpiOnLanInstaller.msi")) {
-	echo "\r\n<div id='installAcpiSrvc' class='menu ACPIHaptic'><a href='#' onclick='GetService(); return false' title='Install the Windows AcpiOnLan service'>Install Srvc</a></div> ";
-	}
+		echo "\r\n<div id='installAcpiSrvc' class='menu ACPIHaptic'><a href='#' onclick='GetService(); return false' title='Install the Windows AcpiOnLan service'>Install Srvc</a></div> ";
+	}	
 	echo "\r\n<div id='logout' class='menu ACPIHaptic'><a href='#' onclick='LogOut(); return false' title='Exit'>".$MenuLogout."</a></div> ";
 	echo "\r\n<div id='advanced' class='menu context-menu-advanced ACPIHaptic'><a href='#' onclick='return false' title='Advanced'>".$MenuAdvanced."</a></div> ";
+	echo "\r\n<div id='searchPrevious' class='menu ACPIHaptic' style='display:none'><a href='#' onclick='SearchPrevious(); return false' title='SearchPrevious'>".$MenuSearchPrevious."</a></div> ";
+	echo "\r\n<div id='search' class='menu ACPIHaptic'><a href='#' onclick='Search(); return false' title='Search'>".$MenuSearch."</a></div> ";
+	echo "\r\n<div id='searchNext' class='menu ACPIHaptic' style='display:none'><a href='#' onclick='SearchNext(); return false' title='SearchNext'>".$MenuSearchNext."</a></div> ";
 	echo "\r\n<a href='help.html' target='_blank' class='menu'>".$MenuHelp."</a>";
 	echo "\r\n</div>";
 }
