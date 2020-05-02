@@ -11,11 +11,13 @@
 
 namespace Symfony\Component\Config\Tests\Definition;
 
-use Symfony\Component\Config\Definition\PrototypedArrayNode;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\ArrayNode;
+use Symfony\Component\Config\Definition\PrototypedArrayNode;
 use Symfony\Component\Config\Definition\ScalarNode;
+use Symfony\Component\Config\Definition\VariableNode;
 
-class PrototypedArrayNodeTest extends \PHPUnit_Framework_TestCase
+class PrototypedArrayNodeTest extends TestCase
 {
     public function testGetDefaultValueReturnsAnEmptyArrayForPrototypes()
     {
@@ -30,8 +32,8 @@ class PrototypedArrayNodeTest extends \PHPUnit_Framework_TestCase
         $node = new PrototypedArrayNode('root');
         $prototype = new ArrayNode(null, $node);
         $node->setPrototype($prototype);
-        $node->setDefaultValue(array('test'));
-        $this->assertEquals(array('test'), $node->getDefaultValue());
+        $node->setDefaultValue(['test']);
+        $this->assertEquals(['test'], $node->getDefaultValue());
     }
 
     // a remapped key (e.g. "mapping" -> "mappings") should be unset after being used
@@ -45,12 +47,12 @@ class PrototypedArrayNodeTest extends \PHPUnit_Framework_TestCase
         $prototype = new ScalarNode(null, $mappingsNode);
         $mappingsNode->setPrototype($prototype);
 
-        $remappings = array();
-        $remappings[] = array('mapping', 'mappings');
+        $remappings = [];
+        $remappings[] = ['mapping', 'mappings'];
         $node->setXmlRemappings($remappings);
 
-        $normalized = $node->normalize(array('mapping' => array('foo', 'bar')));
-        $this->assertEquals(array('mappings' => array('foo', 'bar')), $normalized);
+        $normalized = $node->normalize(['mapping' => ['foo', 'bar']]);
+        $this->assertEquals(['mappings' => ['foo', 'bar']], $normalized);
     }
 
     /**
@@ -64,12 +66,12 @@ class PrototypedArrayNodeTest extends \PHPUnit_Framework_TestCase
      * The above should finally be mapped to an array that looks like this
      * (because "id" is the key attribute).
      *
-     *     array(
-     *         'things' => array(
+     *     [
+     *         'things' => [
      *             'option1' => 'foo',
      *             'option2' => 'bar',
-     *         )
-     *     )
+     *         ]
+     *     ]
      */
     public function testMappedAttributeKeyIsRemoved()
     {
@@ -81,12 +83,12 @@ class PrototypedArrayNodeTest extends \PHPUnit_Framework_TestCase
         $prototype->addChild(new ScalarNode('foo'));
         $node->setPrototype($prototype);
 
-        $children = array();
-        $children[] = array('id' => 'item_name', 'foo' => 'bar');
+        $children = [];
+        $children[] = ['id' => 'item_name', 'foo' => 'bar'];
         $normalized = $node->normalize($children);
 
-        $expected = array();
-        $expected['item_name'] = array('foo' => 'bar');
+        $expected = [];
+        $expected['item_name'] = ['foo' => 'bar'];
         $this->assertEquals($expected, $normalized);
     }
 
@@ -105,12 +107,12 @@ class PrototypedArrayNodeTest extends \PHPUnit_Framework_TestCase
         $prototype->addChild(new ScalarNode('id')); // the key attribute will remain
         $node->setPrototype($prototype);
 
-        $children = array();
-        $children[] = array('id' => 'item_name', 'foo' => 'bar');
+        $children = [];
+        $children[] = ['id' => 'item_name', 'foo' => 'bar'];
         $normalized = $node->normalize($children);
 
-        $expected = array();
-        $expected['item_name'] = array('id' => 'item_name', 'foo' => 'bar');
+        $expected = [];
+        $expected['item_name'] = ['id' => 'item_name', 'foo' => 'bar'];
         $this->assertEquals($expected, $normalized);
     }
 
@@ -119,50 +121,50 @@ class PrototypedArrayNodeTest extends \PHPUnit_Framework_TestCase
         $node = $this->getPrototypeNodeWithDefaultChildren();
         $node->setAddChildrenIfNoneSet();
         $this->assertTrue($node->hasDefaultValue());
-        $this->assertEquals(array(array('foo' => 'bar')), $node->getDefaultValue());
+        $this->assertEquals([['foo' => 'bar']], $node->getDefaultValue());
 
         $node = $this->getPrototypeNodeWithDefaultChildren();
         $node->setKeyAttribute('foobar');
         $node->setAddChildrenIfNoneSet();
         $this->assertTrue($node->hasDefaultValue());
-        $this->assertEquals(array('defaults' => array('foo' => 'bar')), $node->getDefaultValue());
+        $this->assertEquals(['defaults' => ['foo' => 'bar']], $node->getDefaultValue());
 
         $node = $this->getPrototypeNodeWithDefaultChildren();
         $node->setKeyAttribute('foobar');
         $node->setAddChildrenIfNoneSet('defaultkey');
         $this->assertTrue($node->hasDefaultValue());
-        $this->assertEquals(array('defaultkey' => array('foo' => 'bar')), $node->getDefaultValue());
+        $this->assertEquals(['defaultkey' => ['foo' => 'bar']], $node->getDefaultValue());
 
         $node = $this->getPrototypeNodeWithDefaultChildren();
         $node->setKeyAttribute('foobar');
-        $node->setAddChildrenIfNoneSet(array('defaultkey'));
+        $node->setAddChildrenIfNoneSet(['defaultkey']);
         $this->assertTrue($node->hasDefaultValue());
-        $this->assertEquals(array('defaultkey' => array('foo' => 'bar')), $node->getDefaultValue());
+        $this->assertEquals(['defaultkey' => ['foo' => 'bar']], $node->getDefaultValue());
 
         $node = $this->getPrototypeNodeWithDefaultChildren();
         $node->setKeyAttribute('foobar');
-        $node->setAddChildrenIfNoneSet(array('dk1', 'dk2'));
+        $node->setAddChildrenIfNoneSet(['dk1', 'dk2']);
         $this->assertTrue($node->hasDefaultValue());
-        $this->assertEquals(array('dk1' => array('foo' => 'bar'), 'dk2' => array('foo' => 'bar')), $node->getDefaultValue());
+        $this->assertEquals(['dk1' => ['foo' => 'bar'], 'dk2' => ['foo' => 'bar']], $node->getDefaultValue());
 
         $node = $this->getPrototypeNodeWithDefaultChildren();
-        $node->setAddChildrenIfNoneSet(array(5, 6));
+        $node->setAddChildrenIfNoneSet([5, 6]);
         $this->assertTrue($node->hasDefaultValue());
-        $this->assertEquals(array(0 => array('foo' => 'bar'), 1 => array('foo' => 'bar')), $node->getDefaultValue());
+        $this->assertEquals([0 => ['foo' => 'bar'], 1 => ['foo' => 'bar']], $node->getDefaultValue());
 
         $node = $this->getPrototypeNodeWithDefaultChildren();
         $node->setAddChildrenIfNoneSet(2);
         $this->assertTrue($node->hasDefaultValue());
-        $this->assertEquals(array(array('foo' => 'bar'), array('foo' => 'bar')), $node->getDefaultValue());
+        $this->assertEquals([['foo' => 'bar'], ['foo' => 'bar']], $node->getDefaultValue());
     }
 
     public function testDefaultChildrenWinsOverDefaultValue()
     {
         $node = $this->getPrototypeNodeWithDefaultChildren();
         $node->setAddChildrenIfNoneSet();
-        $node->setDefaultValue(array('bar' => 'foo'));
+        $node->setDefaultValue(['bar' => 'foo']);
         $this->assertTrue($node->hasDefaultValue());
-        $this->assertEquals(array(array('foo' => 'bar')), $node->getDefaultValue());
+        $this->assertEquals([['foo' => 'bar']], $node->getDefaultValue());
     }
 
     protected function getPrototypeNodeWithDefaultChildren()
@@ -176,5 +178,164 @@ class PrototypedArrayNodeTest extends \PHPUnit_Framework_TestCase
         $node->setPrototype($prototype);
 
         return $node;
+    }
+
+    /**
+     * Tests that when a key attribute is mapped, that key is removed from the array.
+     * And if only 'value' element is left in the array, it will replace its wrapper array.
+     *
+     *     <things>
+     *         <option id="option1" value="value1">
+     *     </things>
+     *
+     * The above should finally be mapped to an array that looks like this
+     * (because "id" is the key attribute).
+     *
+     *     [
+     *         'things' => [
+     *             'option1' => 'value1'
+     *         ]
+     *     ]
+     *
+     * It's also possible to mix 'value-only' and 'non-value-only' elements in the array.
+     *
+     * <things>
+     *     <option id="option1" value="value1">
+     *     <option id="option2" value="value2" foo="foo2">
+     * </things>
+     *
+     * The above should finally be mapped to an array as follows
+     *
+     * [
+     *     'things' => [
+     *         'option1' => 'value1',
+     *         'option2' => [
+     *             'value' => 'value2',
+     *             'foo' => 'foo2'
+     *         ]
+     *     ]
+     * ]
+     *
+     * The 'value' element can also be ArrayNode:
+     *
+     * <things>
+     *     <option id="option1">
+     *         <value>
+     *            <foo>foo1</foo>
+     *            <bar>bar1</bar>
+     *         </value>
+     *     </option>
+     * </things>
+     *
+     * The above should be finally be mapped to an array as follows
+     *
+     * [
+     *     'things' => [
+     *         'option1' => [
+     *             'foo' => 'foo1',
+     *             'bar' => 'bar1'
+     *         ]
+     *     ]
+     * ]
+     *
+     * If using VariableNode for value node, it's also possible to mix different types of value nodes:
+     *
+     * <things>
+     *     <option id="option1">
+     *         <value>
+     *            <foo>foo1</foo>
+     *            <bar>bar1</bar>
+     *         </value>
+     *     </option>
+     *     <option id="option2" value="value2">
+     * </things>
+     *
+     * The above should be finally mapped to an array as follows
+     *
+     * [
+     *     'things' => [
+     *         'option1' => [
+     *             'foo' => 'foo1',
+     *             'bar' => 'bar1'
+     *         ],
+     *         'option2' => 'value2'
+     *     ]
+     * ]
+     *
+     * @dataProvider getDataForKeyRemovedLeftValueOnly
+     */
+    public function testMappedAttributeKeyIsRemovedLeftValueOnly($value, $children, $expected)
+    {
+        $node = new PrototypedArrayNode('root');
+        $node->setKeyAttribute('id', true);
+
+        // each item under the root is an array, with one scalar item
+        $prototype = new ArrayNode(null, $node);
+        $prototype->addChild(new ScalarNode('id'));
+        $prototype->addChild(new ScalarNode('foo'));
+        $prototype->addChild($value);
+        $node->setPrototype($prototype);
+
+        $normalized = $node->normalize($children);
+        $this->assertEquals($expected, $normalized);
+    }
+
+    public function getDataForKeyRemovedLeftValueOnly()
+    {
+        $scalarValue = new ScalarNode('value');
+
+        $arrayValue = new ArrayNode('value');
+        $arrayValue->addChild(new ScalarNode('foo'));
+        $arrayValue->addChild(new ScalarNode('bar'));
+
+        $variableValue = new VariableNode('value');
+
+        return [
+           [
+               $scalarValue,
+               [
+                   ['id' => 'option1', 'value' => 'value1'],
+               ],
+               ['option1' => 'value1'],
+           ],
+
+           [
+               $scalarValue,
+               [
+                   ['id' => 'option1', 'value' => 'value1'],
+                   ['id' => 'option2', 'value' => 'value2', 'foo' => 'foo2'],
+               ],
+               [
+                   'option1' => 'value1',
+                   'option2' => ['value' => 'value2', 'foo' => 'foo2'],
+               ],
+           ],
+
+           [
+               $arrayValue,
+               [
+                   [
+                       'id' => 'option1',
+                       'value' => ['foo' => 'foo1', 'bar' => 'bar1'],
+                   ],
+               ],
+               [
+                   'option1' => ['foo' => 'foo1', 'bar' => 'bar1'],
+               ],
+           ],
+
+           [$variableValue,
+               [
+                   [
+                       'id' => 'option1', 'value' => ['foo' => 'foo1', 'bar' => 'bar1'],
+                   ],
+                   ['id' => 'option2', 'value' => 'value2'],
+               ],
+               [
+                   'option1' => ['foo' => 'foo1', 'bar' => 'bar1'],
+                   'option2' => 'value2',
+               ],
+           ],
+        ];
     }
 }

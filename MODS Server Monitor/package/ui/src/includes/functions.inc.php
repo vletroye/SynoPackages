@@ -809,8 +809,10 @@ namespace {
             $url .= dirname($_SERVER['SCRIPT_NAME']);
             $url = str_replace('\\', '', $url);
         }
-        $url = rtrim($url, '/') . '/';
-
+        //MODS_ServerMonitor needs to open index.php
+		//$url = rtrim($url, '/') . '/';
+		$url = rtrim($url, '/').'/index.php';	
+		
         if ($params != null) {
             $url .= '?';
             if (is_array($params)) {

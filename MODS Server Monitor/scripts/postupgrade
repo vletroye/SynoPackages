@@ -34,7 +34,7 @@ HOST=`cat "$ETC_DIR/mysql_host"`
 ConfigFile="$SYNOPKG_PKGDEST/ui/config.php"
 
 echo "<?php" > "$ConfigFile"
-echo "\$url=(isset(\$_SERVER['HTTPS']) ? 'https' : 'http') . '://' . \$_SERVER[HTTP_HOST] . dirname(\$_SERVER[REQUEST_URI]);" >> "$ConfigFile"
+echo "\$url=(isset(\$_SERVER['HTTPS']) ? 'https' : 'http') . '://' . \$_SERVER['HTTP_HOST'] . dirname(\$_SERVER['REQUEST_URI']);" >> "$ConfigFile"
 echo "define('PSM_DB_PREFIX', '');" >> "$ConfigFile"
 echo "define('PSM_DB_USER', '$pkgwizard_srvmon_account');" >> "$ConfigFile"
 echo "define('PSM_DB_PASS', '$pkgwizard_srvmon_password');" >> "$ConfigFile"

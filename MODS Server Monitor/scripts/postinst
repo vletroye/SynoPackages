@@ -85,6 +85,8 @@ echo `date` "Checking access: $MYSQLSHOW --user=$pkgwizard_admin_account --passw
 RESULT=`$MYSQLSHOW --user=$pkgwizard_admin_account --password=$pkgwizard_admin_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
 echo `date` "Results: $RESULT"
 cat $ERRLOG
+CreateDB=1
+
 if [ "$RESULT" == "$pkgwizard_db_Name" ]; then
   # Check that the database can be accessed with the given account
   echo `date` "Checking access on $pkgwizard_db_Name: $MYSQLSHOW --user=$pkgwizard_srvmon_account --password=********** $pkgwizard_db_Name | grep -v Wildcard | grep -o $pkgwizard_db_Name"
@@ -99,31 +101,40 @@ if [ "$RESULT" == "$pkgwizard_db_Name" ]; then
   else
     echo `date` "Existing database $pkgwizard_db_Name is going to be reused"
     echo "Existing database $pkgwizard_db_Name is going to be reused" > $SYNOPKG_TEMP_LOGFILE
-    exit 0
+	
+	pkgwizard_server_name=`cat "$ETC_DIR/server_name"`
+	pkgwizard_db_Name=`cat "$ETC_DIR/database_name"`
+	pkgwizard_srvmon_account=`cat "$ETC_DIR/mysql_account"`
+	pkgwizard_srvmon_password=`cat "$ETC_DIR/mysql_password"`
+	PORT=`cat "$ETC_DIR/mysql_port"`
+	HOST=`cat "$ETC_DIR/mysql_host"`
+    CreateDB=0
   fi
 fi
 
-# Create the database
-Q1="CREATE DATABASE IF NOT EXISTS $pkgwizard_db_Name COLLATE = utf8_unicode_ci;"
-Q2="GRANT USAGE ON *.* TO $pkgwizard_srvmon_account@localhost IDENTIFIED BY '$pkgwizard_srvmon_password';"
-Q3="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $pkgwizard_srvmon_account@localhost;"
-Q4="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $pkgwizard_admin_account@localhost;"
-Q5="FLUSH PRIVILEGES;"
-SQL="${Q1}${Q2}${Q3}${Q4}${Q5}"
+if [[ "$CreateDB" -eq 1 ]]; then
+	# Create the database
+	Q1="CREATE DATABASE IF NOT EXISTS $pkgwizard_db_Name COLLATE = utf8_unicode_ci;"
+	Q2="GRANT USAGE ON *.* TO $pkgwizard_srvmon_account@localhost IDENTIFIED BY '$pkgwizard_srvmon_password';"
+	Q3="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $pkgwizard_srvmon_account@localhost;"
+	Q4="GRANT ALL PRIVILEGES ON $pkgwizard_db_Name.* TO $pkgwizard_admin_account@localhost;"
+	Q5="FLUSH PRIVILEGES;"
+	SQL="${Q1}${Q2}${Q3}${Q4}${Q5}"
 
-echo `date` "Executing: $MYSQL -vvv -h $pkgwizard_server_name -u $pkgwizard_admin_account --password=********** -e $SQL"
-$MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_admin_account" --password="$pkgwizard_admin_password" -e "$SQL"
-cat $ERRLOG
+	echo `date` "Executing: $MYSQL -vvv -h $pkgwizard_server_name -u $pkgwizard_admin_account --password=********** -e $SQL"
+	$MYSQL -vvv -h "$pkgwizard_server_name" -u "$pkgwizard_admin_account" --password="$pkgwizard_admin_password" -e "$SQL"
+	cat $ERRLOG
 
-echo `date` "Checking that DB '$pkgwizard_db_Name' exists"
-RESULT=`$MYSQLSHOW --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
-cat $ERRLOG
-if [ "$RESULT" != "$pkgwizard_db_Name" ]; then
-  echo `date` "Database '$pkgwizard_db_Name' has not been created successfuly with access for '$pkgwizard_srvmon_account'"
-  echo "Fail to create $pkgwizard_db_Name  database." > $SYNOPKG_TEMP_LOGFILE
-  exit 1
+	echo `date` "Checking that DB '$pkgwizard_db_Name' exists"
+	RESULT=`$MYSQLSHOW --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
+	cat $ERRLOG
+	if [ "$RESULT" != "$pkgwizard_db_Name" ]; then
+	  echo `date` "Database '$pkgwizard_db_Name' has not been created successfuly with access for '$pkgwizard_srvmon_account'"
+	  echo "Fail to create $pkgwizard_db_Name  database." > $SYNOPKG_TEMP_LOGFILE
+	  exit 1
+	fi
+	echo `date` "Database '$pkgwizard_db_Name' has been created successfuly with access for '$pkgwizard_srvmon_account'"
 fi
-echo `date` "Database '$pkgwizard_db_Name' has been created successfuly with access for '$pkgwizard_srvmon_account'"
 
 ConfigFile="$SYNOPKG_PKGDEST/ui/config.php"
 
