@@ -1,16 +1,30 @@
 [
   {
-    "step_title": "Mac Vendors",
+    "step_title": "AcpiOnLan Setup Configuration",
     "invalid_next_disabled": false,
     "items": [
       {
         "type": "textfield",
-        "desc": "Enter a token got from https://app.macvendors.com",
+        "desc": "Enter a token from Mac Vendors (https://app.macvendors.com) if you want to automatically identify your devices",
         "subitems": [
           {
             "key": "pkgwizard_tokenVendor",
             "defaultValue": "",
-            "desc": "Your MacVendor token",
+            "desc": "MacVendors token",
+            "validator": {
+              "allowBlank": true
+            }
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Enter a folder name if you want to access AcpiOnLan via your WebServer",
+        "subitems": [
+          {
+            "key": "pkgwizard_webFolder",
+            "defaultValue": "AcpiOnLan",
+            "desc": "Web folder",
             "validator": {
               "allowBlank": true
             }

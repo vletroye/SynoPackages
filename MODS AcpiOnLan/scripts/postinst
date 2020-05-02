@@ -28,12 +28,19 @@ ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG
 #restating nginx is done via package's dependencies (instuninst_restart_services)
 #sudo synoservicecfg --reload nginx
 
-ln -s /usr/syno/etc/packages/$SYNOPKG_PKGNAME $SYNOPKG_PKGDEST/ui/Acpi_On_Lan/config
+ln -s -d /usr/syno/etc/packages/$SYNOPKG_PKGNAME $SYNOPKG_PKGDEST/ui/Acpi_On_Lan/config
 chown http /usr/syno/etc/packages/$SYNOPKG_PKGNAME
 if [ -n "$pkgwizard_tokenVendor" ]; then
-  echo "$pkgwizard_tokenVendor" > $SYNOPKG_PKGDEST/ui/Acpi_On_Lan/config/token
+  echo "$pkgwizard_tokenVendor" > "$SYNOPKG_PKGDEST/ui/Acpi_On_Lan/config/token"
 fi
 chmod +s /usr/bin/ping
+
+if [ -n "$pkgwizard_webFolder" ]; then
+  if [[ ! -d "/var/services/web/$pkgwizard_webFolder" &&  ! -f "/var/services/web/$pkgwizard_webFolder" && ! -L "/var/services/web/$pkgwizard_webFolder" ]]; then
+    echo "$pkgwizard_webFolder" > "$SYNOPKG_PKGDEST/ui/Acpi_On_Lan/config/webfolder"
+    ln -s -d "$SYNOPKG_PKGDEST/ui/Acpi_On_Lan/" "/var/services/web/$pkgwizard_webFolder"
+  fi
+fi
 
 if [ -s "$ERRLOG" ]; then
   echo `date` "----------------------------------------------------"

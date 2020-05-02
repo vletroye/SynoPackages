@@ -17,6 +17,13 @@ if [ "$pkgwizard_keepData" == "false" ]; then
   rm -R /usr/syno/etc/packages/$SYNOPKG_PKGNAME
 fi
 
+if [ -f "$SYNOPKG_PKGDEST/../etc/webfolder" ]; then
+  pkgwizard_webFolder=`cat "$SYNOPKG_PKGDEST/ui/Acpi_On_Lan/config/webfolder"`
+  if [ -n "$pkgwizard_webFolder" && -L "/var/services/web/$pkgwizard_webFolder" ]; then
+    rm -f "/var/services/web/$pkgwizard_webFolder"
+  fi
+fi
+
 rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 
 if [ -s "$ERRLOG" ]; then
