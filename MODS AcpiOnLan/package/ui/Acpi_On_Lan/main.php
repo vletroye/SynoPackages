@@ -124,7 +124,7 @@
 		echo "\n\r<div id='page-wrap' class='ACPI'>";
 		ShowComputers($computers, $settings);
 		echo "\n\r<br/><br/>";
-	}		
+	}
 	echo "\n\r<!-- Error Message field -->";
 	echo "\n\r<div id='results' class='menu' style='text-align:left;display: none;'>AcpiOnLan running fine</div>";
 	
@@ -369,7 +369,7 @@ function ShowComputers($computers, $settings) {
 		$ActionStb = GetAction($settings, $computer, 'stb').'<a href="#" onclick="SetState(\''.$id.'\',\'standby\'); return false">'.GetActionIcon($computer, 'stb', 'action_standby-1.png', 'Standby').'</a></div>';
 		$ActionShd = GetAction($settings, $computer, 'shd').'<a href="#" onclick="SetState(\''.$id.'\',\'shutdown\'); return false">'.GetActionIcon($computer, 'shd', 'action_shutdown-1.png', 'Shutdown').'</a></div>';
 		$ActionRst = GetAction($settings, $computer, 'rst').'<a href="#" onclick="SetState(\''.$id.'\',\'restart\'); return false">'.GetActionIcon($computer, 'rst', 'action_restart-1.png', 'Restart').'</a></div>';
-		$ActionWol = GetAction($settings, $computer, 'wol').'<a href="#" onclick="WakeOnLan(\''.$id.'\'); return false">'.GetActionIcon($computer, 'wol', 'action_wake-1.png', 'Wake On Lan').'</a></div>';
+		$ActionWol = GetAction($settings, $computer, 'wol').'<a href="#" onclick="WakeOnLanId(\''.$id.'\'); return false">'.GetActionIcon($computer, 'wol', 'action_wake-1.png', 'Wake On Lan').'</a></div>';
 		
 		$GetActionAbort = "<div id='abtAction".$id."' class='action' style='display: none;'>";
 		$GetActionIconAbort = "<img class='ACPIHaptic' src='images/action_abort-1.png' width='".GetIconSize()."' id='abt".$id."' title='Abort'>";

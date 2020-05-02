@@ -267,27 +267,45 @@
 			$mac = $_GET["mac"];
 
 			$computers = LoadComputers();
-			if ($id)
+			if ($id) {
 				$computer = $computers->GetById($id);
-			else
+			} else {
 				$computer = $computers->GetByMac($mac);
+				
+				if (! $computer) {
+					$computer = new Computer();
+					$computer->id = uniqid();
+					$computer->mac=strtoupper($mac);
+					$computer->bmask="";
+					$computer->ethernet="";
+					$computer->hostname=$mac;
+				}
+			}
+			
 			$mac = strtoupper($computer->mac);
 			$eth = $computer->ethernet;
 			$bmask = $computers->getBmask($eth);
 
 			//echo $eth.", ".$mac.", ".$bmask."<br/>";
 			//NativeWakeOnLan($mac, $eth);
+			$response="";
 			if ($bmask == '') {
-				//echo "bmask empty";
-				//break;
-				header('HTTP/1.0 400 Bad error');
-				$response = array('type' => 'error', 'message' => 'Unknown ethernet mask');
+				foreach($computers->network as $bmask) {
+					if (WakeOnLan($bmask, $mac, 1009) == FALSE) {
+						//echo "WakeOnLan failed";
+						//break;						
+						header('HTTP/1.0 400 Bad error');
+						$response = array('type' => 'error', 'message' => 'Wake-On-Lan failed');
+					}
+				}
 			} else if (WakeOnLan($bmask, $mac, 1009) == FALSE) {
 				//echo "WakeOnLan failed";
 				//break;
 				header('HTTP/1.0 400 Bad error');
 				$response = array('type' => 'error', 'message' => 'Wake-On-Lan failed');
-			} else {
+			}
+
+			if ($response == ""){
 				//echo "WakeOnLan done";
 				//break;
 				$response = $computer;
@@ -481,6 +499,20 @@
 			$targetIcon=$_FILES['myfile']['name'];
 			$state = UploadIcon($uploadIcon, $targetIcon);
 			$response = array('state' => $state);
+			break;
+			
+		case "UpdateToken":
+			$token = $_GET["token"];
+
+			$File = "./config/token";
+			$Handle = fopen($File, 'w');
+			fwrite($Handle, $token); 
+			fclose($Handle);
+
+			$settings = LoadSettings();
+			$settings->tokenVendor = $token;
+			SaveSettings($settings);
+			$response = array('state' => "1");
 			break;
 	}
 	

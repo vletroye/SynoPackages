@@ -2,6 +2,8 @@
 // https://code.google.com/p/php-mobile-detect
 require_once 'mobile_detect.php';
 
+require_once 'macVendorsApi.php';
+
 $lastExecVendor=time();
 
 class Settings {
@@ -547,34 +549,52 @@ function NewComputersFromArp($computers, $max = 999999) {
 }
 
 function GetVendor($MAC) {
-  $settings = LoadSettings();
-  $token = $settings->tokenVendor;
-    
-  $url="https://api.macvendors.com/v1/lookup/".urlencode($MAC);
-  $ch=curl_init();
-  curl_setopt($ch, CURLOPT_URL, $url);
-  $authorization = "Authorization: Bearer ".$token; // **Prepare Autorisation Token**
-  curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization )); // **Inject Token into Header**
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-  
-  //Max one call per second
-  $elapseExecVendor = time()-$lastExecVendor;
-  if ($elapseExecVendor<1) sleep(1);
-  $data = curl_exec($ch);
-  $lastExecVendor=time();
-  $vendor = json_decode($data);
-  if (isset($vendor->data)) {
-	$response = $vendor->data->organization_name;
-	if ($response=="Vendor not found")
-		$response = "Unknown";
-  }
-  else if (isset($vendor->errors)) {
-	$response = $vendor->errors->detail;
-  }
-  else
+	$settings = LoadSettings();
+	$token = $settings->tokenVendor;
+
+	//Max one call per second
+	$elapseExecVendor = time()-$lastExecVendor;
+	if ($elapseExecVendor<1) sleep(1);
+
 	$response = "Unknown";
-  return $response;
+
+	if ( $response == "Unknown" ) {
+	  //https://macvendors.co/api/php
+	  $api = new MacVendorsApi();
+
+	  $vendor = $api->get_vendor($MAC,'csv');
+	  $response = $vendor['company'];
+	  if (!$response || $response=="Not Found") $response = "Unknown";
+	}
+	
+	if ( $response == "Unknown" ) {
+		//Try using https://macvendors.com/api with our without Token
+		$ch=curl_init();
+		if ($token != "") {
+			$authorization = "Authorization: Bearer ".$token; // **Prepare Autorisation Token**
+			$url="https://api.macvendors.com/v1/lookup/".urlencode($MAC);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization )); // **Inject Token into Header**
+		} else {
+			$url = "https://api.macvendors.com/" . urlencode($MAC);
+		}
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
+		$data = curl_exec($ch);
+		$vendor = json_decode($data);
+		if (isset($vendor->data)) {
+			$response = $vendor->data->organization_name;
+			if ($response=="Vendor not found")
+				$response = "Unknown";
+		} else if (isset($vendor->errors)) {
+			$response = $vendor->errors->detail;
+		}
+	}
+	
+	$lastExecVendor=time();
+
+	return $response;
 }
 
 function GetCurrentIP($ExistingMac) {	

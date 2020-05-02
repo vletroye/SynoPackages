@@ -486,6 +486,13 @@ $(function(){
 					PingDevice();
 				}
 			},
+			wolDevice: {
+				name: "WOL a Device",
+				callback: function(key, options) {
+					StopUpdate();
+					WolDevice();
+				}
+			},
 			Backup: {
 				name: "Backup",
 				callback: function(key, options) {
@@ -519,6 +526,13 @@ $(function(){
 				callback: function(key, options) {
 					StopUpdate();
 					UploadIcon();
+				}
+			},
+			Token: {
+				name: "Set Vendor Token",
+				callback: function(key, options) {
+					StopUpdate();
+					UploadToken();
 				}
 			}
 		}
@@ -584,24 +598,73 @@ function PingDevice() {
 	HideMenus();
 	$.acpiZoom.disable( true );
 	bootbox.prompt({
-		title: "Please enter an ! IP address", 
+		title: "Please enter an IP address", 
 		value: subnet,
 		callback: function(ip) {
 			$.acpiZoom.enable( true );
 			ShowMenus();
 			if(ip!=null) {
-				if (!ValidateIPaddress(ip)) {
+				if (!ValidateIPaddress(ip.trim())) {
 					Notification.show("not a valid IP", "Warning");
 				} else {
-					Ping(ip);
+					Ping(ip.trim());
 				}
 			}
 		}
 	});	
 }
 
-function ValidateIPaddress(ipaddress) {  
-	if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+function UploadToken() {
+	HideMenus();
+	$.acpiZoom.disable( true );
+	bootbox.prompt({
+		title: "Please enter your MAC Vendor's token", 
+		value: "",
+		callback: function(token) {
+			$.acpiZoom.enable( true );
+			ShowMenus();
+			if(token!=null) {
+				$.getJSON( "acpi.services.php", { service: 'UpdateToken', token: token } )
+				.done(function( data ) {
+					Notification.show("Token updated", "Success");
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+					Notification.show("Token couldn't be updated", "Error");
+					DisplayError(jqXHR, textStatus, errorThrown);
+				 });
+			}
+		}
+	});	
+}
+
+function WolDevice() {
+	HideMenus();
+	$.acpiZoom.disable( true );
+	bootbox.prompt({
+		title: "Please enter an MAC address", 
+		value: "",
+		callback: function(mac) {
+			$.acpiZoom.enable( true );
+			ShowMenus();
+			if(mac!=null) {
+				if (!ValidateMACaddress(mac.trim())) {
+					Notification.show(mac+" is not a valid MAC", "Warning");
+				} else {
+					WakeOnLanMac(mac.trim());
+				}
+			}
+		}
+	});	
+}
+
+function ValidateMACaddress(address) {  
+	if (/^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$/.test(address)) {
+		return (true);
+	}
+	return (false);
+}
+
+function ValidateIPaddress(address) {  
+	if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(address)) {
 		return (true);
 	}
 	return (false);
@@ -870,16 +933,16 @@ function AcpiOnLanFail(computer) {
 	});
 }
 
-function Ping(ip) {
+function Ping(address) {
 	// Acpi-On-Lan was not available, try to Ping the Computer
-	$.getJSON( "acpi.services.php", { service: 'Ping', ip: ip } )
+	$.getJSON( "acpi.services.php", { service: 'Ping', ip: address } )
 	.done(function( data ) {
 		switch (data.state) {
 		  case 1:
-			Notification.show("The device on "+ip+ " answered", "Info");
+			Notification.show("The device on "+address+ " answered", "Info");
 			break;
 		  default:
-			Notification.show("The device on "+ip+ " cannot be reached", "Info");
+			Notification.show("The device on "+address+ " cannot be reached", "Info");
 			break;
 		}
 		RefreshNextComputer();
@@ -1299,7 +1362,7 @@ function LoadImage(id, image, title) {
 	}
 }
 
-function WakeOnLan(id) {
+function WakeOnLanId(id) {
 	$.getJSON( "acpi.services.php", { service: 'WakeOnLan', id: id } )
 	.done(function( data ) {
 		var computer = computers.items[id];
@@ -1307,6 +1370,16 @@ function WakeOnLan(id) {
 	}).fail(function (jqXHR, textStatus, errorThrown) {
 		var computer = computers.items[id];
 		Notification.show(GetIdName(computer)+" couldn't be waked", "Error");
+        DisplayError(jqXHR, textStatus, errorThrown);
+     });
+}
+
+function WakeOnLanMac(address) {
+	$.getJSON( "acpi.services.php", { service: 'WakeOnLan', mac: address } )
+	.done(function( data ) {
+        Notification.show("Device "+data.hostname+" should be awake soon", "Success");
+	}).fail(function (jqXHR, textStatus, errorThrown) {
+		Notification.show("Device "+address+" couldn't be awake", "Error");
         DisplayError(jqXHR, textStatus, errorThrown);
      });
 }
