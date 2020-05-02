@@ -529,7 +529,7 @@ $(function(){
 				}
 			},
 			Token: {
-				name: "Set Vendor Token",
+				name: "Vendor Token",
 				callback: function(key, options) {
 					StopUpdate();
 					UploadToken();
@@ -1388,6 +1388,7 @@ function FetchHostName(id) {
 	var computer = computers.items[id];
 	var cell = document.getElementById('host'+id);
 	cell.style.backgroundRepeat = "no-repeat";
+	cell.style.backgroundPosition = "center";
 	cell.style.backgroundImage = "url('images/loading.gif')";
 	cell.style.backgroundSize = "20px 20px";
 	$.getJSON( "acpi.services.php", { service: 'FetchHost', ip: computer.ip } )
@@ -1437,6 +1438,7 @@ function FetchVendor(id) {
 	var computer = computers.items[id];
 	var cell = document.getElementById('mac'+id);
 	cell.style.backgroundRepeat = "no-repeat";
+	cell.style.backgroundPosition = "center";
 	cell.style.backgroundImage = "url('images/loading.gif')";
 	cell.style.backgroundSize = "20px 20px";
 	$.getJSON( "acpi.services.php", { service: 'FetchVendor', mac: computer.mac } )
@@ -1461,21 +1463,21 @@ function FetchVendor(id) {
 
 function FetchVendorName(id) {
 	var computer = computers.items[id];
-	var cell = document.getElementById('mac'+id);
+	var cell = document.getElementById('host'+id);
 	cell.style.backgroundRepeat = "no-repeat";
+	cell.style.backgroundPosition = "center";
 	cell.style.backgroundImage = "url('images/loading.gif')";
 	cell.style.backgroundSize = "20px 20px";
 	$.getJSON( "acpi.services.php", { service: 'FetchVendor', mac: computer.mac } )
 	.done(function( data ) {
 		var computer = computers.items[id];
-		var cell = document.getElementById('mac'+id);
+		var cell = document.getElementById('host'+id);
 		cell.style.background = "none";
 		if (data) {
 			bootbox.confirm(
-				"Do you accept the hostname '"+data+"' for "+computer.mac+" ?",
+				"Do you accept '"+data+"' as hostname for "+computer.mac+" ?",
 				function(result) {
 					if (result == true) {
-						cell.innerHTML = htmlEncode(data);
 						LoadImage('ftc'+id, 'loading.gif', '');
 						$.getJSON( "acpi.services.php", { service: 'EditHost', hostname: data, id: id } )
 						.done(function( data ) {
