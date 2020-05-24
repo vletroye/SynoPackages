@@ -809,7 +809,7 @@ namespace {
             $url .= dirname($_SERVER['SCRIPT_NAME']);
             $url = str_replace('\\', '', $url);
         }
-        //MODS_ServerMonitor needs to open index.php
+        //ServerMonitor needs to open index.php to work on Synology
 		//$url = rtrim($url, '/') . '/';
 		$url = rtrim($url, '/').'/index.php';	
 		
