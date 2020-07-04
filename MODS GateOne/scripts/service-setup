@@ -1,13 +1,18 @@
 ### Package specific variables and functions
 # Base service USER to run background process prefixed according to DSM
 USER="gateone"
+GROUP="$SYNOPKG_PKGNAME"
 PRIV_PREFIX=sc-
 SYNOUSER_PREFIX=svc-
-if [ -n "${SYNOPKG_DSM_VERSION_MAJOR}" -a "${SYNOPKG_DSM_VERSION_MAJOR}" -lt 6 ]; then EFF_USER="${SYNOUSER_PREFIX}${USER}"; else EFF_USER="${PRIV_PREFIX}${USER}"; fi
-# Service port
-SERVICE_PORT="8271"
+if [ -n "${SYNOPKG_DSM_VERSION_MAJOR}" -a "${SYNOPKG_DSM_VERSION_MAJOR}" -lt 6 ]; then 
+	EFF_USER="${SYNOUSER_PREFIX}${USER}"; 
+else 
+	EFF_USER="${PRIV_PREFIX}${USER}"; 
+fi
+
 # start-stop-status script redirect stdout/stderr to LOG_FILE
 LOG_FILE="/var/log/${SYNOPKG_PKGNAME}"
+
 # Service command has to deliver its pid into PID_FILE
 PID_FILE="${SYNOPKG_PKGDEST}/var/${SYNOPKG_PKGNAME}.pid"
 
@@ -16,15 +21,12 @@ call_func ()
 {
     FUNC=$1
     if type "$FUNC" | grep -q 'function' 2>/dev/null; then
-        if [ -n "${INST_LOG}" ]; then
-            echo "Invoke $FUNC" >> ${INST_LOG}
-        fi
+        echo "Invoke $FUNC" >> ${INST_LOG}
         eval ${FUNC}
     fi
 }
 
-# PYTHON_DIR="/usr/local/python"
-PYTHON_DIR=""
+PYTHON_DIR="/usr/local/python"
 PATH="${SYNOPKG_PKGDEST}/bin:${SYNOPKG_PKGDEST}/env/bin:${PYTHON_DIR}/bin:${PATH}"
 PYTHON="${SYNOPKG_PKGDEST}/env/bin/python"
 VIRTUALENV="${PYTHON_DIR}/bin/virtualenv"
@@ -44,22 +46,26 @@ else
 fi
 SSL_DIR="${SYNOPKG_PKGDEST}/ssl/"
 
-SERVICE_COMMAND="${PYTHON} ${GATEONE} --settings_dir=${SETTINGS_DIR}"
+SERVICE_COMMAND="${PYTHON} ${GATEONE} --settings_dir=${SETTINGS_DIR} --session_dir=/tmp"
 SVC_BACKGROUND=yes
 SVC_WRITE_PID=yes
 
 service_postinst ()
 {
-	echo "Execute Service Postinst" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "Execute Service-Setup Postinst" >> ${INST_LOG}
+	echo "------------------------------" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+  
+    # Install pip
+    echo "Installing pip..." >> ${INST_LOG}
+    wget https://bootstrap.pypa.io/get-pip.py >> ${INST_LOG} 2>&1
+    python get-pip.py >> ${INST_LOG} 2>&1
 
-	# Install pip
-	echo "Installing pip..." >> ${INST_LOG}
-	wget https://bootstrap.pypa.io/get-pip.py >> ${INST_LOG} 2>&1
-	python get-pip.py >> ${INST_LOG} 2>&1
-
-	# Install virtualenv
-	echo "Installing virtualenv..." >> ${INST_LOG}
-	pip install virtualenv >> ${INST_LOG} 2>&1
+    # Install virtualenv
+    echo "Installing virtualenv..." >> ${INST_LOG}
+    pip install virtualenv >> ${INST_LOG} 2>&1
 
     # Create a Python virtualenv
     echo "Creating Python virtualenv..." >> ${INST_LOG}
@@ -85,14 +91,18 @@ service_postinst ()
 
     # Discard legacy obsolete busybox user account
     BIN=${SYNOPKG_PKGDEST}/bin
-    $BIN/busybox --install $BIN
+    $BIN/busybox --install $BIN >> ${INST_LOG}
     $BIN/delgroup "${USER}" "users" >> ${INST_LOG}
     $BIN/deluser "${USER}" >> ${INST_LOG}
 }
 
 service_preupgrade ()
-{
-	echo "Execute Service Preupgrade" >> ${INST_LOG}
+{    
+	echo "" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "Execute Service-Setup Preupgrade" >> ${INST_LOG}
+	echo "--------------------------------" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
 	
     # Revision 5 introduces backward incompatible changes
     if [ `echo ${SYNOPKG_OLD_PKGVER} | sed -r "s/^.*-([0-9]+)$/\1/"` -le 4 ]; then
@@ -102,26 +112,46 @@ service_preupgrade ()
 }
 
 service_preinst ()
-{
-	echo "Execute Service Preinst" >> ${INST_LOG}
+{	
+	echo "" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "Execute Service-Setup Preinst" >> ${INST_LOG}
+	echo "-----------------------------" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}	
 }
 
 service_preuninst ()
-{
-	echo "Execute Service Preuninst" >> ${INST_LOG}
+{	
+	echo "" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "Execute Service-Setup Preuninst" >> ${INST_LOG}
+	echo "-------------------------------" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}	
 }
 
 service_postuninst ()
 {
-	echo "Execute Service postuninst" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "Execute Service-Setup postuninst" >> ${INST_LOG}
+	echo "--------------------------------" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}	
 }
 
 service_postupgrade ()
 {
-	echo "Execute Service Postupgrade" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "Execute Service-Setup Postupgrade" >> ${INST_LOG}
+	echo "---------------------------------" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}	
 }
 
 service_prestart ()
 {
-	echo "Execute Service Prestart" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}
+	echo "Execute Service-Setup Prestart" >> ${INST_LOG}
+	echo "------------------------------" >> ${INST_LOG}
+	echo "" >> ${INST_LOG}	
 }

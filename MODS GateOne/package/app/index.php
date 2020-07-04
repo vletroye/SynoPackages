@@ -6,5 +6,5 @@ if ( "@MODS_HTTP@" == "true") {
 }
 
 $server = $protocol.$_SERVER['SERVER_NAME'].':@MODS_PORT@';
-header('Location:'.$server,TRUE,301);
+header('Location:'.$server,TRUE,307);
 ?>
