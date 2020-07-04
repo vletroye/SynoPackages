@@ -34,7 +34,7 @@ status()
 {
   # Test your installation. Here after, we use [ true ] assuming that our setup always succeed :)
   if [ true ]; then
-    if [ "$SYNOPKG_PKG_STATUS" = "INSTALL" ] || [ "$SYNOPKG_PKG_STATUS" = "UNINSTALL" ] || [ $SYNOPKG_PKG_STATUS = "UPGRADE" ]; then
+    if [ "$SYNOPKG_PKG_STATUS" == "INSTALL" ] || [ "$SYNOPKG_PKG_STATUS" == "UNINSTALL" ] || [ "$SYNOPKG_PKG_STATUS" == "UPGRADE" ]; then
       echo `date` "["`basename $0`"] [$*] STATUS: INSTALLATION SUCCEEDED."
       # Return a message for the user via the Catalog Manager
       echo "Status: succeeded<br>" >> $SYNOPKG_TEMP_LOGFILE
@@ -42,7 +42,7 @@ status()
 
     exit 0 # installation successful
   else
-    if [ "$SYNOPKG_PKG_STATUS" = "INSTALL" ] || [ "$SYNOPKG_PKG_STATUS" = "UNINSTALL" ] || [ $SYNOPKG_PKG_STATUS = "UPGRADE" ]; then
+    if [ "$SYNOPKG_PKG_STATUS" == "INSTALL" ] || [ "$SYNOPKG_PKG_STATUS" == "UNINSTALL" ] || [ "$SYNOPKG_PKG_STATUS" == "UPGRADE" ]; then
       echo `date` "["`basename $0`"] [$*] STATUS: INSTALLATION FAILED."
       # Return a message for the user via the Catalog Manager
       echo "Status: failed<br>" >> $SYNOPKG_TEMP_LOGFILE

@@ -1,6 +1,6 @@
 [
   {
-    "step_title": "Uninstallaion Wizard",
+    "step_title": "Uninstallation Wizard",
     "items": [
       {
         "type": "multiselect",
