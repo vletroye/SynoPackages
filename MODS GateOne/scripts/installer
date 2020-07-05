@@ -59,16 +59,16 @@ TEE="/usr/bin/tee -a"
 
 log_step ()
 {
-	echo "" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
     date >> ${INST_LOG}
     echo "===> Installer Step $1. USER=$USER GROUP=$GROUP SHARE_PATH=${SHARE_PATH}" >> ${INST_LOG}
-	echo "------------------------------------------------------------------------" >> ${INST_LOG}
-	
-	echo "" >> $LOG
-	echo "" >> $LOG
+    echo "------------------------------------------------------------------------" >> ${INST_LOG}
+
+    echo "" >> $LOG
+    echo "" >> $LOG
     echo "===> Installer Step $1. USER=$USER GROUP=$GROUP SHARE_PATH=${SHARE_PATH}" >> $LOG
-	echo "------------------------------------------------------------------------" >> $LOG
+    echo "------------------------------------------------------------------------" >> $LOG
 }
 
 save_wizard_variables ()
@@ -80,6 +80,18 @@ save_wizard_variables ()
     if [ -n "${SHARE_PATH}" ]; then
         echo "SHARE_PATH=${SHARE_PATH}" >> ${INST_VARIABLES}
     fi
+    if [ -n "${GateOne_SSH_Port}" ]; then
+        echo "GateOne_SSH_Port=${GateOne_SSH_Port}" >> ${INST_VARIABLES}
+    fi
+    if [ -n "${GateOne_SSH_User}" ]; then
+        echo "GateOne_SSH_User=${GateOne_SSH_User}" >> ${INST_VARIABLES}
+    fi
+    if [ -n "${GateOne_Port}" ]; then
+        echo "GateOne_Port=${GateOne_Port}" >> ${INST_VARIABLES}
+    fi
+    if [ -n "${GateOne_Protocol_Http}" ]; then
+        echo "GateOne_Protocol_Http=${GateOne_Protocol_Http}" >> ${INST_VARIABLES}
+    fi
 }
 
 # Remove user from system and from groups it is member of
@@ -90,7 +102,7 @@ syno_remove_user ()
         # Check if user exists
         if synouser --get "${RM_USER}" &> /dev/null; then
             echo "Removing user ${RM_USER}" >> ${INST_LOG}
-			echo "Removing user ${RM_USER}" >> $LOG
+            echo "Removing user ${RM_USER}" >> $LOG
             synouser --del "${RM_USER}" >> ${INST_LOG} 2>&1
             synouser --rebuild all
             # Also rebuild groups so users are removed
@@ -105,7 +117,7 @@ syno_group_create ()
     EFF_USER=$1
     if [ -n "${EFF_USER}" ]; then
         echo "Creating group ${GROUP} - ${EFF_USER} - ${GROUP_DESC}" >> ${INST_LOG}
-		echo "Creating group ${GROUP} - ${EFF_USER} - ${GROUP_DESC}" >> $LOG
+        echo "Creating group ${GROUP} - ${EFF_USER} - ${GROUP_DESC}" >> $LOG
         # Create syno group
         synogroup --add "${GROUP}" "${EFF_USER}" >> ${INST_LOG}
         # Set description of the syno group
@@ -121,7 +133,7 @@ syno_group_remove ()
         # Check if syno group is empty
         if ! synogroup --get "${RM_GROUP}" | grep -q "0:\["; then
             echo "Removing group ${RM_GROUP}" >> ${INST_LOG}
-			echo "Removing group ${RM_GROUP}" >> $LOG
+            echo "Removing group ${RM_GROUP}" >> $LOG
             # Remove syno group
             synogroup --del "${RM_GROUP}" >> ${INST_LOG} 2>&1
             synogroup --rebuild all
@@ -138,7 +150,7 @@ syno_user_add_to_group ()
     if ! synogroup --get "$ADD_GROUP" | grep "^[0-9]:\[${ADD_USER}\]" &> /dev/null; then
         # Add user, not in group yet
         echo "Adding '${ADD_USER}' to '${ADD_GROUP}'" >> ${INST_LOG}
-		echo "Adding '${ADD_USER}' to '${ADD_GROUP}'" >> $LOG
+        echo "Adding '${ADD_USER}' to '${ADD_GROUP}'" >> $LOG
         MEMBERS="$(synogroup --get $ADD_GROUP | grep '^[0-9]' | sed 's/.*\[\([^]]*\)].*/\1/' | tr '\n' ' ')"
         # The "synogroup --member" command clears all users before adding new ones
         # so all the users must be listed on the command line
@@ -169,7 +181,7 @@ set_syno_permissions ()
 
             # Then fix the Synology permissions
             echo "Granting '${GROUP}' group permissions on ${DIRNAME}" >> ${INST_LOG}
-			echo "Granting '${GROUP}' group permissions on ${DIRNAME}" >> $LOG
+            echo "Granting '${GROUP}' group permissions on ${DIRNAME}" >> $LOG
             synoacltool -add "${DIRNAME}" "group:${GROUP}:allow:rwxpdDaARWcC-:fd--" >> ${INST_LOG} 2>&1
             find "${DIRNAME}" -type d -exec synoacltool -enforce-inherit "{}" \; >> ${INST_LOG} 2>&1
         fi
@@ -183,13 +195,13 @@ set_syno_permissions ()
                 fi
                 # Add the new group permissions
                 echo "Granting '${GROUP}' group basic permissions on ${DIRNAME}" >> ${INST_LOG}
-				echo "Granting '${GROUP}' group basic permissions on ${DIRNAME}" >> $LOG
+                echo "Granting '${GROUP}' group basic permissions on ${DIRNAME}" >> $LOG
                 synoacltool -add "${DIRNAME}" "group:${GROUP}:allow:r-x---a-R----:---n" >> ${INST_LOG} 2>&1
             fi
             DIRNAME="$(dirname "${DIRNAME}")"
         done
     else
-		echo "Skip granting '${GROUP}' group permissions on ${DIRNAME} as the directory does not reside in '/volumeX'. Set manually if needed." >> $LOG
+        echo "Skip granting '${GROUP}' group permissions on ${DIRNAME} as the directory does not reside in '/volumeX'. Set manually if needed." >> $LOG
         echo "Skip granting '${GROUP}' group permissions on ${DIRNAME} as the directory does not reside in '/volumeX'. Set manually if needed." >> ${INST_LOG}
     fi
 }
@@ -201,11 +213,11 @@ set_unix_permissions ()
     if [ -n "${EFF_USER}" ]; then
         if [ $SYNOPKG_DSM_VERSION_MAJOR -lt 6 ]; then
             echo "Granting '${EFF_USER}:root' unix ownership on ${DIRNAME}" >> ${INST_LOG}
-		    echo "Granting '${EFF_USER}:root' unix ownership on ${DIRNAME}" >> $LOG
+            echo "Granting '${EFF_USER}:root' unix ownership on ${DIRNAME}" >> $LOG
             chown -R ${EFF_USER}:root "${DIRNAME}" >> $INST_LOG 2>&1
         else
             echo "Granting '${EFF_USER}:${USER}' unix ownership on ${DIRNAME}" >> ${INST_LOG}
-		    echo "Granting '${EFF_USER}:${USER}' unix ownership on ${DIRNAME}" >> $LOG
+            echo "Granting '${EFF_USER}:${USER}' unix ownership on ${DIRNAME}" >> $LOG
             chown -R ${EFF_USER}:${USER} "${DIRNAME}" >> $INST_LOG 2>&1
         fi
     fi
@@ -223,7 +235,7 @@ syno_user_add_to_legacy_group () {
     if synogroup --get "$LEGACY_GROUP" | grep "^[0-9]:\[${LEGACY_USER}\]" &> /dev/null; then
         # Add new user and remove old one
         echo "Adding '${NEW_USER}' to '${LEGACY_GROUP}' for backwards compatibility" >> ${INST_LOG}
-		echo "Adding '${NEW_USER}' to '${LEGACY_GROUP}' for backwards compatibility" >> $LOG
+        echo "Adding '${NEW_USER}' to '${LEGACY_GROUP}' for backwards compatibility" >> $LOG
         MEMBERS="$(synogroup --get $LEGACY_GROUP | grep '^[0-9]' | sed 's/.*\[\([^]]*\)].*/\1/' | tr '\n' ' ')"
         MEMBERS=${MEMBERS//$LEGACY_USER}
         # The "synogroup --member" command clears all users before adding new ones
@@ -240,8 +252,8 @@ preinst ()
     log_step "preinst"	
     call_func "service_preinst"
 	
-	echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is pre-installing" >> $LOG
-	chmod o+w $LOG
+    echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is pre-installing" >> $LOG
+    chmod o+w $LOG
 	
     # Check volume exists
     if [ -n "${SHARE_PATH}" ]; then
@@ -271,18 +283,12 @@ postinst ()
 	rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf >> $LOG
 	ln -s $SYNOPKG_PKGDEST/app/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf >> $LOG
 	
-	#define Access Port and Protocol
+	#define Access Port and Protocol in Conf files
 	echo "Set Port $GateOne_Port in $SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
 	sed -i -e "s|@MODS_PORT@|$GateOne_Port|g" "$SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
 	
-	echo "Set Protocol $GateOne_Protocol_Http in $SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
+	echo "Set Disable_SSL = $GateOne_Protocol_Http in $SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
 	sed -i -e "s|@MODS_HTTP@|$GateOne_Protocol_Http|g" "$SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
-	
-	echo "Set Port $GateOne_Port in $SYNOPKG_PKGDEST/app/index.php" >> $LOG
-	sed -i -e "s|@MODS_PORT@|$GateOne_Port|g" "$SYNOPKG_PKGDEST/app/index.php" >> $LOG
-	
-	echo "Set Protocol $GateOne_Protocol_Http in $SYNOPKG_PKGDEST/app/index.php" >> $LOG
-	sed -i -e "s|@MODS_HTTP@|$GateOne_Protocol_Http|g" "$SYNOPKG_PKGDEST/app/index.php" >> $LOG
 	
 	echo "Set Port $GateOne_Port in $FWPORTS_FILE" >> $LOG
 	sed -i -e "s|@MODS_PORT@|$GateOne_Port|g" "$FWPORTS_FILE" >> $LOG
@@ -295,26 +301,34 @@ postinst ()
 	echo "Set Protocol $protocol in $FWPORTS_FILE" >> $LOG
 	sed -i -e "s|@MODS_HTTP@|$protocol|g" "$FWPORTS_FILE" >> $LOG
 	
-	#define Package name
+	#define Package name in Conf files
 	echo "Set Port Config Section $SYNOPKG_PKGNAME in $FWPORTS_FILE" >> $LOG
 	sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$FWPORTS_FILE" >> $LOG
+
+	#define path in Conf files
+	#echo "Set Path /usr/local/$SYNOPKG_PKGNAME in $SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
+	#sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
 	
-	#define path
-	echo "Set Path /usr/local/$SYNOPKG_PKGNAME in $SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
-	sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/var/conf.d/90custom.conf" >> $LOG
-	
-	#define Default SSH Port and User
-	echo "Set ssh port $GATEONE_SSH_PORT in $SYNOPKG_PKGDEST/share/gateone/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py" >> $LOG
+	#define Default SSH Port and User in GateOne App
+	echo "Set ssh port $GateOne_SSH_Port in $SYNOPKG_PKGDEST/share/gateone/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py" >> $LOG
 	sed -i -e "s|@GATEONE_SSH_PORT@|$GateOne_SSH_Port|g" "$SYNOPKG_PKGDEST/share/gateone/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py" >> $LOG
 	echo "Set user $GateOne_SSH_User in $SYNOPKG_PKGDEST/share/gateone/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py" >> $LOG
 	sed -i -e "s|@GATEONE_SSH_USER@|$GateOne_SSH_User|g" "$SYNOPKG_PKGDEST/share/gateone/gateone/applications/terminal/plugins/ssh/scripts/ssh_connect.py" >> $LOG
+
+	#define Port and Protocol in GateOne App
+	echo "Set Port $GateOne_Port in $SYNOPKG_PKGDEST/app/index.php" >> $LOG
+	sed -i -e "s|@MODS_PORT@|$GateOne_Port|g" "$SYNOPKG_PKGDEST/app/index.php" >> $LOG
+	
+	echo "Set Protocol Http = $GateOne_Protocol_Http in $SYNOPKG_PKGDEST/app/index.php" >> $LOG
+	sed -i -e "s|@MODS_HTTP@|$GateOne_Protocol_Http|g" "$SYNOPKG_PKGDEST/app/index.php" >> $LOG
+
 	
     # Link for backward compatibility of binaries location
-    $LN "${SYNOPKG_PKGDEST}" "/usr/local/${SYNOPKG_PKGNAME}" >> ${INST_LOG}
+    $LN "${SYNOPKG_PKGDEST}" "/usr/local/gateone" >> ${INST_LOG}
 
     # Add firewall config
     if [ -r "${FWPORTS_FILE}" ]; then
-		echo "Installing service configuration ${FWPORTS_FILE}" >> $LOG
+        echo "Installing service configuration ${FWPORTS_FILE}" >> $LOG
         echo "Installing service configuration ${FWPORTS_FILE}" >> ${INST_LOG}
         servicetool --install-configure-file --package "${FWPORTS_FILE}" >> ${INST_LOG} 2>&1
     fi
@@ -325,7 +339,7 @@ postinst ()
             # DSM 5 specific operations
             # Create prefixed synouser
             if ! cat /etc/passwd | grep "${EFF_USER}:x:" &> /dev/null; then
-				echo "Create User $EFF_USER $USER_DESC" >> $LOG
+                echo "Create User $EFF_USER $USER_DESC" >> $LOG
                 synouser --add "${EFF_USER}" "" "$USER_DESC" 0 "" 0 >> ${INST_LOG} 2>&1
                 # Set HOME for consistency with DSM 6, location available even if homes not enabled
                 BACKUP_PASSWD="/tmp/install_${SYNOPKG_PKGNAME}_passwd"
@@ -344,11 +358,11 @@ postinst ()
         # Check if group already exists
         if ! synogroup --get "$GROUP" &> /dev/null; then
             # Group does not exist yet: create with user as member
-			echo "Create User $EFF_USER" >> $LOG
+            echo "Create User $EFF_USER" >> $LOG
             syno_group_create "${EFF_USER}"
         fi
         if synogroup --get "$GROUP" &> /dev/null; then
-			echo "Add User $EFF_USER in Group $GROUP" >> $LOG
+            echo "Add User $EFF_USER in Group $GROUP" >> $LOG
             syno_user_add_to_group "${EFF_USER}" "${GROUP}"
         fi
         # Not sure but invoked with hope DSM is updated
@@ -397,13 +411,13 @@ preuninst ()
 {
     log_step "preuninst"
 
-	echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is pre-uninstalling" >> $LOG
-	chmod o+w $LOG
+    echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is pre-uninstalling" >> $LOG
+    chmod o+w $LOG
 	
     if [ "${SYNOPKG_PKG_STATUS}" == "UNINSTALL" ]; then
         # Remove firewall config
         if [ -r "${FWPORTS_FILE}" ]; then
-			echo "Removing service configuration ${SYNOPKG_PKGNAME}.sc" >> $LOG
+            echo "Removing service configuration ${SYNOPKG_PKGNAME}.sc" >> $LOG
             echo "Removing service configuration ${SYNOPKG_PKGNAME}.sc" >> ${INST_LOG}
             servicetool --remove-configure-file --package "${SYNOPKG_PKGNAME}.sc" >> ${INST_LOG} 2>&1
         fi
@@ -417,14 +431,14 @@ postuninst ()
 {
     log_step "postuninst"
 	
-	echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-uninstalling" >> $LOG
-	chmod o+w $LOG
+    echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-uninstalling" >> $LOG
+    chmod o+w $LOG
 
     if [ "${SYNOPKG_PKG_STATUS}" == "UNINSTALL" ]; then
         # Remove link
         $RM "/usr/local/${SYNOPKG_PKGNAME}" >> ${INST_LOG}
 
-	    rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
+        rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
 		
         # Remove syno group if empty
         syno_group_remove "${GROUP}"
@@ -445,8 +459,8 @@ preupgrade ()
     log_step "preupgrade"
     call_func "service_preupgrade"
 
-	echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is pre-upgrading" >> $LOG
-	chmod o+w $LOG
+    echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is pre-upgrading" >> $LOG
+    chmod o+w $LOG
 
     # Save some stuff
     $RM "$TMP_DIR" >> ${INST_LOG}
@@ -465,8 +479,8 @@ postupgrade ()
     log_step "postupgrade"
     call_func "service_restore"
 	
-	echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-upgrading" >> $LOG
-	chmod o+w $LOG
+    echo `date` $SYNOPKG_PKGNAME "V"$SYNOPKG_PKGVER "is post-upgrading" >> $LOG
+    chmod o+w $LOG
 
     # Restore some stuff, has to be cp otherwise fails on directories
     $CP "${TMP_DIR}"/. "${INST_VAR}" >> ${INST_LOG}

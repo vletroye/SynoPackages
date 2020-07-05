@@ -3,7 +3,7 @@
 # Default display name
 DNAME="${SYNOPKG_PKGNAME}"
 
-. `dirname $0`/installer
+#. `dirname $0`/installer
 
 # Source package specific variable and functions
 SVC_SETUP=`dirname $0`"/service-setup"

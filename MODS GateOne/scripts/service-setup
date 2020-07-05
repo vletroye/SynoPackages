@@ -1,13 +1,13 @@
 ### Package specific variables and functions
 # Base service USER to run background process prefixed according to DSM
 USER="gateone"
-GROUP="$SYNOPKG_PKGNAME"
+GROUP="gateone"
 PRIV_PREFIX=sc-
 SYNOUSER_PREFIX=svc-
 if [ -n "${SYNOPKG_DSM_VERSION_MAJOR}" -a "${SYNOPKG_DSM_VERSION_MAJOR}" -lt 6 ]; then 
-	EFF_USER="${SYNOUSER_PREFIX}${USER}"; 
+    EFF_USER="${SYNOUSER_PREFIX}${USER}"
 else 
-	EFF_USER="${PRIV_PREFIX}${USER}"; 
+    EFF_USER="${PRIV_PREFIX}${USER}"
 fi
 
 # start-stop-status script redirect stdout/stderr to LOG_FILE
@@ -53,19 +53,27 @@ SVC_WRITE_PID=yes
 service_postinst ()
 {
     echo "" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
-	echo "Execute Service-Setup Postinst" >> ${INST_LOG}
-	echo "------------------------------" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "Execute Service-Setup Postinst" >> ${INST_LOG}
+    echo "------------------------------" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
   
-    # Install pip
-    echo "Installing pip..." >> ${INST_LOG}
-    wget https://bootstrap.pypa.io/get-pip.py >> ${INST_LOG} 2>&1
-    python get-pip.py >> ${INST_LOG} 2>&1
+    # Install virtual env if it does not exist
+    if ! [ -x "$(command -v virtualenv)" ]; then
+    
+        # Install pip if it does not exist
+        if ! [ -x "$(command -v pip)" ]; then
+            cd /tmp >> ${INST_LOG} 2>&1
+            echo "Installing pip..." >> ${INST_LOG}
+            wget https://bootstrap.pypa.io/get-pip.py >> ${INST_LOG} 2>&1
+            python get-pip.py >> ${INST_LOG} 2>&1
+            rm -f get-pip.py >> ${INST_LOG} 2>&1
+        fi
 
-    # Install virtualenv
-    echo "Installing virtualenv..." >> ${INST_LOG}
-    pip install virtualenv >> ${INST_LOG} 2>&1
+        # Install virtualenv
+        echo "Installing virtualenv..." >> ${INST_LOG}
+        pip install virtualenv >> ${INST_LOG} 2>&1
+    fi
 
     # Create a Python virtualenv
     echo "Creating Python virtualenv..." >> ${INST_LOG}
@@ -73,17 +81,17 @@ service_postinst ()
 
     # Install the wheels
     echo "Installing wheels..." >> ${INST_LOG}
-    ${SYNOPKG_PKGDEST}/env/bin/pip install --no-deps --no-index -U --force-reinstall -f ${SYNOPKG_PKGDEST}/share/wheelhouse ${SYNOPKG_PKGDEST}/share/wheelhouse/*.whl >> ${INST_LOG} 2>&1
+    ${SYNOPKG_PKGDEST}/env/bin/pip install --no-deps --no-index -U --force-reinstall -f ${SYNOPKG_PKGDEST}/share/wheelhouse ${SYNOPKG_PKGDEST}/share/wheelhouse/*.whl > ${INST_LOG}.wheels 2>&1
 
     # Install GateOne
     echo "Installing Gateone" >> ${INST_LOG}
-    ${PYTHON} ${SYNOPKG_PKGDEST}/share/gateone/setup.py install --prefix=${SYNOPKG_PKGDEST}/env --skip_init_scripts >> ${INST_LOG}
+    ${PYTHON} ${SYNOPKG_PKGDEST}/share/gateone/setup.py install --prefix=${SYNOPKG_PKGDEST}/env --skip_init_scripts > ${INST_LOG}.gateone
 
     # Install initial certificates
     echo "Installing initial certificates..." >> ${INST_LOG}
-    $CP "${CERTPATH}${CERTIFICATE}" "${KEYPATH}${KEYFILE}" ${SSL_DIR}
-    sed -i -e "s,@certificate@,${SSL_DIR}${CERTIFICATE},g" ${CONF_FILE}
-    sed -i -e "s,@keyfile@,${SSL_DIR}${KEYFILE},g" ${CONF_FILE}
+    $CP "${CERTPATH}${CERTIFICATE}" "${KEYPATH}${KEYFILE}" ${SSL_DIR} >> ${INST_LOG}
+    sed -i -e "s,@certificate@,${SSL_DIR}${CERTIFICATE},g" ${CONF_FILE} >> ${INST_LOG}
+    sed -i -e "s,@keyfile@,${SSL_DIR}${KEYFILE},g" ${CONF_FILE} >> ${INST_LOG}
 
     # Fix permissions
     set_unix_permissions "${SYNOPKG_PKGDEST}/ssl"
@@ -98,11 +106,11 @@ service_postinst ()
 
 service_preupgrade ()
 {    
-	echo "" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
-	echo "Execute Service-Setup Preupgrade" >> ${INST_LOG}
-	echo "--------------------------------" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "Execute Service-Setup Preupgrade" >> ${INST_LOG}
+    echo "--------------------------------" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
 	
     # Revision 5 introduces backward incompatible changes
     if [ `echo ${SYNOPKG_OLD_PKGVER} | sed -r "s/^.*-([0-9]+)$/\1/"` -le 4 ]; then
@@ -113,45 +121,45 @@ service_preupgrade ()
 
 service_preinst ()
 {	
-	echo "" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
-	echo "Execute Service-Setup Preinst" >> ${INST_LOG}
-	echo "-----------------------------" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}	
+    echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "Execute Service-Setup Preinst" >> ${INST_LOG}
+    echo "-----------------------------" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}	
 }
 
 service_preuninst ()
 {	
-	echo "" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
-	echo "Execute Service-Setup Preuninst" >> ${INST_LOG}
-	echo "-------------------------------" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}	
+    echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "Execute Service-Setup Preuninst" >> ${INST_LOG}
+    echo "-------------------------------" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}	
 }
 
 service_postuninst ()
 {
-	echo "" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
-	echo "Execute Service-Setup postuninst" >> ${INST_LOG}
-	echo "--------------------------------" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}	
+    echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "Execute Service-Setup postuninst" >> ${INST_LOG}
+    echo "--------------------------------" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}	
 }
 
 service_postupgrade ()
 {
-	echo "" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
-	echo "Execute Service-Setup Postupgrade" >> ${INST_LOG}
-	echo "---------------------------------" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}	
+    echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "Execute Service-Setup Postupgrade" >> ${INST_LOG}
+    echo "---------------------------------" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}	
 }
 
 service_prestart ()
 {
-	echo "" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}
-	echo "Execute Service-Setup Prestart" >> ${INST_LOG}
-	echo "------------------------------" >> ${INST_LOG}
-	echo "" >> ${INST_LOG}	
+    echo "" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}
+    echo "Execute Service-Setup Prestart" >> ${INST_LOG}
+    echo "------------------------------" >> ${INST_LOG}
+    echo "" >> ${INST_LOG}	
 }
