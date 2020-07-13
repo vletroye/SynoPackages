@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Daikin_Control.MODS_Daikin_Control": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "MODS Daikin Control",
+      "desc": "This is a MODS package with a customized version of the web interface created by Ael-Code to manage Daikin's Air Conditioner.",
+      "icon": "images/MODS_Daikin_Control_{0}.png",
+      "url": "/webman/3rdparty/MODS_Daikin_Control/index.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "all",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
