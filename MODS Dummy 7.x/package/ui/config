@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Dummy_7.MODS_Dummy_7_x": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": false,
+      "title": "MODS Dummy 7.x",
+      "desc": "This is a dummy package created with MODS for illustration purpose. It does not contains any concrete application but was created to test MODS' features on DSM 7.x",
+      "icon": "images/MODS_Dummy_7_x_{0}.png",
+      "url": "https://global.download.synology.com/download/Document/Software/DeveloperGuide/Firmware/DSM/7.0/enu/DSM_Developer_Guide_7_0_Beta.pdf",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
