@@ -1,0 +1,19 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Filebot_Runner.Filebot_Run": {
+      "itemType": 1,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Filebot Run",
+      "desc": "Execute the task 1 defined within FiletBot",
+      "icon": "images/Filebot_Run_{0}.png",
+      "url": "/webman/3rdparty/MODS_Filebot_Runner/mods.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "all",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

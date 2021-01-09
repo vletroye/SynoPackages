@@ -1,0 +1,45 @@
+#!/bin/sh
+LOG="/var/log/$SYNOPKG_PKGNAME"_INS
+ERRLOG="/var/log/$SYNOPKG_PKGNAME"_ERR
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+# Close the streams and redirect them to custom Logs
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+# Log a line as pre-install is always the first action of a setup
+if [ "$SYNOPKG_PKG_STATUS" = "INSTALL" ]; then
+  echo "*******************************************************************************************"
+  echo `date` "START $SYNOPKG_PKG_STATUS"
+fi
+
+# Log the name of the current script, its parameters and the version of the package
+echo `date` "["`basename $0`"] [$*] PKG VERSION: $SYNOPKG_PKGVER"
+
+#---------------------------------------------------------------------------------------------------
+# ADD YOU CODE HERE UNDER
+
+
+
+# END YOUR CODE HERE ABOVE
+#---------------------------------------------------------------------------------------------------
+
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # Make the log pretty to be displayed by the Catalog Manager
+  sed -i 's/$/<br>/' "$ERRLOG"
+  # Return the error log to the Catalog Manager
+  cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  exit 1
+fi
+
+# Return a message for the user via the Catalog Manager
+echo "<br>Pre installation done<br>" >> $SYNOPKG_TEMP_LOGFILE
+
+exit 0

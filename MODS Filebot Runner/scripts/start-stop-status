@@ -1,0 +1,114 @@
+#!/bin/sh
+LOG="/var/log/$SYNOPKG_PKGNAME"_INS
+ERRLOG="/var/log/$SYNOPKG_PKGNAME"_ERR
+if [[ -f "$ERRLOG" ]]; then
+  rm -f "$ERRLOG"
+fi
+
+# Close the streams and redirect them to custom Logs
+exec 4<&1
+exec 5<&2
+exec 1<&-
+exec 2<&-
+exec 1>>$LOG
+exec 2>>$ERRLOG
+
+start()
+{
+  # Replace the null statement here after (:) by the code to be executed when starting your package
+  :
+
+  # You can call a script such as "yourScript" with 
+  # the name of the current script (`basename $0`) and 
+  # its own parameters ($*) as input.
+  # Example: . `dirname $0`/yourScript `basename $0` $*
+}
+
+stop()
+{
+  # Replace the null statement here after (:) by the code to be executed when stopping your package
+  :
+}
+
+status()
+{
+  # Test your installation. Here after, we use [ true ] assuming that our setup always succeed :)
+  if [ true ]; then
+    if [ "$SYNOPKG_PKG_STATUS" == "INSTALL" ] || [ "$SYNOPKG_PKG_STATUS" == "UNINSTALL" ] || [ "$SYNOPKG_PKG_STATUS" == "UPGRADE" ]; then
+      echo `date` "["`basename $0`"] [$*] STATUS: INSTALLATION SUCCEEDED."
+      # Return a message for the user via the Catalog Manager
+      echo "Status: succeeded<br>" >> $SYNOPKG_TEMP_LOGFILE
+    fi
+
+    exit 0 # installation successful
+  else
+    if [ "$SYNOPKG_PKG_STATUS" == "INSTALL" ] || [ "$SYNOPKG_PKG_STATUS" == "UNINSTALL" ] || [ "$SYNOPKG_PKG_STATUS" == "UPGRADE" ]; then
+      echo `date` "["`basename $0`"] [$*] STATUS: INSTALLATION FAILED."
+      # Return a message for the user via the Catalog Manager
+      echo "Status: failed<br>" >> $SYNOPKG_TEMP_LOGFILE
+    fi
+
+    exit 150 # package is broken and should be reinstalled
+  fi
+}
+
+log()
+{
+  # Simply return the content of the Log file to the caller after restoring the output stream
+  exec 1<&4
+  echo $LOG
+}
+
+case $1 in
+  start)
+    # Log the name of the current script, its parameters and the version of the package
+    echo `date` "["`basename $0`"] [$*] PKG VERSION: $SYNOPKG_PKGVER"
+
+    start
+
+    # Return a message for the user via the Catalog Manager
+    # And Log a line as start is always the last action of a setup or upgrade
+    if [ "$SYNOPKG_PKG_STATUS" = "INSTALL" ] || [ "$SYNOPKG_PKG_STATUS" = "UPGRADE" ]; then
+      echo "Start done<br>" >> $SYNOPKG_TEMP_LOGFILE
+      echo `date` "END $SYNOPKG_PKG_STATUS"
+      echo "*******************************************************************************************"
+    fi
+  ;;
+  stop)
+    # Log a line as stop is always the first action of an upgrade or uninstall
+    if [ "$SYNOPKG_PKG_STATUS" = "UNINSTALL" ] || [ "$SYNOPKG_PKG_STATUS" = "UPGRADE" ]; then
+      echo "*******************************************************************************************"
+      echo `date` "START $SYNOPKG_PKG_STATUS"
+    fi
+    # Log the name of the current script, its parameters and the version of the package
+    echo `date` "["`basename $0`"] [$*] PKG VERSION: $SYNOPKG_PKGVER"
+    
+    stop
+
+    # Return a message for the user via the Catalog Manager
+    if [ "$SYNOPKG_PKG_STATUS" = "UNINSTALL" ] || [ "$SYNOPKG_PKG_STATUS" = "UPGRADE" ]; then
+      echo "<br>Stop done<br>" >> $SYNOPKG_TEMP_LOGFILE
+    fi
+  ;;
+  status)
+    status
+  ;;
+  log)
+    log
+  ;;
+esac
+
+if [ -s "$ERRLOG" ]; then
+  echo `date` "----------------------------------------------------"
+  cat $ERRLOG
+  echo `date` "----------------------------------------------------"
+  # Make the log pretty to be displayed by the Catalog Manager
+  sed -i 's/$/<br>/' "$ERRLOG"
+  # Return the error log to the Catalog Manager
+  if [ "$SYNOPKG_PKG_STATUS" = "INSTALL" ] || [ "$SYNOPKG_PKG_STATUS" = "UNINSTALL" ] || [ "$SYNOPKG_PKG_STATUS" = "UPGRADE" ]; then
+    cat $ERRLOG >> $SYNOPKG_TEMP_LOGFILE
+  fi
+  exit 1
+fi
+
+exit 0
