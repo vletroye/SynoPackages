@@ -7,7 +7,9 @@ stdbuf -oL echo "Please Wait. FileBot needs some time to start."
 stdbuf -oL echo
 stdbuf -oL echo
 
+sleep 1
+
 stdbuf -oL /usr/local/filebot-node/task 1
 
 stdbuf -oL echo
-stdbuf -oL echo "_____________________________________________"
+stdbuf -oL echo "___________________________________________________________________"

@@ -40,6 +40,6 @@ if [ $SYNOPKG_PKG_STATUS = "UNINSTALL" ]; then
 fi
 
 # Return a message for the user via the Catalog Manager
-echo "Post uninstallation done<br>" >> $SYNOPKG_TEMP_LOGFILE
+#echo "Post uninstallation done<br>" >> $SYNOPKG_TEMP_LOGFILE
 
 exit 0

@@ -34,6 +34,6 @@ if [ -s "$ERRLOG" ]; then
 fi
 
 # Return a message for the user via the Catalog Manager
-echo "Pre upgrade done<br>" >> $SYNOPKG_TEMP_LOGFILE
+#echo "Pre upgrade done<br>" >> $SYNOPKG_TEMP_LOGFILE
 
 exit 0

@@ -20,7 +20,7 @@ function liveExecuteCommand($cmd)
 
     while (!feof($proc))
     {
-        $live_output     = fread($proc, 4096);
+        $live_output     = fread($proc, 2048);
         $complete_output = $complete_output . $live_output;
         echo "$live_output";
 		

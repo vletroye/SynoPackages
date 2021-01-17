@@ -40,6 +40,6 @@ if [ -s "$ERRLOG" ]; then
 fi
 
 # Return a message for the user via the Catalog Manager
-echo "<br>Pre installation done<br>" >> $SYNOPKG_TEMP_LOGFILE
+#echo "<br>Pre installation done<br>" >> $SYNOPKG_TEMP_LOGFILE
 
 exit 0
