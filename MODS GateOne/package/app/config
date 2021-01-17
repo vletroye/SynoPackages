@@ -1,6 +1,6 @@
 {
   ".url": {
-    "com.synocommunity.MODS_GateOne.GateOne": {
+    "com.synocommunity.MODS_GateOne": {
       "itemType": 2,
       "type": "legacy",
       "allUsers": true,
@@ -9,7 +9,7 @@
       "icon": "images/GateOne_{0}.png",
       "url": "/webman/3rdparty/MODS_GateOne/index.php",
       "allowMultiInstance": false,
-      "configablePrivilege": false,
+      "configablePrivilege": true,
       "advanceGrantPrivilege": true,
       "grantPrivilege": "all",
       "width": 0,
