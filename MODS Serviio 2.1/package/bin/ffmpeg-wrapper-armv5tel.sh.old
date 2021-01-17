@@ -1,0 +1,43 @@
+#!/bin/sh
+
+#FFmpeg wrapper script to use libshine fixed point maths MP3 encoder on ARM CPUs
+#as originally posted here: http://forum.serviio.org/viewtopic.php?f=7&t=6458
+
+PARAMS=""
+FFMPEG_BIN="ffmpeg"
+INPUT=0
+for PARAM in "$@"; do
+  if [ ${INPUT} = 1 ]; then
+    #the FFmpeg input filename/URL needs quotes adding back on
+    #because it may contain spaces, and the shell has removed them
+    PARAMS="${PARAMS} \"${PARAM}\""    
+    INPUT=0
+  else
+    PARAMS="${PARAMS} ${PARAM}"
+  fi
+  if [ "${PARAM}" == "-i" ]; then
+    #this loop is the -i parameter, the next loop will be the input filename/URL
+    INPUT=1
+  fi
+done
+
+#make libshine encoder substitution, 320Kbps since it's no more expensive
+if [ "${PARAMS}" != "${PARAMS/libmp3lame/}" ] || [ "${PARAMS}" != "${PARAMS/-f mp3/}" ]; then
+  PARAMS="`echo ${PARAMS} | sed -r "s|libmp3lame|libshine|;s|-b:a [0-9]+k|-b:a 320k|"`"
+fi
+
+#make libfdk_aac encoder substitution, 128Kbps since we're usually transcoding to AAC stereo only
+#if [ "${PARAMS}" != "${PARAMS/-c:a aac/}" ]; then
+#  PARAMS="`echo ${PARAMS} | sed -r "s| aac -strict experimental | libfdk_aac |;s|-b:a [0-9]+k|-b:a 128k|"`"
+#fi
+
+
+#invoke FFmpeg
+FOLDER="`dirname $0`"
+echo "${FOLDER}/${FFMPEG_BIN} ${PARAMS}" > ${FOLDER}/../log/ffmpeg-wrapper.log
+#need to use eval here otherwise the quotes aren't handled properly
+#http://fvue.nl/wiki/Bash:_Why_use_eval_with_variable_expansion%3F
+eval ${FOLDER}/${FFMPEG_BIN} ${PARAMS}
+
+#return FFmpeg status
+exit $?

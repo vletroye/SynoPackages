@@ -1,0 +1,61 @@
+Serviio End User Licence Agreement
+(c) 2009 - 2017 Petr Nejedly. All rights reserved.
+
+1. This End User Licence Agreement ("EULA") is a legal agreement between you 
+   (either an individual or an entity) (hereinafter "You") and copyright holder 
+   or other authorized party (collectively "Company") relating to Your 
+   installation and use of the Serviio Media Server software 
+   (the "Software"). 
+
+   By installing, copying, or otherwise using the Software, You agree to be bound 
+   by the terms of this EULA. If You do not agree to the terms of this EULA, 
+   do not install, copy or use the Software. 
+
+2. Permission is granted to You to use this Software, to copy it and 
+   redistribute it freely, subject to the following restrictions:
+
+   a. The origin of the Software must not be misrepresented; You must not 
+      claim that You wrote the Software.
+   b. You may not sell, rent, loan or otherwise encumber the Software in 
+      whole or in part, standalone or as a part of integrated solutions, 
+      to any third party.   
+   c. The Software is intended for personal use only. Organizations and business 
+      entities must purchase a business licence to operate the Software in a business 
+      setup.   
+   d. You may not decompile, reverse engineer, disassemble or modify the Software, 
+      unless this is strictly for personal use or to debug such modifications.  
+      These modifications must not include removing licensing management module.    
+   e. This notice may not be removed or altered from redistributions.
+
+3. The Software includes open source software not owned by
+   the Company. The licence terms in this EULA do not apply to those parts.
+   Instead, the licensing terms listed below apply:
+      
+    a. The Software includes portions of FFmpeg which is licensed under GPL 2.0
+    b. The Software includes software developed by the Visigoth Software Society
+       which is licensed by a BSD-style licence
+    c. The Software includes Jaudiotagger which is licensed under LGPL 3.0
+    d. The Software uses NSIS which is licensed by zlib/libpng licence  
+    e. The Software includes SLF4J which is licensed by MIT licence 
+    f. The Software includes Restlet which is licensed under LGPL 2.1
+    g. The Software includes software developed by the JDOM Project
+       (http://www.jdom.org/).
+    h. The Software includes LAME MP3 encoder which is licenced under LGPL 2.0
+    i. The Software includes librtmp which is licenced under LGPL 2.1
+    j. The Software includes Winp which is licenced under MIT licence
+    k. The Software includes dcraw
+    l. The Software includes jNAT-PMPlib which is licended under LGPL 3.0
+    m. The Software includes x264 which is licensed under GPL 2.0
+    n. The Software includes aXMLRPC which is licensed under MIT licence
+    o. The Software includes imgscalr which is licensed under Apache 2.0 licence
+  
+THE SOFTWARE IS PROVIDED BY THE COMPANY "AS IS" AND ANY EXPRESS OR IMPLIED 
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+IN NO EVENT SHALL THE COMPANY BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

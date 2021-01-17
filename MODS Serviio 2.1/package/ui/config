@@ -1,0 +1,21 @@
+{
+  ".url": {
+    "org.serviio.console": {
+      "itemType": 0,
+      "type": "url",
+      "allUsers": true,
+      "title": "Serviio",
+      "desc": "Serviio Console Web UI",
+      "icon": "images/Serviio_{0}.png",
+      "protocol": "http",
+      "url": "/console",
+      "port": 23423,
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": true,
+      "grantPrivilege": "all",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
