@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. `dirname $0`/common `basename $0` $*
+
+StartScript
+
+LinkNginx
+
+EnableRouterLog
+
+EndScript
+exit 0

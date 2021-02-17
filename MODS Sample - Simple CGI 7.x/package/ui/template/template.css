@@ -1,0 +1,19 @@
+body {
+    margin-left: 200px;
+    background: #5d9ab2 url("img_tree.png") no-repeat top left;
+}
+
+.wrap { 
+	margin: 20px auto; 
+	padding: 30px 20px; 
+	text-align: center; 
+	box-shadow: 0 4px 25px -4px #9da5ab;
+    width: 70%;
+    background-color: #d0f0f6;
+}
+
+article {
+	text-align: left; 
+	padding: 40px; 
+	line-height: 150%;
+}

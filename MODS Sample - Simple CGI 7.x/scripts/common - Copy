@@ -1,0 +1,421 @@
+#!/bin/sh
+LOG="/tmp/$SYNOPKG_PKGNAME.log"
+ERR="/tmp/$SYNOPKG_PKGNAME.err"
+DEBUG="1"
+FRWD="0"
+
+
+# System errors occuring during installation (Ex.: if DSM can't run this script) can be found via: cat /var/log/packages/<Package Name>.log
+# Additional info can also be found via: sudo cat /var/log/synopkg.log
+
+SCRIPT=${0##*/}
+SCRIPTPATH=`dirname $0`
+PARAM=$1
+
+if [ $DEBUG == "1" ]; then
+	echo "SCRIPT=$SCRIPT"
+	echo "SCRIPTPATH=$SCRIPTPATH"
+	echo "PARAM=$PARAM"
+fi
+
+# Call the function from the the Script with something like this:
+#if [ $SCRIPT == "start-stop-status" ]; then
+#	startstopstatus
+#else
+#	$SCRIPT
+#fi
+
+
+function prereplace() {	
+	# Package is not yet deployed in the target folder (it does not exist yet)
+	# Package's 'target' files are currently in: $SYNOPKG_PKGINST_TEMP_DIR
+	# 	they will be copied into $SYNOPKG_PKGDEST between preinst and postinst
+	# Package's 'installation' files are currently in: ${SYNOPKG_PKGINST_TEMP_DIR%"/package"}
+	# 	they will be copied into /var/packages/$SYNOPKG_PKGNAME between preinst and postinst
+	if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then		
+		# Installation from scratch of the package
+		echo ""
+	
+	elif [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+		# Both $SYNOPKG_PKGVER and $SYNOPKG_OLD_PKGVER have a value.
+		
+		# This is the script of the new Package
+		
+		echo ""
+	fi
+}
+function preinst() {
+	# Package is not yet deployed in the target folder (it does not exist yet)
+	# So Files of a previous version are not yet linked into var/, home/ and etc/
+	
+	# Package's 'target' files are currently in the temp folder: $SYNOPKG_PKGINST_TEMP_DIR
+	# 	they will be copied into $SYNOPKG_PKGDEST between preinst and postinst
+	# Package's 'installation' files are currently in the parent of the temp folder: ${SYNOPKG_PKGINST_TEMP_DIR%"/package"}
+	# 	they will be copied into /var/packages/$SYNOPKG_PKGNAME between preinst and postinst
+
+	# Compared to prereplace, the resource file is now processed (conf/resource.own has been created)
+	
+	# This is the place for checks. No to deploy yet anything.
+
+	if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then
+		# Installation from scratch of the package
+		
+		echo ""
+		
+	elif [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+		# A previous version of the package was installed => Files possibly exist in var/, home/ and etc/
+		# Folder $SYNOPKG_TEMP_UPGRADE_FOLDER is available but backuped files should be to restored during postinst as the target folder does not yet exist now
+		# Both $SYNOPKG_PKGVER and $SYNOPKG_OLD_PKGVER have a value.
+
+		# This is the script of the new Package
+		
+		echo ""	
+	fi
+}
+function postinst() {
+	# Package is now deployed in the target folder
+	# Package's 'target' files are now available in the destination folder: $SYNOPKG_PKGDEST
+	# Package's 'installation' files are available in: /var/packages/$SYNOPKG_PKGNAME
+	# Package is not available anymore in teh temp folder: $SYNOPKG_PKGINST_TEMP_DIR
+
+	# Files of a previous version possibly exist in the linked var/, home/ and etc/
+	
+	# This is the place for custom installation stuff
+	
+	if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then
+		# Installation from scratch of the package
+	
+		echo ""
+		
+	elif [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+		# A previous version of the package was installed => Files possibly exist in var/, home/ and etc/
+		# Folder $SYNOPKG_TEMP_UPGRADE_FOLDER can be used to restore files from the previous $SYNOPKG_PKGDEST (if backuped)
+		# Both $SYNOPKG_PKGVER and $SYNOPKG_OLD_PKGVER have a value.
+		
+		# This is the script of the new Package
+		
+		echo ""		
+	fi
+}
+function postreplace() {
+	if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then
+	
+		echo ""		
+		
+	elif [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+		# Both $SYNOPKG_PKGVER and $SYNOPKG_OLD_PKGVER have a value.
+
+		# This is the script of the new Package
+		
+		echo ""		
+	fi
+}
+function preupgrade() {
+	# New Package's 'target' files are available in: $SYNOPKG_PKGINST_TEMP_DIR	
+	# New Package's 'installation' files are available in: ${SYNOPKG_PKGINST_TEMP_DIR%"/package"}
+	# Previous Package's 'target' files are still available in the target folder: $SYNOPKG_PKGDEST
+	# Previous Package's 'installation' files are still available in: /var/packages/$SYNOPKG_PKGNAME
+	# Both $SYNOPKG_PKGVER and $SYNOPKG_OLD_PKGVER have a value
+	
+	# Folder $SYNOPKG_TEMP_UPGRADE_FOLDER can be used to backup files from $SYNOPKG_PKGDEST during the upgrade
+	# This is the place to do it as part of the new package which knows what it needs
+	
+	# This is the script of the new Package
+
+	echo ""
+}
+function preuninst() {
+	# Previous Package's target files are still available in the target folder: $SYNOPKG_PKGDEST
+	# Previous Package's installation files are still available in: /var/packages/$SYNOPKG_PKGNAME
+
+	if [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+		# New Package's files are not yet available
+		
+		# Folder $SYNOPKG_TEMP_UPGRADE_FOLDER can be used to backup files from $SYNOPKG_PKGDEST during the upgrade
+		# But this is best done in preupgrade
+		
+		# This is the script of the old Package
+	
+		echo ""
+		
+	elif [ $SYNOPKG_PKG_STATUS == "UNINSTALL" ]; then
+		echo ""	
+	fi
+}
+function postuninst() {
+	# Previous Package's target files are not available anymore in: $SYNOPKG_PKGDEST
+	# But previous Package's installation files are still available in: /var/packages/$SYNOPKG_PKGNAME
+
+	if [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+		# New Package's files are not yet available
+	
+		# Folder $SYNOPKG_TEMP_UPGRADE_FOLDER can be used to backup files from $SYNOPKG_PKGDEST during the upgrade
+		# But this is best done in preupgrade
+		
+		# This is the script of the old Package
+	
+		echo ""
+	elif [ $SYNOPKG_PKG_STATUS == "UNINSTALL" ]; then
+		echo ""
+	fi
+}
+function postupgrade() {
+	# Both $SYNOPKG_PKGVER and $SYNOPKG_OLD_PKGVER have a value.
+	
+	# This is the script of the new  Package
+	
+	echo ""
+}
+function startstopstatus() {
+	# WIZARD_UIFILE are not available in start-stop-status
+	
+	if [ $PARAM == "prestart" ]; then
+		if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then
+			# Called for checks after installation and before starting automatically
+		
+			echo ""
+			
+		elif [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+			# Called for checks after upgrade and before starting automatically
+		
+			# This is the script of the new Package
+			
+			echo ""
+		fi	
+	elif [ $PARAM == "start" ]; then
+		if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then
+			# Called to start the package automatically after installation if requested by the user 
+		
+			echo ""
+			
+		elif [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+			# Called to restart the package automatically after upgrade if it was running before upgrade
+
+			# This is the script of the new Package
+		
+			echo ""
+		fi
+	elif [ $PARAM == "prestop" ]; then
+		if [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+			# Called for checks before upgrade if it is currently runnning
+		
+			# This is the script of the old Package
+		
+			echo ""
+			
+		elif [ $SYNOPKG_PKG_STATUS == "UNINSTALL" ]; then
+			# Called for checks before uninstallation if it is currently runnning
+
+			echo ""
+		fi
+	elif [ $PARAM == "stop" ]; then
+		if [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+			# Called to stop the package before upgrade if it is currently running
+		
+			# This is the script of the old Package
+		
+			echo ""
+			
+		elif [ $SYNOPKG_PKG_STATUS == "UNINSTALL" ]; then
+		# Called to stop the package before uninstalation if it is currently running
+			
+			echo ""
+		fi
+	elif [ $PARAM == "status" ]; then
+		
+		echo ""
+	fi
+}
+
+function LogApart() {
+	if [ $FRWD == "1" ]; then
+		EndLog
+	fi
+	FRWD="1"
+	
+	# Save the streams stdout and stderr
+	exec 4<&1
+	exec 5<&2
+
+	# Redirect the stream stdout and stderr to their own logs
+	exec 2>>$ERR
+	exec 1>>$LOG
+}
+
+function LogAll() {
+	if [ $FRWD == "1" ]; then
+		EndLog
+	fi
+	FRWD="1"
+
+	# Save the streams stdout and stderr
+	exec 4<&1
+	exec 5<&2
+
+	# Redirect the stream stdout to a log and stderr to stdout
+	exec 2>&1
+	exec 1>>$LOG
+}
+
+function EndLog() {
+	if [ $FRWD == "1" ]; then
+		FRWD="0"
+		
+		# Restore the streams stdout and stderr
+		exec 1<&4
+		exec 2<&5
+	fi
+}
+
+function PublishErr() {
+	EndLog
+	#if the variable $SYNOPKG_TEMP_LOGFILE is not empty, the user will be prompted with the content.
+	if [ ! -z "$SYNOPKG_TEMP_LOGFILE" ]; then
+		if [ -f $ERR ]; then
+			cat $ERR >> "$SYNOPKG_TEMP_LOGFILE"
+		fi
+		
+		if [ -f $SYNOPKG_TEMP_LOGFILE ]; then
+			# make the log pretty to be displayed (replace LF with html <br>)
+			sed -i 's/$/<br>/' $SYNOPKG_TEMP_LOGFILE
+		fi
+	fi
+}
+
+function DelErr() {
+	rm -f $ERR
+}
+
+function CheckErr() {
+	if [ -f $ERR ]; then
+		if [ -s $ERR  ]; then
+			return 150
+		else
+			return 0
+		fi
+	else
+		return 0
+	fi
+}
+
+function ExitErr() {
+	local code=$(CheckErr)
+	exit $code
+}
+
+function PublishAndExitErr() {
+	PublishErr
+	local code=$(CheckErr)
+	exit $code
+}
+
+function ExecSSH(){
+	user=$1
+	pass=$2
+	port=$3
+	cmd=$4
+	
+	#ogegoon@Ares:/tmp$ /volume1/\@appstore/PHP5.6/usr/local/bin/php56 -v
+	#PHP 5.6.40 (cli) (built: Jul 15 2020 11:58:30)
+	#Copyright (c) 1997-2016 The PHP Group
+	#Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+	
+	#ogegoon@Ares:/tmp$ /volume1/\@appstore/PHP7.0/usr/local/bin/php70 -v
+	#PHP 7.0.33 (cli) (built: Jul 15 2020 12:27:08) ( NTS )
+	#Copyright (c) 1997-2017 The PHP Group
+	#Zend Engine v3.0.0, Copyright (c) 1998-2017 Zend Technologies
+	
+	#ogegoon@Ares:/tmp$ /volume1/\@appstore/PHP7.3/usr/local/bin/php73 -v
+	#PHP 7.3.16 (cli) (built: Sep  7 2020 18:34:57) ( NTS )
+	#Copyright (c) 1997-2018 The PHP Group
+	#Zend Engine v3.3.16, Copyright (c) 1998-2018 Zend Technologies
+	
+	#ogegoon@Ares:/tmp$ /volume1/\@appstore/PHP7.4/usr/local/bin/php74 -v
+	#PHP 7.4.9 (cli) (built: Oct 28 2020 12:28:33) ( NTS )
+	#Copyright (c) The PHP Group
+	#Zend Engine v3.4.0, Copyright (c) Zend Technologies
+
+	version=`php -v | grep "PHP " | cut -f2 -d " "`
+	major=`echo $version | cut -d. -f1`
+	minor=`echo $version | cut -d. -f2`
+		
+	# Call PHP with ssh2 modules
+	php -dextension=/var/packages/PHP$major.$minor/target/usr/local/lib/php$major$minor/modules/ssh2.so `dirname $0`/exec.php -u "$user" -p "$pass" -s "127.0.0.1" -o "$port" -c "$cmd"
+	phpid=$!
+	wait $phpid
+	exitcode=$?
+	echo php return code $exitcode
+	
+	return $exitcode
+}
+
+function CheckSSH(){
+	user=$1
+	pass=$2
+	port=$3
+
+	version=`php -v | grep "PHP " | cut -f2 -d " "`
+	major=`echo $version | cut -d. -f1`
+	minor=`echo $version | cut -d. -f2`
+		
+	# Call PHP with ssh2 modules
+	php -dextension=/var/packages/PHP$major.$minor/target/usr/local/lib/php$major$minor/modules/ssh2.so `dirname $0`/check.php -u "$user" -p "$pass" -s "127.0.0.1" -o "$port"
+	phpid=$!
+	wait $phpid
+	exitcode=$?
+	echo php return code $exitcode
+	
+	return $exitcode
+}
+
+function CheckPhp() {
+	version=`php -v | grep "PHP " | cut -f2 -d " "`
+	major=`echo $version | cut -d. -f1`
+	minor=`echo $version | cut -d. -f2`
+
+	PHPCGI="/usr/local/bin/php73-cgi"
+	PHPINI="/usr/local/etc/php73/cli/php.ini"
+}
+
+function Publish() {
+	msg=$1
+	
+	echo $msg >> $SYNOPKG_TEMP_LOGFILE
+}
+
+#Execution Order
+#---------------
+#Installation
+# Call to Installation Wizard
+# 1. prereplace
+#		Executed from a temporary folder
+#		Target folder does not yet exist
+# 2. preinst
+# 3. postinst
+# 4. postreplace
+# 5. start-stop-status with prestart argument if end user chooses to start it immediately
+# 6. start-stop-status with start argument if end user chooses to start it immediately
+#Upgrade
+# 1. start-stop-status with prestop argument if it has been started (old)
+# 2. start-stop-status with stop argument if it has been started (old)
+# 3. preupgrade (new)
+# 4. preuninst (old)
+# 5. postuninst (old)
+# 6. prereplace (new)
+# 7. preinst (new)
+# 8. postinst (new)
+# 9. postreplace (new)
+# 10. postupgrade (new)
+# 11. start-stop-status with prestart argument if it was started before being upgraded (new)
+# 12. start-stop-status with start argument if it was started before being upgraded (new)
+#Uninstallation
+# 1. start-stop-status with prestop argument if it has been started
+# 2. start-stop-status with stop argument if it has been started
+# 3. preuninst
+# 4. postuninst
+#Start
+# 1. start-stop-status with prestart argument
+# 2. start-stop-status with start argument
+#Stop
+# 1. start-stop-status with prestop argument
+# 2. start-stop-status with stop argument

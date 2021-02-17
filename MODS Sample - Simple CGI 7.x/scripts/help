@@ -1,0 +1,83 @@
+
+#About Errors & Logs
+#-------------------
+	# Errors and Infos (echo) logged by the installation/upgrade/uninstallation scripts can be found via: cat /var/log/packages/<Package Name>.log
+	# Additional info can also be found via: sudo cat /var/log/synopkg.log
+	# Errors and Infos (echo) logged by wizards' scripts are not in any of those log files.
+	#	For this reason, MODS logs Wizard's scripts info into /tmp/$SYNOPKG_PKGNAME.log and recopy that file into standard log asap
+
+	# Check if MODS' stuff remains after uninstallation or is well installed
+	#ls /usr/syno/etc/packages/MODS_Sample_Simple_CGI_7.x/ /usr/syno/share/nginx/conf.d/dsm.MODS*
+	#ls /usr/syno/share/nginx/conf.d/dsm.MODS*
+
+	# Check MODS' outputs and remove then for next installation attempts
+	#sudo cat /tmp/MODS* /var/log/synopkg.log  /var/log/packages/MODS_Sample_Simple_CGI_7.x.log
+	#sudo rm -f /var/log/packages/MODS_Sample_Simple_CGI_7.x.log /var/log/synopkg.log /tmp/MODS*
+	# Or in one line (without synopkg.log)
+	#sudo cat /tmp/MODS* /var/log/packages/MODS_Sample_Simple_CGI_7.x.log; sudo rm -f /var/log/packages/MODS_Sample_Simple_CGI_7.x.log /tmp/MODS*   
+
+
+#About Script execution order
+#----------------------------
+	#Installation
+	#------------
+	# Call to Installation Wizard
+	# 1. prereplace
+	#		Executed from a temporary folder
+	#		Target folder does not yet exist
+	# 2. preinst
+	# 3. postinst
+	# 4. postreplace
+	# 5. start-stop-status with prestart argument if end user chooses to start it immediately
+	# 6. start-stop-status with start argument if end user chooses to start it immediately
+	#Upgrade (also to repair a failed installation)
+	#----------------------------------------------
+	# 1. start-stop-status with prestop argument if it has been started (old)
+	# 2. start-stop-status with stop argument if it has been started (old)
+	# 3. preupgrade (new)
+	# 4. preuninst (old)
+	# 5. postuninst (old)
+	# 6. prereplace (new)
+	# 7. preinst (new)
+	# 8. postinst (new)
+	# 9. postreplace (new)
+	# 10. postupgrade (new)
+	# 11. start-stop-status with prestart argument if it was started before being upgraded (new)
+	# 12. start-stop-status with start argument if it was started before being upgraded (new)
+	#Uninstallation
+	#--------------
+	# 1. start-stop-status with prestop argument if it has been started
+	# 2. start-stop-status with stop argument if it has been started
+	# 3. preuninst
+	# 4. postuninst
+	#Start
+	#-----
+	# 1. start-stop-status with prestart argument
+	# 2. start-stop-status with start argument
+	#Stop
+	#----
+	# 1. start-stop-status with prestop argument
+	# 2. start-stop-status with stop argument
+
+#About PHP versions
+#------------------
+	#$ /volume1/\@appstore/PHP5.6/usr/local/bin/php56 -v
+	# PHP 5.6.40 (cli) (built: Jul 15 2020 11:58:30)
+	# Copyright (c) 1997-2016 The PHP Group
+	# Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+	
+	#$ /volume1/\@appstore/PHP7.0/usr/local/bin/php70 -v
+	# PHP 7.0.33 (cli) (built: Jul 15 2020 12:27:08) ( NTS )
+	# Copyright (c) 1997-2017 The PHP Group
+	# Zend Engine v3.0.0, Copyright (c) 1998-2017 Zend Technologies
+	
+	#$ /volume1/\@appstore/PHP7.3/usr/local/bin/php73 -v
+	# PHP 7.3.16 (cli) (built: Sep  7 2020 18:34:57) ( NTS )
+	# Copyright (c) 1997-2018 The PHP Group
+	# Zend Engine v3.3.16, Copyright (c) 1998-2018 Zend Technologies
+	
+	#$ /volume1/\@appstore/PHP7.4/usr/local/bin/php74 -v
+	# PHP 7.4.9 (cli) (built: Oct 28 2020 12:28:33) ( NTS )
+	# Copyright (c) The PHP Group
+	# Zend Engine v3.4.0, Copyright (c) Zend Technologies
+	

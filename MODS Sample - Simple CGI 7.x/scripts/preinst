@@ -1,0 +1,15 @@
+#!/bin/sh
+
+. `dirname $0`/common `basename $0` $*
+
+StartScript
+
+if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then
+
+	# Delete Logs from previous installation
+	rm -f $LOG
+	rm -f $ERR
+fi
+
+EndScript
+exit 0

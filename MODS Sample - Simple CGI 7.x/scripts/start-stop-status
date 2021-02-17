@@ -1,0 +1,19 @@
+#!/bin/sh
+
+case $1 in
+  prestart)
+    exit 0
+    ;;
+  start)
+    exit 0
+    ;;
+  prestop)
+    exit 0
+    ;;
+  stop)
+    exit 0
+    ;;
+  status)
+    exit 0
+    ;;
+esac

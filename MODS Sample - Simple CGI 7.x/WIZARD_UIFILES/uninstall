@@ -1,0 +1,54 @@
+[
+  {
+    "step_title": "Uninstall parameters",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Enter an administrator account and his password to uninstall this package:",
+        "subitems": [
+          {
+            "blankText": "You must type an account",
+            "validator": {
+              "vtype": "alphanum",
+              "allowBlank": false
+            },
+            "key": "MODS_ADMIN",
+            "defaultValue": "@MODS_ADMIN@",
+            "desc": "Account"
+          }
+        ]
+      },
+      {
+        "type": "password",
+        "subitems": [
+          {
+            "key": "MODS_PASSWORD",
+            "defaultValue": "@MODS_PASSWORD@",
+            "desc": "Password",
+            "blankText": "You must type a password"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Enter the port used to connect via SSH:",
+        "subitems": [
+          {
+            "blankText": "You must type a valid port",
+            "validator": {
+              "allowBlank": false,
+              "regex": {
+                "errorText": "You must type a valid port",
+                "expr": "/^(102[0-3]|10[0-1]\\d|[1-9][0-9]{0,2}|0)$/"
+              }
+            },
+            "key": "MODS_PORT",
+            "defaultValue": "@MODS_PORT@",
+            "desc": "SSH Port"
+          }
+        ]
+      }
+    ]
+  }
+]

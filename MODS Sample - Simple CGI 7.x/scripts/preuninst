@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. `dirname $0`/common `basename $0` $*
+
+StartScript
+
+UnlinkNginx
+
+EndScript
+exit 0

@@ -1,0 +1,14 @@
+[
+  {
+    "step_title": "Ready to Proceed",
+    "invalid_next_disabled": false,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "You are going to proceed with SSH credentials provided during installation [@MODS_ADMIN@ account].",
+        "subitems": [
+        ]
+      }
+	]
+  }
+]
