@@ -1,0 +1,57 @@
+[
+  {
+    "step_title": "Installer SSH parameters",
+    "invalid_next_disabled": false,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Enter an administrator account and his password to install this package:",
+        "subitems": [
+          {
+            "key": "WIZARD_ADMIN",
+            "defaultValue": "admin",
+            "desc": "Account",
+            "validator": {
+              "vtype": "alphanum",
+              "allowBlank": false
+            }
+          },
+          {
+            "validator": {
+              "vtype": "alphanum",
+              "allowBlank": false
+            },
+            "key": "WIZARD_PASSWORD",
+            "desc": "Password"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Enter the port used to connect via SSH:",
+        "subitems": [
+          {
+            "validator": {
+              "vtype": "alphanum",
+              "allowBlank": false
+            },
+            "key": "WIZARD_PORT",
+            "defaultValue": "22",
+            "desc": "SSH Port"
+          }
+        ]
+      },
+      {
+        "type": "multiselect",
+        "desc": "Save the password for later [unsafe]:",
+        "subitems": [
+          {
+            "key": "WIZARD_SAVE",
+            "defaultValue": "FALSE",
+            "desc": "Save"
+          }
+        ]
+      }
+    ]
+  }
+]

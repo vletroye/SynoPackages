@@ -1,3 +1,30 @@
 #!/bin/sh
+exec 1<&-
+exec 1>>$SYNOPKG_TEMP_LOGFILE
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
 
+#source `dirname $0`/common
+. `dirname $0`/common
+
+#---------------------------------------------------------------------------------------------------
+# ADD YOUR CODE HERE UNDER
+
+if [ -v $WIZARD_PASSWORD ]; then
+	if [ -f "/var/packages/$SYNOPKG_PKGNAME/etc/parameters" ]; then
+		#source /var/packages/$SYNOPKG_PKGNAME/etc/parameters
+		. /var/packages/$SYNOPKG_PKGNAME/etc/parameters
+	fi
+fi
+
+if [ $SYNOPKG_PKG_STATUS = "UNINSTALL" ]; then
+	Link="/usr/syno/share/nginx/conf.d/dsm.MODS_Dummy_7.x.conf"
+	modsudo $WIZARD_ADMIN $WIZARD_PASSWORD $WIZARD_PORT "unlink $Link"
+	rm -f "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+fi
+
+# END YOUR CODE HERE ABOVE
+#---------------------------------------------------------------------------------------------------
+
+sed -i 's/$/<br>/' $SYNOPKG_TEMP_LOGFILE
 exit 0

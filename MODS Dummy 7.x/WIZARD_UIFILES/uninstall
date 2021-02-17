@@ -1,0 +1,39 @@
+[
+  {
+    "step_title": "Uninstaller SSH parameters",
+    "invalid_next_disabled": false,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Enter an administrator account and his password to uninstall this package:",
+        "subitems": [
+          {
+            "key": "WIZARD_ADMIN",
+            "defaultValue": "@MODS_ADMIN@",
+            "desc": "Account",
+            "validator": {
+              "vtype": "alphanum",
+              "allowBlank": false
+            }
+          },
+          {
+            "key": "WIZARD_PASSWORD",
+			"defaultValue": "@MODS_PASS@",
+            "desc": "Password"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Enter the port used to connect via SSH:",
+        "subitems": [
+          {
+            "key": "WIZARD_PORT",
+            "defaultValue": "@MODS_PORT@",
+            "desc": "SSH Port"
+          }
+        ]
+      }
+    ]
+  }
+]

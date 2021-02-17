@@ -1,0 +1,33 @@
+function modsudo(){
+	user=$1
+	pass=$2
+	port=$3
+	cmd=$4
+	
+	#ogegoon@Ares:/tmp$ /volume1/\@appstore/PHP5.6/usr/local/bin/php56 -v
+	#PHP 5.6.40 (cli) (built: Jul 15 2020 11:58:30)
+	#Copyright (c) 1997-2016 The PHP Group
+	#Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+	
+	#ogegoon@Ares:/tmp$ /volume1/\@appstore/PHP7.0/usr/local/bin/php70 -v
+	#PHP 7.0.33 (cli) (built: Jul 15 2020 12:27:08) ( NTS )
+	#Copyright (c) 1997-2017 The PHP Group
+	#Zend Engine v3.0.0, Copyright (c) 1998-2017 Zend Technologies
+	
+	#ogegoon@Ares:/tmp$ /volume1/\@appstore/PHP7.3/usr/local/bin/php73 -v	
+	#PHP 7.3.16 (cli) (built: Sep  7 2020 18:34:57) ( NTS )
+	#Copyright (c) 1997-2018 The PHP Group
+	#Zend Engine v3.3.16, Copyright (c) 1998-2018 Zend Technologies
+	
+	#ogegoon@Ares:/tmp$ /volume1/\@appstore/PHP7.4/usr/local/bin/php74 -v	
+	#PHP 7.4.9 (cli) (built: Oct 28 2020 12:28:33) ( NTS )
+	#Copyright (c) The PHP Group
+	#Zend Engine v3.4.0, Copyright (c) Zend Technologies
+
+	version=`php -v | grep "PHP " | cut -f2 -d " "`
+	major=`echo $version | cut -d. -f1`
+	minor=`echo $version | cut -d. -f2`
+		
+	php -dextension=/volume1/\@appstore/PHP$major.$minor/usr/local/lib/php$major$minor/modules/ssh2.so `dirname $0`/exec.php -u "$user" -p "$pass" -s "127.0.0.1" -o "$port" -c "$cmd"
+	wait $!
+}

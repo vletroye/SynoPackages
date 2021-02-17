@@ -1,13 +1,13 @@
 {
   ".url": {
-    "SYNO.SDS._ThirdParty.App.MODS_Dummy_7.MODS_Dummy_7_x": {
+    "SYNO.SDS.ThirdParty.App.MODS_Dummy_7.x": {
       "itemType": 2,
       "type": "legacy",
       "allUsers": false,
       "title": "MODS Dummy 7.x",
       "desc": "This is a dummy package created with MODS for illustration purpose. It does not contains any concrete application but was created to test MODS' features on DSM 7.x",
       "icon": "images/MODS_Dummy_7_x_{0}.png",
-      "url": "/webman/3rdparty/MODS_Dummy_7/info.php",
+      "url": "/webman/3rdparty/MODS_Dummy_7.x/info.php",
       "allowMultiInstance": false,
       "configablePrivilege": false,
       "advanceGrantPrivilege": false,

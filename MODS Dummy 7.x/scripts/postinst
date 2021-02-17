@@ -1,17 +1,60 @@
 #!/bin/sh
+exec 1<&-
+exec 1>>$SYNOPKG_TEMP_LOGFILE
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
+
+#echo SYNOPKG_PKGNAME: $SYNOPKG_PKGNAME #Package name which is defined in INFO.
+#echo SYNOPKG_PKGVER: $SYNOPKG_PKGVER #Package version which is defined in INFO.
+#echo SYNOPKG_PKGDEST: $SYNOPKG_PKGDEST #Target directory in which the package is stored.
+#echo SYNOPKG_PKGDEST_VOL: $SYNOPKG_PKGDEST_VOL #Target volume in which the package is stored. Please note, SYNOPKG_PKGDEST_VOL is only available in DSM 4.2 or above. If you want to get the target volume in older DSM, please parse it from SYNOPKG_PKGDEST variable.
+#echo SYNOPKG_PKGPORT: $SYNOPKG_PKGPORT #Administrator port which is defined in INFO. Packages listed on a specific port to use the management UI.
+#echo SYNOPKG_PKGINST_TEMP_DIR: $SYNOPKG_PKGINST_TEMP_DIR #Packages are extracted to a temporary directory whose path is described by this variable.
+#echo SYNOPKG_TEMP_LOGFILE: $SYNOPKG_TEMP_LOGFILE #Package Center randomly generates a filename for a script to log the information or error messages.
+#echo SYNOPKG_DSM_LANGUAGE: $SYNOPKG_DSM_LANGUAGE #End-user?s DSM language
+#echo SYNOPKG_DSM_VERSION_MAJOR: $SYNOPKG_DSM_VERSION_MAJOR #End-user?s major number of DSM version which is formatted as [DSM major number].[DSM minor number]-[DSM build number].
+#echo SYNOPKG_DSM_VERSION_MINOR: $SYNOPKG_DSM_VERSION_MINOR #End-user?s minor number of DSM version which is formatted as [DSM major number].[DSM minor number]-[DSM build number].
+#echo SYNOPKG_DSM_VERSION_BUILD: $SYNOPKG_DSM_VERSION_BUILD #End-user?s DSM build number of DSM version which is formatted as [DSM major number].[DSM minor number]-[DSM build number].
+#echo SYNOPKG_DSM_ARCH: $SYNOPKG_DSM_ARCH #End-user?s DSM CPU architecture. Reference #http://forum.synology.com/wiki/index.php/What_kind_of_CPU_does_my_NAS_have
+#echo SYNOPKG_PKG_STATUS: $SYNOPKG_PKG_STATUS #Package status can be represented by these values: INSTALL, UPGRADE, UNINSTALL, START, and STOP. (a) Status value of a package will be set to INSTALL in the preinst and postinst scripts while the package is being installed. If the user chooses the ?start after installation? option at the last step of the installation wizard, the value will be set to INSTALL in the start-stop-status script when the package is started. (b) Status value of a package will be set to UPGRADE in the preupgrade, preuninst, postunist, preinst, postinst and postupgrade scripts sequentially while the package is being upgraded. If the package has been already started before upgrade, the value will be set to UPGRADE in the start-stop-status script when the package is started or stopped. (c) Status value of a package will be set to UNINSTALL in the preuninst and postunist scripts while the package is being uninstalled. If the package has been already started before uninstall, the value will be set to UNINSTALL in the start-stop-status script when the package is stopped. (d) If the user starts or stops a package in Package Center, the status value of the package will be set to START or STOP in the start-stop-status script. (e) When the DiskStation is booting or shutting down, its status value will be empty. Please note, SYNOPKG_PKG_STATUS is only available for the start-stop-status script in DSM 4.0 or above.
+#echo SYNOPKG_OLD_PKGVER: $SYNOPKG_OLD_PKGVER #Existing package version which is defined in INFO (only in preupgrade script)
+#echo SYNOPKG_TEMP_SPKFILE: $SYNOPKG_TEMP_SPKFILE #The location of package spk file is temporarily stored in DS when the package is installing/upgrading. Note: It?s only available in DSM 4.2 or above.
+#echo SYNOPKG_USERNAME: $SYNOPKG_USERNAME #The user name who installs, upgrades, uninstalls, starts or stops the package. If the value is empty, the action is triggered by DSM, not by the end user. Note: It?s only available in DSM 5.2 or above.
+#echo SYNOPKG_PKG_PROGRESS_PATH: $SYNOPKG_PKG_PROGRESS_PATH #A temporary file path for a script to showing the progress in installing and upgrading a package. Note: The progress value is between 0 and 1. It?s only available in DSM 5.2 or above.
+#echo SYNOPKG_TEMP_UPGRADE_FOLDER: $SYNOPKG_TEMP_UPGRADE_FOLDER #The temporary directory when the package is upgrading. You can move the files from the previous version of the package to it in preupgrade script and move them back in postupgrade. Note: It?s only available in DSM 6.0 or above.
+#echo SCRIPT PATH: `dirname $0`
+#echo SCRIPT RUN AS: `whoami`
+
+#source `dirname $0`/common
+. `dirname $0`/common
 
 #---------------------------------------------------------------------------------------------------
-# ADD YOU CODE HERE UNDER
+# ADD YOUR CODE HERE UNDER
 
 # set the name of the package in the nginx config
 sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
 
-# link the nginx config to redirect pages accessed on admin port
-#rm -f /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-#ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf /usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf
-#sudo synoservicecfg --reload nginx [done via package config]
-
+if [ $SYNOPKG_PKG_STATUS = "INSTALL" ]; then
+    Link="/usr/syno/share/nginx/conf.d/dsm.MODS_Dummy_7.x.conf"
+	modsudo $WIZARD_ADMIN $WIZARD_PASSWORD $WIZARD_PORT "ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf $Link"
+	
+	if [ ! -s $SYNOPKG_TEMP_LOGFILE ]; then
+		touch "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+		echo "WIZARD_ADMIN=$WIZARD_ADMIN" >> "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+		if [ $WIZARD_PASSWORD="TRUE" ]; then
+			echo "WIZARD_PASSWORD=$WIZARD_PASSWORD" >> "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+		fi
+		echo "WIZARD_PORT=$WIZARD_PORT" >> "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+		chmod og-r "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+	fi
+fi
 
 # END YOUR CODE HERE ABOVE
 #---------------------------------------------------------------------------------------------------
-exit 0
+
+if [ -s $SYNOPKG_TEMP_LOGFILE ]; then
+	sed -i 's/$/<br>/' $SYNOPKG_TEMP_LOGFILE
+	exit 150
+else
+	exit 0
+fi

@@ -1,0 +1,17 @@
+{
+  "usr-local-linker": {
+    "bin": [
+      "ui/usr/bin/ls1",
+      "ui/usr/bin/ls2"
+    ],
+    "lib": [
+      "ui/lib/dummy"
+    ],
+    "etc": [
+      "ui/dsm.cgi.conf"
+    ]
+  },
+  "port-config": {
+    "protocol-file": "etc/MODS_Dummy_7.sc"
+  }
+}

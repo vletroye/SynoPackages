@@ -1,3 +1,15 @@
 #!/bin/sh
+exec 1<&-
+exec 1>>$SYNOPKG_TEMP_LOGFILE
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
 
+#---------------------------------------------------------------------------------------------------
+# ADD YOUR CODE HERE UNDER
+
+
+# END YOUR CODE HERE ABOVE
+#---------------------------------------------------------------------------------------------------
+
+sed -i 's/$/<br>/' "$SYNOPKG_TEMP_LOGFILE"
 exit 0
