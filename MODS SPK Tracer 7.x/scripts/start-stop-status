@@ -1,0 +1,81 @@
+#!/bin/sh
+# You CANNOT prompt the users via the $SYNOPKG_TEMP_LOGFILE file in this script
+LOG="/tmp/$SYNOPKG_PKGNAME.log"
+
+exec 1<&-
+exec 1>>$LOG
+exec 2<&-
+exec 2>>$LOG 
+
+case $1 in
+	prestart) # called if precheckstartstop is set to yes in INFO; the package could check if it is allowed to be started
+		. `dirname $0`/trace `basename $0` $*
+		exit 0
+	;;
+	prestop) # called if precheckstartstop is set to yes in INFO; the package could check if it is allowed to be stopped
+		. `dirname $0`/trace `basename $0` $*
+		exit 0
+	;;
+	start)		
+		. `dirname $0`/trace `basename $0` $*
+        touch "$SYNOPKG_PKGDEST/started"
+        rm -f "$SYNOPKG_PKGDEST/stopped"
+        rm -f "$SYNOPKG_PKGDEST/status"
+		
+		if [ $SYNOPKG_PKG_STATUS == "INSTALL" ] || [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+			# End the installation or upgrade sequence
+			echo "###############################################################################"
+			echo ""
+			echo "------------------------------------------------------------------------------------"
+			echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+			echo "------------------------------------------------------------------------------------"
+			echo ""
+		fi
+		exit 0
+	;;
+	stop)
+
+		. `dirname $0`/trace `basename $0` $*
+        touch "$SYNOPKG_PKGDEST/stopped"
+        rm -f "$SYNOPKG_PKGDEST/started"
+        rm -f "$SYNOPKG_PKGDEST/status"
+		exit 0
+	;;
+	status) # must return one of the following status
+        #0: package is running.
+        #1: program of package is dead and /var/run pid file exists.
+        #2: program of package is dead and /var/lock lock file exists
+        #3: package is not running
+        #4: package status is unknown
+        #150: package is broken and should be reinstalled.
+
+        if [ ! -f "$SYNOPKG_PKGDEST/status" ]; then
+            touch "$SYNOPKG_PKGDEST/status"
+            . `dirname $0`/trace `basename $0` $*
+        fi
+
+        if [ -f "$SYNOPKG_PKGDEST/started" ]; then
+            if [ -f "$SYNOPKG_PKGDEST/stopped" ]; then
+                # Abnormal situation: both status file exist. 
+                exit 150
+            else
+                # status 'file' started exists
+                exit 0
+            fi
+        fi
+        
+        if [ -f "$SYNOPKG_PKGDEST/stopped" ]; then
+            # status file 'stopped' exists
+            exit 3
+        fi
+
+        # status file not created
+        exit 4
+	;;
+	log) # Does no exist anymore in DSM 7.x
+		exit 0
+	;;
+    *)
+        exit 1
+    ;;	
+esac

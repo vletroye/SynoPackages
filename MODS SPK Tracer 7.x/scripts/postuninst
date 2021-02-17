@@ -1,0 +1,78 @@
+#!/bin/sh
+# If you want to send a prompt users with messages after they 
+# installed, upgraded, uninstalled, started, or stopped a package,
+# you can use the $SYNOPKG_TEMP_LOGFILE variable in related scripts:
+# echo "Hello World!" >> $SYNOPKG_TEMP_LOGFILE
+LOG="/tmp/$SYNOPKG_PKGNAME.log"
+
+exec 1<&-
+exec 1>>$LOG
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
+
+. `dirname $0`/trace `basename $0` $*
+
+if [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+
+    echo "Script is executing the upgrade part"
+
+fi
+
+function deldir(){
+	path=$1
+	if [ -d "$path" ] && [ "$(ls -A $path)" ]; then
+		echo "Delete $path"
+		find "$path" -xdev -depth -mindepth 1 -delete
+	fi	
+}
+	
+if [ $SYNOPKG_PKG_STATUS == "UNINSTALL" ]; then
+
+    echo "Script is executing the uninstallation part"
+
+	# Empty etc, home, tmp and var (One may not delete the folders themselves but only the content)
+	if [ $MODS_DELETE_DIR == "true" ]; then
+		echo "Request to delete Directories"
+		deldir "/usr/syno/etc/packages/$SYNOPKG_PKGNAME"
+		deldir "$SYNOPKG_PKGDEST_VOL/@apphome/$SYNOPKG_PKGNAME"
+		deldir "$SYNOPKG_PKGDEST_VOL/@appdata/$SYNOPKG_PKGNAME"
+		
+		# "$SYNOPKG_PKGDEST_VOL/@apptemp/$SYNOPKG_PKGNAME" is deleted by DSM automatically
+		# "$SYNOPKG_PKGDEST_VOL/@appstore/$SYNOPKG_PKGNAME" is deleted by DSM automatically
+	else
+		echo "Keep Directories tmp, home, var and tmp"
+	fi
+
+	display "TARGET_ETC" e
+	display "TARGET_VAR" e
+	display "TARGET_HOME" e
+	
+	if [ $MODS_DELETE_LOG == "true" ]; then
+		echo "Delete $LOG"
+	else
+		echo "Keep $LOG"
+	fi	
+	
+	if [ $MODS_COPY_LOG == "true" ] && [ -d "$SYNOPKG_PKGDEST_VOL/public" ]; then
+		echo "Copy Log onto $SYNOPKG_PKGDEST_VOL/public/"
+		cp $LOG "$SYNOPKG_PKGDEST_VOL/public/"
+	fi
+
+	# End the uninstallation sequence
+	echo "###############################################################################"
+	echo ""
+	echo "------------------------------------------------------------------------------------"
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo "------------------------------------------------------------------------------------"
+	echo ""
+
+	if [ $MODS_DELETE_LOG == "true" ]; then
+		rm -f $LOG
+	fi	
+	
+fi
+
+# make the log pretty to be displayed
+sed -i 's/$/<br>/' $SYNOPKG_TEMP_LOGFILE
+
+exit 0

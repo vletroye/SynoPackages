@@ -1,0 +1,22 @@
+[
+  {
+    "step_title": "UPGRADE Wizard",
+    "invalid_next_disabled": false,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "This value comes from the Installation Wizard or from the previous Upgrade Wizard if any. You can change it. it will be logged and reused by the Uninstallation Wizard.",
+        "subitems": [
+          {
+            "key": "MODS_UPGRADE",
+            "defaultValue": "@MODS_UPGRADE@",
+            "desc": "Edit Installation value",
+            "validator": {
+              "allowBlank": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

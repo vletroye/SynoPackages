@@ -1,0 +1,30 @@
+#!/bin/sh
+# If you want to send a prompt users with messages after they 
+# installed, upgraded, uninstalled, started, or stopped a package,
+# you can use the $SYNOPKG_TEMP_LOGFILE variable in related scripts:
+# echo "Hello World!" >> $SYNOPKG_TEMP_LOGFILE
+LOG="/tmp/$SYNOPKG_PKGNAME.log"
+
+exec 1<&-
+exec 1>>$LOG
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
+
+. `dirname $0`/trace `basename $0` $*
+
+if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then
+
+    echo "Script is executing the installation part"
+
+fi
+
+if [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+
+    echo "Script is executing the upgrade part"
+
+fi
+
+# make the log pretty to be displayed
+sed -i 's/$/<br>/' $SYNOPKG_TEMP_LOGFILE
+
+exit 0

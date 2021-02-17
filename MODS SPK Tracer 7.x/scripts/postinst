@@ -1,0 +1,71 @@
+#!/bin/sh
+# If you want to send a prompt users with messages after they 
+# installed, upgraded, uninstalled, started, or stopped a package,
+# you can use the $SYNOPKG_TEMP_LOGFILE variable in related scripts:
+# echo "Hello World!" >> $SYNOPKG_TEMP_LOGFILE
+LOG="/tmp/$SYNOPKG_PKGNAME.log"
+
+exec 1<&-
+exec 1>>$LOG
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
+
+. `dirname $0`/trace `basename $0` $*
+
+if [ $SYNOPKG_PKG_STATUS == "INSTALL" ]; then
+
+    echo "Script is executing the installation part"
+
+    # Create an evidence file wih the package version
+    # One can check when this file is deleted/replaced via the traces
+	echo "$SYNOPKG_PKGVER" > "$SYNOPKG_PKGDEST/evidence"
+
+    # Link the log with all traces into the ui folder.
+    # Doing so, you will be able to download that file via the DSM menu.
+    # Indeed, the 'menu item' of this package is is a URL pointing at that link
+    # See the file /ui/config which contains: "url": "/webman/3rdparty/MODS_SPK_Tracer_7.x/trace.log",
+    ln -s $LOG "$SYNOPKG_PKGDEST/ui/trace.log"
+
+    # Save the Installation Wizard variables into a file
+	if [ -f "/var/packages/$SYNOPKG_PKGNAME/etc/parameters" ]; then
+		grep -v "WIZARD_INSTALL" "/var/packages/$SYNOPKG_PKGNAME/etc/parameters" > "/tmp/$SYNOPKG_PKGNAME.tmp"
+		cat "/tmp/$SYNOPKG_PKGNAME.tmp" > "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+		rm -f "/tmp/$SYNOPKG_PKGNAME.tmp"
+	else
+		echo "# Parameters created on $(date +'%d/%m/%Y %H:%M:%S')" > "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+	fi
+	echo "	WIZARD_INSTALL=$MODS_INSTALL" >> "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+	cat "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+    chmod og-r "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+
+fi
+
+if [ $SYNOPKG_PKG_STATUS == "UPGRADE" ]; then
+
+    echo "Script is executing the upgrade part"
+
+    # Create an evidence file wih the package version
+    # One can check when this file is deleted/replaced via the traces
+	echo "$SYNOPKG_PKGVER" > "$SYNOPKG_PKGDEST/evidence"
+	
+    # Link the log with all traces into the ui folder.
+    # Doing so, you will be able to download that file via the DSM menu.
+    # Indeed, the 'menu item' of this package is is a URL pointing at that link
+    # See the file /ui/config which contains: "url": "/webman/3rdparty/MODS_SPK_Tracer_7.x/trace.log",
+    ln -s $LOG "$SYNOPKG_PKGDEST/ui/trace.log"
+	
+	# Save the Upgrade Wizard variables into a file
+	if [ -f "/var/packages/$SYNOPKG_PKGNAME/etc/parameters" ]; then
+		grep -v "WIZARD_UPGRADE" "/var/packages/$SYNOPKG_PKGNAME/etc/parameters" > "/tmp/$SYNOPKG_PKGNAME.tmp"
+		cat "/tmp/$SYNOPKG_PKGNAME.tmp" > "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+		rm -f "/tmp/$SYNOPKG_PKGNAME.tmp"
+	fi
+    echo "	WIZARD_UPGRADE=$MODS_UPGRADE" >> "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+	cat "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+    chmod og-r "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+fi
+
+# make the log pretty to be displayed
+sed -i 's/$/<br>/' $SYNOPKG_TEMP_LOGFILE
+
+exit 0

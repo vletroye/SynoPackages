@@ -1,0 +1,51 @@
+[
+  {
+    "step_title": "UNINSTALLER Wizard",
+    "invalid_next_disabled": false,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "These values come from the Installation Wizard and the Upgrade Wizard. You can change them. They will be logged.",
+        "subitems": [
+          {
+            "key": "MODS_UNINSTALL_INST",
+            "defaultValue": "@MODS_INSTALL@",
+            "desc": "Edit Installation value",
+            "validator": {
+              "allowBlank": true
+            }
+          },
+          {
+            "key": "MODS_UNINSTALL_UPGR",
+            "defaultValue": "@MODS_UPGRADE@",
+            "desc": "Edit Upgrade value",
+            "validator": {
+              "allowBlank": true
+            }
+          }		  
+        ]
+      },
+      {
+        "type": "multiselect",
+        "desc": "Clean-up",
+        "subitems": [
+          {
+            "key": "MODS_DELETE_LOG",
+            "defaultValue": "false",
+            "desc": "Delete Log from /tmp"
+          },
+          {
+            "key": "MODS_COPY_LOG",
+            "defaultValue": "false",
+            "desc": "Copy Log to @MODS_VOLUME@/public folder"
+          },
+          {
+            "key": "MODS_DELETE_DIR",
+            "defaultValue": "true",
+            "desc": "Delete var, tmp, etc and home"
+          }
+        ]
+      }
+    ]
+  }
+]

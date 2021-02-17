@@ -1,0 +1,20 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_SPK_Tracer_7.x": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "MODS SPK Tracer",
+      "desc": "Download SPK Tracer's log",
+      "icon": "images/MODS_SPK_Tracer_{0}.png",
+      "appWindow": "SYNO.SDS._ThirdParty.App.MODS_SPK_Tracer_7.x",
+      "url": "/webman/3rdparty/MODS_SPK_Tracer_7.x/trace.log",
+      "allowMultiInstance": false,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "all",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

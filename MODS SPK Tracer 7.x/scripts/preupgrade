@@ -1,0 +1,29 @@
+#!/bin/sh
+# If you want to send a prompt users with messages after they 
+# installed, upgraded, uninstalled, started, or stopped a package,
+# you can use the $SYNOPKG_TEMP_LOGFILE variable in related scripts:
+# echo "Hello World!" >> $SYNOPKG_TEMP_LOGFILE
+LOG="/tmp/$SYNOPKG_PKGNAME.log"
+
+exec 1<&-
+exec 1>>$LOG
+exec 2<&-
+exec 2>>$SYNOPKG_TEMP_LOGFILE
+
+. `dirname $0`/trace `basename $0` $*
+
+echo "Script is executing the upgrade part"
+
+# Save files to be kept during the upgrade into $SYNOPKG_TEMP_UPGRADE_FOLDER
+# Those files can be restored by the 'postupgrade' script
+
+# $SYNOPKG_PKGNAME/etc, $SYNOPKG_PKGNAME/var, $SYNOPKG_PKGNAME/home don't have to be copied.
+# The links are deleted and restored during the upgrade.
+
+echo "Backup Evidence"
+cp "$SYNOPKG_PKGDEST/evidence" "$SYNOPKG_TEMP_UPGRADE_FOLDER/evidence"
+
+# make the log pretty to be displayed
+sed -i 's/$/<br>/' $SYNOPKG_TEMP_LOGFILE
+  
+exit 0

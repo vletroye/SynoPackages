@@ -1,0 +1,24 @@
+[
+  {
+    "step_title": "INSTALLER Wizard",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "The value that you enter here will be logged and reused by the Upgrade Wizard and the Uninstallation Wizard.",
+        "subitems": [
+          {
+            "blankText": "You must enter a value",
+            "invalidText": "You may only use letters and fugres",
+            "validator": {
+              "vtype": "alphanum",
+              "allowBlank": false
+            },
+            "key": "MODS_INSTALL",
+            "desc": "Type a value"
+          }
+        ]
+      }
+    ]
+  }
+]

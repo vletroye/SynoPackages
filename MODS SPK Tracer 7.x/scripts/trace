@@ -1,0 +1,260 @@
+#!/bin/sh
+LOG="/tmp/$SYNOPKG_PKGNAME.log"
+
+# System errors occuring during installation (Ex.: DSM can't run this script) can be found via: cat /var/log/packages/MODS_SPK_Tracer_7.x.log
+# Additional info can also be found via: sudo cat /var/log/synopkg.log
+
+# Save the streams stdout and stderr
+exec 4<&1
+exec 5<&2
+
+# Redirect the stream stdout to a log and stderr to stdout
+exec 2>&1
+exec 1>>$LOG
+
+function display(){
+	var=$1
+	type=$2
+	value=${!var}
+	if [ "$type" == "e" ]; then
+		if [ ! -z $value ]; then
+			if [ -d $value ]; then
+				if [ "$(ls -A $value)" ]; then
+					echo "$var = \"$value\" (dir exist and contains data)"
+				else
+					echo "$var = \"$value\" (dir exist but is empty)"
+				fi
+			else
+				echo "$var = \"$value\" (dir does not exist)"
+			fi
+		else
+			echo "$var (not defined)"
+		fi	
+	elif [ "$type" == "d" ]; then
+		if [ ! -z $value ]; then
+			if [ -d $value ]; then
+				echo "$var = \"$value\" (dir exist)"
+			else
+				echo "$var = \"$value\" (dir does not exist)"
+			fi
+		else
+			echo "$var (not defined)"
+		fi
+	elif [ "$type" == "f" ]; then
+		if [ ! -z $value ]; then
+			if [ -f $value ]; then
+				echo "$var = \"$value\" (file exist)"
+			else
+				echo "$var = \"$value\" (file does not exist)"
+			fi
+		else
+			echo "$var (not defined)"
+		fi
+	elif [ -z $value ]; then
+		echo "$var (not defined)"
+	else
+		echo "$var = \"$value\""
+	fi	
+}
+
+SCRIPT=${0##*/}
+SCRIPTPATH=`dirname $0`
+
+echo "###############################################################################"
+echo "**$***" | sed "s/./*/g"
+echo "* $* *"
+echo "**$***" | sed "s/./*/g"
+echo "Called at $(date +'%d/%m/%Y %H:%M:%S')"
+echo "Called by $SYNOPKG_PKGNAME v$SYNOPKG_PKGVER"
+echo "Called in $SCRIPTPATH" 
+echo ""
+
+echo "Synology Environment Variables"
+echo ".............................."
+echo ""
+
+CURRENT_USER=`whoami`
+display CURRENT_USER
+display SYNOPKG_PKG_STATUS
+display SYNOPKG_PKGNAME
+display SYNOPKG_PKGVER
+display SYNOPKG_OLD_PKGVER
+display SYNOPKG_USERNAME
+display SYNOPKG_DSM_LANGUAGE
+display SYNOPKG_DSM_ARCH
+display SYNOPKG_DSM_VERSION_MAJOR
+display SYNOPKG_DSM_VERSION_MINOR
+display SYNOPKG_DSM_VERSION_BUILD
+display SYNOPKG_PKGPORT
+display SYNOPKG_PKGDEST_VOL d
+display SYNOPKG_PKGDEST d
+display SYNOPKG_PKGINST_TEMP_DIR d
+display SYNOPKG_TEMP_UPGRADE_FOLDER d
+display SYNOPKG_PKG_PROGRESS_PATH f
+display SYNOPKG_TEMP_SPKFILE f
+display SYNOPKG_TEMP_LOGFILE f
+
+echo ""
+
+OTHER_PACKAGE_FOLDER="/var/packages/$SYNOPKG_PKGNAME"
+display "OTHER_PACKAGE_FOLDER" d
+OTHER_PACKAGE_LOG="/var/log/packages/$SYNOPKG_PKGNAME.log"
+display "OTHER_PACKAGE_LOG" f
+echo ""
+
+if [ -d $OTHER_PACKAGE_FOLDER ]; then
+	LINK_ETC="/var/packages/$SYNOPKG_PKGNAME/etc"
+	display "LINK_ETC" d
+fi
+TARGET_ETC="/usr/syno/etc/packages/$SYNOPKG_PKGNAME"
+display "TARGET_ETC" e
+if [ -d $OTHER_PACKAGE_FOLDER ]; then
+	LINK_VAR="/var/packages/$SYNOPKG_PKGNAME/var"
+	display "LINK_VAR" d
+fi
+TARGET_VAR="$SYNOPKG_PKGDEST_VOL/@appdata/$SYNOPKG_PKGNAME"
+display "TARGET_VAR" e
+if [ -d $OTHER_PACKAGE_FOLDER ]; then
+	LINK_TMP="/var/packages/$SYNOPKG_PKGNAME/tmp"
+	display "LINK_TMP" d
+fi
+TARGET_HOME="$SYNOPKG_PKGDEST_VOL/@apphome/$SYNOPKG_PKGNAME"
+display "TARGET_HOME" e
+if [ -d $OTHER_PACKAGE_FOLDER ]; then
+	LINK_TARGET="/var/packages/$SYNOPKG_PKGNAME/target"
+	display "LINK_TARGET" d
+fi
+TARGET_TMP="$SYNOPKG_PKGDEST_VOL/@apptemp/$SYNOPKG_PKGNAME"
+display "TARGET_TMP" e
+if [ -d $OTHER_PACKAGE_FOLDER ]; then
+	LINK_HOME="/var/packages/$SYNOPKG_PKGNAME/home"
+	display "LINK_HOME" d
+fi
+TARGET_DIR="$SYNOPKG_PKGDEST_VOL/@appstore/$SYNOPKG_PKGNAME"
+display "TARGET_DIR" e
+
+echo ""
+
+if [ -d $SYNOPKG_PKGDEST ]; then
+	TRACE_EVIDENCE="$SYNOPKG_PKGDEST/evidence"
+	display "TRACE_EVIDENCE" f
+	if [ -f $TRACE_EVIDENCE ]; then
+		echo "	Evidence from package v$(<$TRACE_EVIDENCE)"
+	fi
+fi
+if [ -d $OTHER_PACKAGE_FOLDER ] && [ -d $LINK_ETC ]; then
+	TRACE_PARAM="/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+	display "TRACE_PARAM" f
+	if [ -f $TRACE_PARAM ]; then
+		cat $TRACE_PARAM
+	fi
+fi
+#if [ -d $SYNOPKG_TEMP_UPGRADE_FOLDER ]; then
+#	TRACE_COPY="$SYNOPKG_TEMP_UPGRADE_FOLDER/parameters"
+#	display "TRACE_COPY" f	
+#	if [ -f $TRACE_COPY ]; then
+#		cat $TRACE_COPY
+#	fi
+#fi
+echo ""
+
+if [ -d "/var/packages/$SYNOPKG_PKGNAME" ]; then
+	# Log all folders and files except the usual content of "WIZARD_UIFILES/", "target/" and "scripts/"
+	echo "Target Package Structure"
+	echo "........................"
+	find -L "/var/packages/$SYNOPKG_PKGNAME" -printf "%P\n" | cut -d\  -f2- | grep -v "WIZARD_UIFILES/" | grep -v "target/ui/" | grep -v "scripts/" | sort -d
+	echo ""
+else
+	echo "Target Structure not yet created"
+	echo "................................"
+	echo ""
+fi
+if [ -d "$SYNOPKG_PKGINST_TEMP_DIR" ]; then
+	# Log all folders and files except the usual content of "WIZARD_UIFILES/", "package/ui/" and "scripts/"
+	echo "Temporary Package Structure"
+	echo "..........................."
+	ROOTDIR=${SYNOPKG_PKGINST_TEMP_DIR%"/package"}
+	find -L "$ROOTDIR" -printf "%P\n" | cut -d\  -f2- | grep -v "WIZARD_UIFILES/" | grep -v "package/ui/" | grep -v "scripts/" | sort -d
+	echo ""
+fi
+
+# The notation here under is to comment a block : '<.....>'
+: '
+
+# Display all environement variables named SYNOPKG...
+echo ""
+declare -xp | grep " SYNOPKG" | sed 's/declare -x //'
+
+echo ""
+[ -d $SYNOPKG_PKGINST_TEMP_DIR ] && echo "$SYNOPKG_PKGINST_TEMP_DIR exists"
+[ -f $SYNOPKG_TEMP_LOGFILE ] && echo "$SYNOPKG_TEMP_LOGFILE exists"
+[ -d $SYNOPKG_TEMP_UPGRADE_FOLDER ] && echo "$SYNOPKG_TEMP_UPGRADE_FOLDER exists"
+[ -f $SYNOPKG_TEMP_SPKFILE ] && echo "$SYNOPKG_TEMP_SPKFILE exists"
+[ -f $SYNOPKG_PKG_PROGRESS_PATH ] && echo "$SYNOPKG_PKG_PROGRESS_PATH exists"
+
+# Display all environement variables named SYNO... but not SYNOPKG...
+echo ""
+declare -xp | grep " SYNO" | grep -v " SYNOPKG" | sed "s/declare -x //"
+echo ""
+'
+
+echo "Custom Wizard Variables"
+echo "......................."
+echo ""
+
+# Display all environement variables named MODS... but not SYNO...
+# MODS being the prefix used by MODS in its own WIZARD_UIFILES
+declare -xp | grep " MODS" | grep -v " SYNO" | sed "s/declare -x //"
+echo ""
+
+# Uncommented this block for debug purpose and to Display all other environement variables
+: '
+declare -xp | grep -v " SYNO" | grep -v " MODS" | sed "s/declare -x //"
+echo ""
+'
+
+# Restore the streams stdout and stderr
+exec 1<&4
+exec 2<&5
+
+#if the variable $SYNOPKG_TEMP_LOGFILE is not empty then prompt the user with the script name
+if [ ! -z "$SYNOPKG_TEMP_LOGFILE" ]; then
+  echo "Look details at $LOG" >> $SYNOPKG_TEMP_LOGFILE
+fi
+
+#Execution Order
+#---------------
+#Installation
+# Call to Installation Wizard
+# 1. prereplace
+#		Executed from a temporary folder
+#		Target folder does not yet exist
+# 2. preinst
+# 3. postinst
+# 4. postreplace
+# 5. start-stop-status with prestart argument if end user chooses to start it immediately
+# 6. start-stop-status with start argument if end user chooses to start it immediately
+#Upgrade
+# 1. start-stop-status with prestop argument if it has been started (old)
+# 2. start-stop-status with stop argument if it has been started (old)
+# 3. preupgrade (new)
+# 4. preuninst (old)
+# 5. postuninst (old)
+# 6. prereplace (new)
+# 7. preinst (new)
+# 8. postinst (new)
+# 9. postreplace (new)
+# 10. postupgrade (new)
+# 11. start-stop-status with prestart argument if it was started before being upgraded (new)
+# 12. start-stop-status with start argument if it was started before being upgraded (new)
+#Uninstallation
+# 1. start-stop-status with prestop argument if it has been started
+# 2. start-stop-status with stop argument if it has been started
+# 3. preuninst
+# 4. postuninst
+#Start
+# 1. start-stop-status with prestart argument
+# 2. start-stop-status with start argument
+#Stop
+# 1. start-stop-status with prestop argument
+# 2. start-stop-status with stop argument
