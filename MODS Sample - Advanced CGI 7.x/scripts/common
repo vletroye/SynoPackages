@@ -37,6 +37,15 @@ if [ -z $SYNOPKG_PKGNAME ]; then
 fi
 LOG="/tmp/$SYNOPKG_PKGNAME.log"
 ERR="/tmp/$SYNOPKG_PKGNAME.err"
+if [ ! -f $ERR ]; then
+	touch $ERR
+	chmod og+w $ERR
+fi
+if [ ! -f $LOG ]; then
+	touch $LOG
+	chmod og+w $LOG
+fi
+
 SEP="################################################################################################################################################################################"
 WIZARD=0
 
