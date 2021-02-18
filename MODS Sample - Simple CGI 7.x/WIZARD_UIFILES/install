@@ -1,58 +1,32 @@
 [
   {
-    "step_title": "Install parameters",
+    "step_title": "Installation Guide",
     "invalid_next_disabled": true,
     "items": [
       {
         "type": "textfield",
-        "desc": "Enter an administrator account and his password to install this package:",
-        "subitems": [
-          {
-            "blankText": "You must type an account",
-            "key": "MODS_ADMIN",
-            "defaultValue": "admin",
-            "desc": "Account"
-          }
-        ]
-      },
-      {
-        "type": "password",
-        "desc": "",
-        "subitems": [
-          {
-            "blankText": "You must type a password",
-            "key": "MODS_PASSWORD",
-            "desc": "Password"
-          }
-        ]
-      },
-      {
-        "type": "multiselect",
-        "subitems": [
-          {
-            "key": "MODS_SAVE",
-            "defaultValue": "false",
-            "desc": "Save password"
-          }
-        ]
+        "desc": "Before installing this package, you must define a sudoer account 'ModsPackager' on your NAS, with rights to run /bin/ln and /bin/unlink without password:",
+        "subitems": []
       },
       {
         "type": "textfield",
-        "desc": "Enter the port used to connect via SSH:",
-        "subitems": [
-          {
-            "validator": {
-              "allowBlank": false,
-              "regex": {
-                "errorText": "You must enter a valid port",
-                "expr": "/^(102[0-3]|10[0-1]\\d|[1-9][0-9]{0,2}|0)$/"
-              }
-            },
-            "key": "MODS_PORT",
-            "defaultValue": "22",
-            "desc": "SSH Port"
-          }
-        ]
+        "desc": "1. Connect onto your NAS via SSH (using e.g. the Putty console) as administrator",
+        "subitems": []
+      },
+      {
+        "type": "textfield",
+        "desc": "2. Create a sudo file (the name does not matter): sudo vi /etc/sudoers.d/ModsPackager",
+        "subitems": []
+      },
+      {
+        "type": "textfield",
+        "desc": "3. Type in this file: ModsPackager ALL=(ALL) NOPASSWD:/bin/ln,/bin/unlink",
+        "subitems": []
+      },
+      {
+        "type": "textfield",
+        "desc": "4. Save the file (with :x!)",
+        "subitems": []
       }
     ]
   }

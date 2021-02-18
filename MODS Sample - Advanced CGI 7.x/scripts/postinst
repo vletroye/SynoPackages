@@ -3,18 +3,13 @@
 . `dirname $0`/common `basename $0` $*
 
 StartScript
-
-LinkNginx
-ExitCode=$?
-
-if [ $ExitCode == "0" ]; then
-    EnableRouterLog
-fi
-
-EndScript
-
-if [ $ExitCode == "0" ]; then
-    exit 0
-else
+if [ $? != 0 ]; then
     exit 150
 fi
+
+LinkNginx
+
+EnableRouterLog
+
+EndScript
+exit 0

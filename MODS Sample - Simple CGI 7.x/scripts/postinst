@@ -5,8 +5,16 @@
 StartScript
 
 LinkNginx
+ExitCode=$?
 
-EnableRouterLog
+if [ $ExitCode == "0" ]; then
+    EnableRouterLog
+fi
 
 EndScript
-exit 0
+
+if [ $ExitCode == "0" ]; then
+    exit 0
+else
+    exit 150
+fi

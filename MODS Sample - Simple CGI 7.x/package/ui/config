@@ -1,13 +1,13 @@
 {
   ".url": {
-    "SYNO.SDS.ThirdParty.App.MODS_Sample_Simple_CGI_7.x": {
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Simple_CGI_7.x": {
       "itemType": 2,
       "type": "legacy",
       "allUsers": true,
-      "title": "Mods Simple CGI",
+      "title": "Mods Advanced CGI",
       "desc": "Simple php website running on DSM 7.x without the need for the Init_3rdparty package and WebStation.",
       "icon": "images/Mods_Simple_CGI_{0}.png",
-      "appWindow": "SYNO.SDS.ThirdParty.App.MODS_Sample_Simple_CGI_7.x",
+      "appWindow": "SYNO.SDS._ThirdParty.App.MODS_Sample_Simple_CGI_7.x",
       "url": "/webman/3rdparty/MODS_Sample_Simple_CGI_7.x/index.php",
       "allowMultiInstance": false,
       "configablePrivilege": true,
