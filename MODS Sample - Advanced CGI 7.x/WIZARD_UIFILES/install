@@ -1,0 +1,33 @@
+[
+  {
+    "step_title": "Installation Guide",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Before installing this package, you must define a sudoer account 'ModsPackager' on your NAS, with rights to run /bin/ln and /bin/unlink without password:",
+        "subitems": []
+      },
+      {
+        "type": "textfield",
+        "desc": "1. Connect onto your NAS via SSH (using e.g. the Putty console) as administrator",
+        "subitems": []
+      },
+      {
+        "type": "textfield",
+        "desc": "2. Create a sudo file (the name does not matter): sudo vi /etc/sudoers.d/ModsPackager",
+        "subitems": []
+      },
+      {
+        "type": "textfield",
+        "desc": "3. Type in this file: ModsPackager ALL=(ALL) NOPASSWD:/bin/ln,/bin/unlink",
+        "subitems": []
+      },
+      {
+        "type": "textfield",
+        "desc": "4. Save the file (with :x!)",
+        "subitems": []
+      }
+    ]
+  }
+]

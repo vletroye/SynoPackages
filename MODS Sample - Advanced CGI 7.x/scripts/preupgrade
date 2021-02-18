@@ -1,0 +1,11 @@
+#!/bin/sh
+
+. `dirname $0`/common `basename $0` $*
+
+StartScript
+
+rm -f $LOG
+rm -f $ERR
+
+EndScript
+exit 0

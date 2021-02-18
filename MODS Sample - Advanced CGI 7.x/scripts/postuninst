@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. `dirname $0`/common `basename $0` $*
+
+StartScript
+
+EndScript
+exit 0
