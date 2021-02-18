@@ -1,0 +1,20 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Basic_CGI_7.x": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Mods Basic CGI",
+      "desc": "This is a fake CGI used to run an embedded php page in a DSM iFrame without dependency on the well known package Init_3rdparty.",
+      "icon": "images/Mods_Basic_CGI_{0}.png",
+      "appWindow": "SYNO.SDS._ThirdParty.App.MODS_Sample_Basic_CGI_7.x",
+      "url": "/webman/3rdparty/MODS_Sample_Basic_CGI_7.x/helloworld.cgi",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
