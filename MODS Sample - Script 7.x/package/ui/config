@@ -1,0 +1,20 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Script_7.x": {
+      "itemType": 1,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "MODS Script 7.x",
+      "desc": "Sample of Script run on DSM 7.x",
+      "icon": "images/MODS_Script_7.x_{0}.png",
+      "appWindow": "SYNO.SDS._ThirdParty.App.MODS_Sample_Script_7.x",
+      "url": "/webman/3rdparty/MODS_Sample_Script_7.x/mods.cgi",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}
