@@ -37,10 +37,9 @@ body {
 <div class="outer-container">
    <div class="inner-container">
      <div class="centered-content">
-<?php
-echo "Hello World";
-$fp = fopen('/var/log/MODS_BasicTestCGI', 'a'); fwrite($fp, date("D M j G:i:s T Y")." helloworld.php executed\n"); fclose($fp);
-?>
+        <?php
+        echo "Hello World";
+        ?>
      </div>
    </div>
 </div>

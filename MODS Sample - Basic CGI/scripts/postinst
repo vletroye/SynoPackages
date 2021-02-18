@@ -1,5 +1,2 @@
 #!/bin/sh
-LOG=/var/log/MODS_BasicTestCGI
-echo `date` "Granting access on log file for the webserver" >> $LOG
-chmod o+w $LOG
 exit 0
