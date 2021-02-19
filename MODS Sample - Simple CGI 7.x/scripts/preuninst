@@ -4,7 +4,13 @@
 
 StartScript
 
-UnlinkNginx
+UnlinkNginx "`whoami`"
+ExitCode=$?
 
 EndScript
-exit 0
+
+if [ $ExitCode == "0" ]; then
+    exit 0
+else
+	exit 150
+fi
