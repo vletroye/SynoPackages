@@ -85,10 +85,10 @@ function ShowLog() {
 
 # Execute a command via SSH on the local host, using a php script
 function ExecSSH() {
-	user=$1	# Admin account
-	pass=$2	# Admin password
-	port=$3 # SSH port
-	cmd=$4	# Command to execute
+	ARG_USER=$1	# Admin account
+	ARG_PASSWORD=$2	# Admin password
+	ARG_PORT=$3 # SSH port
+	ARG_CMD=$4	# Command to execute
 	
 	# Find the php version to be used 
 	version=`php -v | grep "PHP " | cut -f2 -d " "`
@@ -104,7 +104,7 @@ function ExecSSH() {
 	script="$path/exec.php"
 		
 	# Call PHP with ssh2 modules
-	output="$(php -dextension=/var/packages/PHP$major.$minor/target/usr/local/lib/php$major$minor/modules/ssh2.so "$script" -u "$user" -p "$pass" -s "127.0.0.1" -o "$port" -c "$cmd")"
+	output="$(php -dextension=/var/packages/PHP$major.$minor/target/usr/local/lib/php$major$minor/modules/ssh2.so "$script" -u "$ARG_USER" -p "$ARG_PASSWORD" -s "127.0.0.1" -o "$ARG_PORT" -c "$ARG_CMD")"
 	ExitCode=$? #Do not add any line or comment between the command and this line retrieving its exit code!!
 	
 	LogInfo "$output"
@@ -113,9 +113,9 @@ function ExecSSH() {
 
 # Validate credentials to connect via SSH on the local host, using a php script
 function CheckSSH() {
-	user=$1	# Admin account
-	pass=$2	# Admin password
-	port=$3 # SSH port
+	ARG_USER=$1	# Admin account
+	ARG_PASSWORD=$2	# Admin password
+	ARG_PORT=$3 # SSH port
 	
 	# Find the php version to be used 
 	version=`php -v | grep "PHP " | cut -f2 -d " "`
@@ -131,7 +131,7 @@ function CheckSSH() {
 	script="$path/check.php"
 		
 	# Call PHP with ssh2 modules
-	output="$(php -dextension=/var/packages/PHP$major.$minor/target/usr/local/lib/php$major$minor/modules/ssh2.so "$script" -u "$user" -p "$pass" -s "127.0.0.1" -o "$port")"
+	output="$(php -dextension=/var/packages/PHP$major.$minor/target/usr/local/lib/php$major$minor/modules/ssh2.so "$script" -u "$ARG_USER" -p "$ARG_PASSWORD" -s "127.0.0.1" -o "$ARG_PORT")"
 	ExitCode=$? #Do not add any line of comment between the command and this line retrieving its exit code!!
 
 	LogInfo "$output"
@@ -139,7 +139,13 @@ function CheckSSH() {
 }
 
 # Link nginx to the package's config file defined to be able to run php scripts outside to web root folder
+# Call this function with 'whoami' as parameter to create the link via sudo. This user must have sudoer access
+# Otherwise, call this function with a login/password of an administrator and the port to be used to connect via SSH
 function LinkNginx() {
+	ARG_ADMIN=$1
+	ARG_PASSWORD=$2
+	ARG_PORT=$3
+	
 	if [ -f $SYNOPKG_PKGDEST/ui/router.cgi ]; then
 		# Set the name of the package in the router cgi
 		sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/router.cgi"
@@ -155,88 +161,111 @@ function LinkNginx() {
 		if [ -f $LINK ]; then
 			LogInfo "Link to nginx config already exists."
 		else
-			# Check if SSH connection is working
-			LogInfo "Checking SSH credentials"
-			CheckSSH "$MODS_ADMIN" "$MODS_PASSWORD" "$MODS_PORT"
-			ExitCode=$? #Do not add any line of comment between the command and this line retrieving its exit code!!
-			
-			if [ $ExitCode == 0 ]; then
-			
-				# Store Admin account and SSH port
-				if [ ! -z $MODS_ADMIN ]; then
-					echo "MODS_ADMIN=$MODS_ADMIN" > "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
-					echo "MODS_PORT=$MODS_PORT" >> "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
-					chmod og-r "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
-				fi
-
-				# Store Admin password if requested
-				if [ $MODS_SAVE == "true" ]; then
-					# Create a Private Key to encrypt the password
-					if [ ! -f "/var/packages/$SYNOPKG_PKGNAME/etc/image" ]; then
-						LogInfo "Creating Encryption Key"
-						openssl genrsa -out /var/packages/$SYNOPKG_PKGNAME/etc/image 2048 2> /dev/null
+			WHOAMI=`whoami`
+			if [ $ARG_ADMIN == $WHOAMI ]; then
+				LogInfo "Trying sudo link as '$WHOAMI'"
+				sudo /bin/ln -s "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf" "$LINK"		
+			else
+				# Check if SSH connection is working
+				LogInfo "Checking SSH credentials"
+				CheckSSH "$ARG_ADMIN" "$ARG_PASSWORD" "$ARG_PORT"
+				ExitCode=$? #Do not add any line of comment between the command and this line retrieving its exit code!!
+				
+				if [ $ExitCode == 0 ]; then
+				
+					# Store Admin account and SSH port
+					if [ ! -z $ARG_ADMIN ]; then
+						echo "MODS_ADMIN=$ARG_ADMIN" > "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+						echo "MODS_PORT=$ARG_PORT" >> "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+						chmod og-r "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
 					fi
+
+					# Store Admin password if requested
+					if [ $MODS_SAVE == "true" ]; then
+						# Create a Private Key to encrypt the password
+						if [ ! -f "/var/packages/$SYNOPKG_PKGNAME/etc/image" ]; then
+							LogInfo "Creating Encryption Key"
+							openssl genrsa -out /var/packages/$SYNOPKG_PKGNAME/etc/image 2048 2> /dev/null
+						fi
+						
+						# Encrypt and store the password
+						if [ ! -z $ARG_PASSWORD ]; then
+							LogInfo "Encrypting Password"
+							echo "$ARG_PASSWORD" | openssl rsautl -inkey /var/packages/$SYNOPKG_PKGNAME/etc/image -encrypt > /var/packages/$SYNOPKG_PKGNAME/etc/backup
+							chmod og-r /var/packages/$SYNOPKG_PKGNAME/etc/backup
+						fi
+					else
+						LogInfo "Don't store Password"
+					fi
+
+					# Create the Symbolic link
+					LogInfo "Creating nginx Link"
+					ExecSSH "$ARG_ADMIN" "$ARG_PASSWORD" "$ARG_PORT" "ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf $LINK"
+					ExitCode=$?
 					
-					# Encrypt and store the password
-					if [ ! -z $MODS_PASSWORD ]; then
-						LogInfo "Encrypting Password"
-						echo "$MODS_PASSWORD" | openssl rsautl -inkey /var/packages/$SYNOPKG_PKGNAME/etc/image -encrypt > /var/packages/$SYNOPKG_PKGNAME/etc/backup
-						chmod og-r /var/packages/$SYNOPKG_PKGNAME/etc/backup
+					if [ $ExitCode != "03" ]; then
+						return $ExitCode
 					fi
 				else
-					LogInfo "Don't store Password"
-				fi
-
-				# Create the Symbolic link
-				LogInfo "Creating nginx Link"
-				ExecSSH "$MODS_ADMIN" "$MODS_PASSWORD" "$MODS_PORT" "ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf $LINK"
-				ExitCode=$?
 				
-				# Check that the link has been created
-				if [ ! -f $LINK ]; then
 					PublishInfo ""
-					PublishInfo "Link Creation failed..."
-					PublishInfo "Investigate the reason in the Logs"		
-					exit 150
-				fi 	
-			else
-			
+					PublishInfo "Cannot connect via SSH onto the NAS with provided Login/Password."
+					PublishInfo "Go back into the Installation Wizard to change your Login/Password."
+					return 1
+				fi
+			fi
+			# Check that the link has been created
+			if [ ! -f $LINK ]; then
 				PublishInfo ""
-				PublishInfo "Cannot connect via SSH onto the NAS with provided Login/Password."
-				PublishInfo "Go back into the Installation Wizard to change your Login/Password."
-				exit 150
+				PublishInfo "Link Creation failed..."
+				PublishInfo "Investigate the reason in the Logs"		
+				return 1
 			fi
 		fi
 	fi
+	
+	return 0
 }
 
 # Unlink nginx config
+# Call this function with 'whoami' as parameter to remove the link via sudo. This user must have sudoer access
+# Otherwise, call this function with a login/password of an administrator and the port to be used to connect via SSH
 function UnlinkNginx() {
+	ARG_ADMIN=$1
+	ARG_PASSWORD=$2
+	ARG_PORT=$3
+	
 	if [ $SYNOPKG_PKG_STATUS == "UNINSTALL" ]; then
 		LINK="/usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf"
 
 		if [ -f $LINK ]; then
-			# Retrieve previous credentials if no account received from Wizard
-			if [ -z $MODS_ADMIN ] && [ -f /var/packages/$SYNOPKG_PKGNAME/etc/backup ]; then			
-				if [ -f /var/packages/$SYNOPKG_PKGNAME/etc/parameters ]; then			
-					. /var/packages/$SYNOPKG_PKGNAME/etc/parameters
-				fi
+			WHOAMI=`whoami`
+			if [ $ARG_ADMIN == $WHOAMI ]; then
+				LogInfo "Trying sudo link as '$WHOAMI'"
+				sudo /bin/unlink "$LINK"
+			else		
+				# Retrieve previous credentials if no account received from Wizard
+				if [ -z $ARG_ADMIN ] && [ -f /var/packages/$SYNOPKG_PKGNAME/etc/backup ]; then			
+					if [ -f /var/packages/$SYNOPKG_PKGNAME/etc/parameters ]; then			
+						. /var/packages/$SYNOPKG_PKGNAME/etc/parameters
+					fi
 
-				if [ -z $MODS_PASSWORD ]; then
-					LogInfo "Retrieving previous SSH credentials"
-					MODS_PASSWORD=$(openssl rsautl -inkey /var/packages/$SYNOPKG_PKGNAME/etc/image -decrypt < /var/packages/$SYNOPKG_PKGNAME/etc/backup)			
+					if [ -z $ARG_PASSWORD ]; then
+						LogInfo "Retrieving previous SSH credentials"
+						ARG_PASSWORD=$(openssl rsautl -inkey /var/packages/$SYNOPKG_PKGNAME/etc/image -decrypt < /var/packages/$SYNOPKG_PKGNAME/etc/backup)			
+					fi
 				fi
-			fi
-			
-			# Unlink nginx configuration
-			LogInfo "Removing nginx Link"
-			ExecSSH "$MODS_ADMIN" "$MODS_PASSWORD" "$MODS_PORT" "unlink $LINK"
-			ExitCode=$?
-			
-			if [ -f $LINK ]; then
-				PublishInfo
-				PublishInfo "Couldn't remove the link '$Link'."
-				PublishInfo "This is not a blocking issue but uninstallation is not clean."
+				
+				# Unlink nginx configuration
+				LogInfo "Removing nginx Link"
+				ExecSSH "$ARG_ADMIN" "$ARG_PASSWORD" "$ARG_PORT" "unlink $LINK"
+				ExitCode=$?
+				
+				if [ -f $LINK ]; then
+					PublishInfo
+					PublishInfo "Couldn't remove the link '$Link'."
+					PublishInfo "This is not a blocking issue but uninstallation is not clean."
+				fi
 			fi
 		else
 			LogInfo "Link to nginx config didn't exist."
