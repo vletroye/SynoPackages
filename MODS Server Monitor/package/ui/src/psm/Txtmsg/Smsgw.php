@@ -24,7 +24,7 @@
  * @author      Tim Zandbergen <Tim@Xervion.nl>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.5.0
+ * @version     Release: v3.5.2
  * @link        http://www.phpservermonitor.org/
  **/
 

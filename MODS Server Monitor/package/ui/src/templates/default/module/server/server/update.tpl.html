@@ -23,7 +23,7 @@
 				<label for="popular_ports">{{ label_port }}</label>
 				<select id="popular_ports" name="popular_ports" class="custom-select">
 					<option {% if not edit_value_port %}selected {% endif %} disabled>{{ label_please_select }}</option>
-					<option {% if edit_value_port not in [0, 80, 443, 21, 25, 465, 110, 995, 143, 993, 22, 389, 3306, 115, 43, 53,
+					<option {% if edit_value_port not in [0, 80, 443, 21, 25, 465, 110, 995, 143, 993, 22, 389, 3306, 3307, 115, 43, 53,
 					 3389] %} selected {% endif %} value="custom">{{ label_custom_port }}</option>
 					<optgroup label="{{ label_popular_ports }}">
 						<option {% if edit_value_port==80 %}selected {% endif %}value="80">HTTP (80)</option>
@@ -38,6 +38,7 @@
 						<option {% if edit_value_port==22 %}selected {% endif %}value="22">SSH (22)</option>
 						<option {% if edit_value_port==389 %}selected {% endif %}value="389">LDAP (389)</option>
 						<option {% if edit_value_port==3306 %}selected {% endif %}value="3306">MySQL (3306)</option>
+						<option {% if edit_value_port==3307 %}selected {% endif %}value="3307">MariaDB (3307)</option>
 						<option {% if edit_value_port==115 %}selected {% endif %}value="115">SFTP (115)</option>
 						<option {% if edit_value_port==43 %}selected {% endif %}value="43">WHOIS (43)</option>
 						<option {% if edit_value_port==53 %}selected {% endif %}value="53">BIND (53)</option>

@@ -23,7 +23,7 @@
             },
             "key": "pkgwizard_db_Name",
             "desc": "Database Name",
-            "defaultValue": "phpservermon"
+            "defaultValue": "servermon"
           }
         ]
       },
@@ -85,7 +85,7 @@
               "allowBlank": false
             },
             "key": "pkgwizard_srvmon_password",
-            "defaultValue": "ServerMon350!",
+            "defaultValue": "phpServerMon352!",
             "desc": "Password"
           }
         ]

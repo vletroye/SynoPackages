@@ -22,7 +22,7 @@
  * @author      Pepijn Over <pep@mailbox.org>
  * @copyright   Copyright (c) 2008-2017 Pepijn Over <pep@mailbox.org>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.5.0
+ * @version     Release: v3.5.2
  * @link        http://www.phpservermonitor.org/
  **/
 
@@ -179,38 +179,67 @@ class StatusUpdater
             $max_runs = 1;
         }
         $result = null;
-        // Execute ping
-        $pingCommand = 'ping6';
-        $serverIp = $this->server['ip'];
-        if (filter_var($serverIp,FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false){
-            $pingCommand = 'ping';
-        }        
-        $txt = exec($pingCommand . " -c " . $max_runs . " " . $serverIp . " 2>&1", $output);
-        // Non-greedy match on filler
-        $re1 = '.*?';
-        // Uninteresting: float
-        $re2 = '[+-]?\\d*\\.\\d+(?![-+0-9\\.])';
-        // Non-greedy match on filler
-        $re3 = '.*?';
-        // Float 1
-        $re4 = '([+-]?\\d*\\.\\d+)(?![-+0-9\\.])';
-        if (preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . "/is", $txt, $matches)) {
-            $result = $matches[1][0];
-        }
-        if (substr($output[0],0,4) == 'PING' && strpos($output[count($output)-2],'packets transmitted')){
-            $result = 0;     
-        }        
-        if (!is_null($result)) {
-            $this->header = $output[0];
-            $status = true;
-        } else {
-            $this->header = "-";
-            $this->error = $output[0];
-            $status = false;
-        }
-        //Divide by a thousand to convert to milliseconds
-        $this->rtime =  $result / 1000;
+		
+        // Execute nping if available as it requires no root access on Synology
+	// nping can be installed via ipkg or opkg (using e.g. the third party packages of cphub: Easy Bootsrap Installer and iPKGui)
+	$serverIp = $this->server['ip'];		
 
+	$pingCommand = '/opt/bin/nping';
+	if (file_exists($pingCommand)) {
+	    if (filter_var($serverIp,FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === $serverIp){
+	        $pingCommand .= ' -6';
+	    }
+	    $txt = exec($pingCommand . " -c " . $max_runs . " " . $serverIp . " 2>&1", $output);
+
+	    if (preg_match_all("/Avg rtt: (\d+\.\d+)ms/is", $output[5], $matches)) {
+	        $result = $matches[1][0];
+	        $status = true;
+	        $this->header = $output[5];
+	        $this->error = '-';
+	    } elseif (preg_match_all("/Avg rtt: N\/A/is", $output[4], $matches)) {
+	        $result = 0;
+	        $status = false;
+	        $this->header = $output[5];
+	        $this->error = '-';
+	    } else {
+	        $this->header = $output[3];
+	        $this->error = $output[2];
+	        $status = false;
+	    }
+	    $this->rtime =  $result;
+	} else {
+       	// Execute ping
+		$pingCommand = 'ping6';
+		if (filter_var($serverIp,FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false){
+			$pingCommand = 'ping';
+		}
+		$txt = exec($pingCommand . " -c " . $max_runs . " " . $serverIp . " 2>&1", $output);
+		// Non-greedy match on filler
+		$re1 = '.*?';
+		// Uninteresting: float
+		$re2 = '[+-]?\\d*\\.\\d+(?![-+0-9\\.])';
+		// Non-greedy match on filler
+		$re3 = '.*?';
+		// Float 1
+		$re4 = '([+-]?\\d*\\.\\d+)(?![-+0-9\\.])';
+		if (preg_match_all("/" . $re1 . $re2 . $re3 . $re4 . "/is", $txt, $matches)) {
+			$result = $matches[1][0];
+		}
+		if (substr($output[0],0,4) == 'PING' && strpos($output[count($output)-2],'packets transmitted')){
+			$result = 0;     
+		}        
+		if (!is_null($result)) {
+			$this->header = $output[0];
+			$status = true;
+		} else {
+			$this->header = "-";
+			$this->error = $output[0];
+			$status = false;
+		}
+		//Divide by a thousand to convert to milliseconds
+		$this->rtime =  $result / 1000;
+	}
+		
         // check if server is available and rerun if asked.
         if (!$status && $run < $max_runs) {
             return $this->updatePing($max_runs, $run + 1);

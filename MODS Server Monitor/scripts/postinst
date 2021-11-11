@@ -71,9 +71,9 @@ RESULT=`$MYSQLSHOW --user=$pkgwizard_admin_account --password=$pkgwizard_admin_p
 echo `date` "Result: $RESULT"
 cat $ERRLOG
 if [ "$RESULT" != "mysql" ]; then
-    echo `date` "Server name, account or password incorrect to access mysql"
+    echo `date` "Server name, account or password is incorrect to access mysql"
     echo "Server name, account or password incorrect to access mysql" > $SYNOPKG_TEMP_LOGFILE
-    echo 1
+    exit 1
 fi
 
 echo $pkgwizard_admin_password > $$
@@ -83,7 +83,7 @@ pkgwizard_admin_password=`sed 's/"/\\"/gp' $$`
 # Check that the database does not yet exist - otherwise reuse it.
 echo `date` "Checking access: $MYSQLSHOW --user=$pkgwizard_admin_account --password=********** | grep -v Wildcard | grep -o $pkgwizard_db_Name"
 RESULT=`$MYSQLSHOW --user=$pkgwizard_admin_account --password=$pkgwizard_admin_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
-echo `date` "Results: $RESULT"
+echo `date` "Access results: $RESULT"
 cat $ERRLOG
 CreateDB=1
 
@@ -91,7 +91,7 @@ if [ "$RESULT" == "$pkgwizard_db_Name" ]; then
   # Check that the database can be accessed with the given account
   echo `date` "Checking access on $pkgwizard_db_Name: $MYSQLSHOW --user=$pkgwizard_srvmon_account --password=********** $pkgwizard_db_Name | grep -v Wildcard | grep -o $pkgwizard_db_Name"
   RESULT=`$MYSQLSHOW --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password | grep -v Wildcard | grep -o $pkgwizard_db_Name`
-  echo `date` "Results: $RESULT"
+  echo `date` "Access results: $RESULT"
   cat $ERRLOG
   if [ "$RESULT" != "$pkgwizard_db_Name" ]; then
     echo `date` "Existing database $pkgwizard_db_Name cannot be reused with the provided account and password --user=$pkgwizard_srvmon_account --password=$pkgwizard_srvmon_password"
@@ -140,7 +140,7 @@ ConfigFile="$SYNOPKG_PKGDEST/ui/config.php"
 
 echo "<?php" > "$ConfigFile"
 echo "\$url=(isset(\$_SERVER['HTTPS']) ? 'https' : 'http') . '://' . \$_SERVER['HTTP_HOST'] . dirname(\$_SERVER['REQUEST_URI']);" >> "$ConfigFile"
-echo "define('PSM_DB_PREFIX', 'psm_');" >> "$ConfigFile"
+echo "define('PSM_DB_PREFIX', '');" >> "$ConfigFile"
 echo "define('PSM_DB_USER', '$pkgwizard_srvmon_account');" >> "$ConfigFile"
 echo "define('PSM_DB_PASS', '$pkgwizard_srvmon_password');" >> "$ConfigFile"
 echo "define('PSM_DB_NAME', '$pkgwizard_db_Name');" >> "$ConfigFile"

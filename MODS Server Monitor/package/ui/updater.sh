@@ -43,15 +43,14 @@ else
 fi
 
 # get latest version
-version=$(curl -s https://api.github.com/repos/phpservermon/phpservermon/releases/latest | grep tag_name | cut -d ':' -f 2 | cut -d ',' -f 1 | cut -d '"' -f 2)
+version=$(curl -s https://api.github.com/repos/phpservermon/phpservermon/releases/latest | grep browser_download_url | cut -d '/' -f 8)
 echo Downloading latest Version of PHPServerMonitor \($version\)
 
 # get download URL
-downloadfile=$(curl -s https://api.github.com/repos/phpservermon/phpservermon/releases/latest | grep "browser_download_url" | grep "zip\"" | cut -d ' ' -f 8 | cut -d '"' -f 2)
-echo Using url $downloadfile
+downloadfile=$(curl -s https://api.github.com/repos/phpservermon/phpservermon/releases/latest | grep "zipball" | cut -d '"' -f 4)
 
 # download latest release
-curl -sLo update.zip.keep $downloadfile
+curl -so update.zip.keep $downloadfile
 
 if [ -f config.php ]; then 
 	echo Save config.php 
