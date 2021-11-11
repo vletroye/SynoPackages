@@ -10,7 +10,7 @@ description_enu="Install (or upgrade from version 2.0 to) version 2.1 of Serviio
 displayname="MODS Serviio 2.1"
 displayname_enu="MODS Serviio 2.1"
 distributor="vletroye"
-distributor_url="https://www.beatificabytes.be/sspks/?arch=all"
+distributor_url="http://www.beatificabytes.be/sspks"
 dsmappname="org.serviio.console"
 dsmuidir="ui"
 firmware="6.0-7321"

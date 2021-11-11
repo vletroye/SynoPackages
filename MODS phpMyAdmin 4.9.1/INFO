@@ -26,7 +26,7 @@ description_trk="phpMyAdmin �cretsiz bir yazilim araci olup MySQL veritabanlar
 displayname="MODS phpMyAdmin 4.9.1"
 displayname_enu="MODS phpMyAdmin 4.9.1"
 distributor="vletroye"
-distributor_url="http://olympe.letroye.be/sspks/?arch=all"
+distributor_url="http://www.beatificabytes.be/sspks"
 dsmappname="SYNO.SDS._ThirdParty.App.MODS_phpMyAdmin_491"
 dsmuidir="ui"
 firmware="6.0-7313"
