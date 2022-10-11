@@ -3,6 +3,12 @@
 TARGET=$1
 PACKAGE=$2
 
+if [[ $TARGET == "list" ]]
+then
+    ls -1 /var/packages
+    exit
+fi
+
 if [[ $PACKAGE == "" ]]
 then
 	echo "Usage: mvpkg Target Package"
