@@ -96,7 +96,7 @@ else
 		#check the link of the 3rdparty
 		output=$( ls -la $trdparty | grep "/$volume/@appstore")
 
-		if [[ ! -z "output" ]]
+		if [[ ! -z "$output" ]]
 		then
 			rm -f "$trdparty"
 			ln -s "/$TARGET/@appstore/$PACKAGE" "$trdparty"
