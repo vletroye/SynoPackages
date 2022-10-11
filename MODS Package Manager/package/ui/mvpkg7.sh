@@ -33,13 +33,21 @@ then
 	echo "The service $PACKAGE can't be found."
 	exit
 else
-	#find the current volume of the package and its link
-	output=$( ls -la /var/packages/*/target | grep "/$PACKAGE/")
+	#find the current volume of the package and its various links
 	
-	link=$(echo $output | grep -oP "\/var/packages/.*/target")
-	volume=$(echo $output | grep -oP "volume(USB)?\d*")
-	path=$(echo $output | grep -oP "\/volume(USB)?.*")
-	
+	link=$(ls -la /var/packages/*/target | grep "/$PACKAGE/" | grep -oP "\/var/packages/.*/target")
+	etc=$(ls -la /var/packages/*/etc | grep "/$PACKAGE/" | grep -oP "\/var/packages/.*/etc")
+	home=$(ls -la /var/packages/*/home | grep "/$PACKAGE/" | grep -oP "\/var/packages/.*/home")
+	var=$(ls -la /var/packages/*/var | grep "/$PACKAGE/" | grep -oP "\/var/packages/.*/var")
+	tmp=$(ls -la /var/packages/*/tmp | grep "/$PACKAGE/" | grep -oP "\/var/packages/.*/tmp")
+
+	volume=$(ls -la /var/packages/*/target | grep "/$PACKAGE/" | grep -oP "volume(USB)?\d*")
+	path_link=$(ls -la /var/packages/*/target | grep "/$PACKAGE/" | grep -oP "\/volume(USB)?.*")
+	path_etc=$(ls -la /var/packages/*/etc | grep "/$PACKAGE/" | grep -oP "\/volume(USB)?.*")
+	path_home=$(ls -la /var/packages/*/home | grep "/$PACKAGE/" | grep -oP "\/volume(USB)?.*")
+	path_var=$(ls -la /var/packages/*/var | grep "/$PACKAGE/" | grep -oP "\/volume(USB)?.*")
+	path_tmp=$(ls -la /var/packages/*/tmp | grep "/$PACKAGE/" | grep -oP "\/volume(USB)?.*")
+
 	if [[ $link != "/var/packages/$PACKAGE/target"* ]]
 	then
 		echo "The service $PACKAGE is not correctly installed."
@@ -58,12 +66,13 @@ else
 		exit
 	fi
 	
-	if [[ "$path" != "/$volume/@appstore/$PACKAGE" ]]
+	if [[ "$path_link" != "/$volume/@appstore/$PACKAGE" ]]
 	then
 		echo "The service $PACKAGE does not have a standard location."
 		exit
 	fi
-		
+	
+	
 	#List Packages with dependency on this one
 	#synopkg --reverse-dependency $PACKAGE
 			
@@ -80,14 +89,26 @@ else
 		mv "/$TARGET/@appstore/$PACKAGE" "/$TARGET/@appstore/$PACKAGE-$(date -d "today" +"%Y%m%d%H%M").log"
 	fi
 
-	#remove the link on the previous volume
-	rm -f "$link"
+	#remove the links on the previous volume	
+	if [ "$link" != "" ]; then rm -f "$link"; fi
+	if [ "$etc" != "" ]; then rm -f "$etc"; fi
+	if [ "$home" != "" ]; then rm -f "$home"; fi
+	if [ "$tmp" != "" ]; then rm -f "$tmp"; fi
+	if [ "$var" != "" ]; then rm -f "$var"; fi
 	
 	#move the package
-	mv "$path" /$TARGET/@appstore
+	if [ "$link" != "" ]; then mv "$path_link" /$TARGET/@appstore; fi
+	if [ "$etc" != "" ]; then mv "$path_etc" /$TARGET/@appconf; fi
+	if [ "$home" != "" ]; then mv "$path_home" /$TARGET/@apphome; fi
+	if [ "$var" != "" ]; then mv "$path_var" /$TARGET/@appdata; fi
+	if [ "$tmp" != "" ]; then mv "$path_tmp" /$TARGET/@apptemp; fi
 	
-	#link with the  package on the new volume
-	ln -s "/$TARGET/@appstore/$PACKAGE" "$link"
+	#link with the  package on the new volume	
+	if [ "$link" != "" ]; then ln -s "/$TARGET/@appstore/$PACKAGE" "$link"; fi
+	if [ "$etc" != "" ]; then ln -s "/$TARGET/@appconf/$PACKAGE" "$etc"; fi
+	if [ "$home" != "" ]; then ln -s "/$TARGET/@apphome/$PACKAGE" "$home"; fi
+	if [ "$var" != "" ]; then ln -s "/$TARGET/@appdata/$PACKAGE" "$var"; fi
+	if [ "$tmp" != "" ]; then ln -s "/$TARGET/@apptemp/$PACKAGE" "$tmp"; fi
 	
 	#Replace link also in local 
 	local="/usr/local/$PACKAGE"
@@ -102,13 +123,26 @@ else
 		#check the link of the 3rdparty
 		output=$( ls -la $trdparty | grep "/$volume/@appstore")
 
-		if [[ ! -z "output" ]]
+		if [[ ! -z "$output" ]]
 		then
 			rm -f "$trdparty"
 			ln -s "/$TARGET/@appstore/$PACKAGE" "$trdparty"
 		fi
 	fi
-			
+
+	#Replace link also in syno/etc if pointing at @appconf
+	trdparty="/usr/syno/etc/packages/$PACKAGE"
+	if [ -L "$trdparty" ]; then
+		#check the link of the conf
+		output=$( ls -la $trdparty | grep "/$volume/@appconf")
+
+		if [[ ! -z "$output" ]]
+		then
+			rm -f "$trdparty"
+			ln -s "/$TARGET/@appconf/$PACKAGE" "$trdparty"
+		fi
+	fi
+	
 	#update settings
 	sed -i "s/$volume/$TARGET/" "/usr/syno/etc/packages/$PACKAGE/*" &>/dev/null
 	
@@ -123,7 +157,7 @@ else
 
 	#Restart the package and all its dependencies
 	#output=$(/usr/syno/sbin/synoservicecfg --hard-start "pkgctl-$PACKAGE" | grep Service)
-  output=$(synopkg start "$PACKAGE")
+        output=$(synopkg start "$PACKAGE")
 	
 	#Check if the package has been correctly restarted
 	#output=$(/usr/syno/sbin/synoservicecfg --is-enabled "pkgctl-$PACKAGE")
