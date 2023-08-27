@@ -1,0 +1,477 @@
+#!/bin/sh
+
+# HELP to use this common file within MODS
+#------------------------------------------
+# Add these two lines at the begining of each installation/upgrade/uninstallation scripts (NOT in the WIZARD shell scripts):
+#. `dirname $0`/common `basename $0` $*
+#StartScript
+
+# Add this line at the end of each WIZARD shell scripts, before the 'exit 0':
+#EndScript
+
+# Add these lines at the begining of each WIZARD shell scripts:
+#. `dirname $0`/../scripts/common `basename $0` $*
+#StartWizard
+
+# Add this line at the end of each WIZARD shell scripts, before the 'exit 0':
+#EndWizard
+
+# You can use these scripts from a command shell with:
+#cd /var/packages/<Your Package>/scripts
+#. ./common
+
+#Once the scripts loaded in the shell, you can continue to use them even after package uninstallation, as for example to display the logs:
+#ShowLog -f -k
+
+if [ $0 != "-sh" ]; then
+	# Read the "filename" after the last / in the first parameter
+	SCRIPTNAME=${0##*/}
+	SCRIPTPATH=`dirname $0`
+
+	# Read the other parameters (using $@ instead of $*, to keep params separated)
+	SCRIPTPARAM=${@:2}
+fi
+
+# Define temporary Log and Err files
+if [ -z $SYNOPKG_PKGNAME ]; then
+	# Define variables to be able to run from a -sh instead of being run from Synology installer
+	SYNOPKG_PKGNAME="$(pwd | cut -d '/' -f4)"
+	if [ -z $SYNOPKG_PKGNAME ]; then
+		SYNOPKG_PKGNAME="Dummy"
+		SYNOPKG_PKGDEST="."
+		SYNOPKG_TEMP_LOGFILE="/tmp/$SYNOPKG_PKGNAME.log"
+	else
+		SYNOPKG_PKGDEST="/var/packages/$SYNOPKG_PKGNAME/target"
+	fi
+fi
+LOG="/tmp/$SYNOPKG_PKGNAME.log"
+ERR="/tmp/$SYNOPKG_PKGNAME.err"
+if [ ! -f $ERR ]; then
+	touch $ERR
+	chmod og+w $ERR
+fi
+if [ ! -f $LOG ]; then
+	touch $LOG
+	chmod og+w $LOG
+fi
+
+SEP="################################################################################################################################################################################"
+WIZARD=0
+
+# Save All environment variables SYNOPKG* and wizards variables xxx*, yyy* , ...
+#Call: StoreState "`dirname $0`" "`basename $0`" "xxx\|yyy"
+function StoreState() {
+	ARG_DIR=$1
+	ARG_SCRIPT=$2
+	ARG_VAR=$3
+	
+	if [ -z $ARG_DIR ]; then
+		ARG_DIR="."
+	fi
+	if [ -z $ARG_SCRIPT ]; then
+		ARG_SCRIPT="generic"
+	fi
+
+	declare -xp | grep " SYNOPKG_" | sed "s/declare -x //" > "$ARG_DIR/$ARG_SCRIPT.env"
+	
+	if [ ! -z $ARG_VAR ]; then
+		declare -xp | grep $ARG_VAR | grep -v " SYNOPKG_" | sed "s/declare -x //" >> "$ARG_DIR/$ARG_SCRIPT.env"
+	fi
+	
+	echo "PATH=\"$PATH\"" >> "$ARG_DIR/$ARG_SCRIPT.env"
+}
+
+# Show Logs and delete them
+#Call: ShowLog 
+#Call: ShowLog -v (to show verbose logs)
+#Call: ShowLog -k (to not delete the logs )
+function ShowLog() {	
+	ARG_PARAM="$*"
+	ARG_VERBOSE=0
+	ARG_KEEP=0
+	
+	# Check if logs display must be shorten
+	if [[ $ARG_PARAM =~ "-v" ]]; then ARG_VERBOSE=1; fi
+	
+	# Check if logs must be kept after display
+	if [[ $ARG_PARAM =~ "-k" ]]; then ARG_KEEP=1; fi
+	
+	# If params are passed but no option are set, wrong usage
+	if [ ! -z $ARG_PARAM ] && [ ARG_VERBOSE == 0 ] && [ ARG_KEEP == 0 ]; then
+		LogInfo "Usage: ShowLog [options]"
+		LogInfo "  -f: full display"
+		LogInfo "  -l: keep logs after display"
+	else
+		if [ -f /var/log/packages/$SYNOPKG_PKGNAME.log ]; then
+			if [ $ARG_VERBOSE == 1 ]; then
+				sudo cat /tmp/MODS* /var/log/packages/$SYNOPKG_PKGNAME.log
+			else	
+				sudo cat /tmp/MODS* /var/log/packages/$SYNOPKG_PKGNAME.log | grep -v "Begin /bin/" | grep -v "End /bin/"
+			fi
+			
+			if [ $ARG_KEEP == 0 ]; then
+				sudo rm -f /var/log/packages/$SYNOPKG_PKGNAME.log
+			fi
+			
+			#rm -f /tmp/MODS*
+		fi
+	fi
+}
+
+# Execute a command via SSH on the local host, using a php script
+#Call: ExecSSH "Account" "Password" "Port" "Command"
+#Return: 0 if successful
+function ExecSSH() {
+	ARG_USER=$1	# Admin account
+	ARG_PASSWORD=$2	# Admin password
+	ARG_PORT=$3 # SSH port
+	ARG_CMD=$4	# Command to execute
+	
+	# Find the php version to be used 
+	version=`php -v | grep "PHP " | cut -f2 -d " "`
+	major=`echo $version | cut -d. -f1`
+	minor=`echo $version | cut -d. -f2`
+	
+	if [ $0 == "-sh" ]; then
+		# If run from a -sh, assume that the php script os local
+		path="."
+	else
+		#path="/var/packages/$SYNOPKG_PKGNAME/scripts"
+		path="`dirname $0`"
+	fi
+	script="$path/exec.php"
+	
+	LogInfo "Command to execute via SSH with login '$ARG_USER': $ARG_CMD"
+	
+	# Call PHP with ssh2 modules
+	output="$(php -dextension=/var/packages/PHP$major.$minor/target/usr/local/lib/php$major$minor/modules/ssh2.so "$script" -u "$ARG_USER" -p "$ARG_PASSWORD" -s "127.0.0.1" -o "$ARG_PORT" -c "$ARG_CMD")"
+	ExitCode=$? #Do not add any line or comment between the command and this line retrieving its exit code!!
+	
+	LogInfo "$output"
+	return $ExitCode
+}
+
+# Validate credentials to connect via SSH on the local host, using a php script
+#Call: CheckSSH "Account" "Password" "Port"
+#Return: 0 if successful
+function CheckSSH() {
+	ARG_USER=$1	# Admin account
+	ARG_PASSWORD=$2	# Admin password
+	ARG_PORT=$3 # SSH port
+	
+	# Find the php version to be used 
+	version=`php -v | grep "PHP " | cut -f2 -d " "`
+	major=`echo $version | cut -d. -f1`
+	minor=`echo $version | cut -d. -f2`
+	
+	if [ $0 == "-sh" ]; then
+		# If run from a -sh, assume that the php script os local
+		path="."
+	else
+		#path="/var/packages/$SYNOPKG_PKGNAME/scripts"
+		path="`dirname $0`"
+	fi
+	script="$path/check.php"
+		
+	# Call PHP with ssh2 modules
+	output="$(php -dextension=/var/packages/PHP$major.$minor/target/usr/local/lib/php$major$minor/modules/ssh2.so "$script" -u "$ARG_USER" -p "$ARG_PASSWORD" -s "127.0.0.1" -o "$ARG_PORT")"
+	ExitCode=$? #Do not add any line of comment between the command and this line retrieving its exit code!!
+
+	LogInfo "$output"
+	return $ExitCode
+}
+
+# Link nginx to the package's config file defined to be able to run php scripts outside to web root folder
+# Call this function with 'whoami' as parameter to create the link via sudo. This user must have sudoer access
+# Otherwise, call this function with a login/password of an administrator and the port to be used to connect via SSH
+# May not be used in preinst or prereplace scripts
+#Call: LinkNginx "Account" "Password" "Port" "true/false" (to use SSH and save/not save the password for futher use)
+#Call: LinkNginx "`whoami`" (to use the current user without SSH)
+#Return: 0 if successful
+function LinkNginx() {
+	ARG_ADMIN=$1
+	ARG_PASSWORD=$2
+	ARG_PORT=$3
+	ARG_SAVE=$4
+	
+	if [ -f $SYNOPKG_PKGDEST/ui/router.cgi ]; then
+		# Set the name of the package in the router cgi
+		sed -i -e "s|@SYNOPKG_PKGNAME@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/router.cgi"
+	fi
+	
+	if [ -f $SYNOPKG_PKGDEST/ui/dsm.cgi.conf ]; then
+		# Set the name of the package in the nginx config
+		sed -i -e "s|@MODS_CGI@|$SYNOPKG_PKGNAME|g" "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf"
+
+		# Create a link for nginx onto the package nginx config
+		LINK="/usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf"
+
+		if [ -f $LINK ]; then
+			LogInfo "Link to nginx config already exists."
+		else
+			WHOAMI=`whoami`
+			if [ $ARG_ADMIN == $WHOAMI ]; then
+				LogInfo "Trying sudo link as '$WHOAMI'"
+				sudo /bin/ln -s "$SYNOPKG_PKGDEST/ui/dsm.cgi.conf" "$LINK"		
+			else
+				# Check if SSH connection is working
+				LogInfo "Checking SSH credentials"
+				CheckSSH "$ARG_ADMIN" "$ARG_PASSWORD" "$ARG_PORT"
+				ExitCode=$? #Do not add any line of comment between the command and this line retrieving its exit code!!
+				
+				if [ $ExitCode == 0 ]; then
+				
+					# Store Admin account and SSH port
+					if [ ! -z $ARG_ADMIN ]; then
+						echo "MODS_ADMIN=$ARG_ADMIN" > "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+						echo "MODS_PORT=$ARG_PORT" >> "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+						chmod og-r "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+					fi
+
+					# Store Admin password if requested
+					if [ $ARG_SAVE == "true" ]; then
+						# Create a Private Key to encrypt the password
+						if [ ! -f "/var/packages/$SYNOPKG_PKGNAME/etc/image" ]; then
+							LogInfo "Creating Encryption Key"
+							openssl genrsa -out /var/packages/$SYNOPKG_PKGNAME/etc/image 2048 2> /dev/null
+						fi
+						
+						# Encrypt and store the password
+						if [ ! -z $ARG_PASSWORD ]; then
+							LogInfo "Encrypting Password"
+							echo "$ARG_PASSWORD" | openssl rsautl -inkey /var/packages/$SYNOPKG_PKGNAME/etc/image -encrypt > /var/packages/$SYNOPKG_PKGNAME/etc/backup
+							chmod og-r /var/packages/$SYNOPKG_PKGNAME/etc/backup
+						fi
+					else
+						LogInfo "Don't store Password"
+					fi
+
+					# Create the Symbolic link
+					LogInfo "Creating nginx Link"
+					ExecSSH "$ARG_ADMIN" "$ARG_PASSWORD" "$ARG_PORT" "ln -s $SYNOPKG_PKGDEST/ui/dsm.cgi.conf $LINK"
+					ExitCode=$?
+					
+					if [ $ExitCode != "03" ]; then
+						return $ExitCode
+					fi
+				else
+				
+					PublishInfo ""
+					PublishInfo "Cannot connect via SSH onto the NAS with provided Login/Password."
+					PublishInfo "Go back into the Installation Wizard to change your Login/Password."
+					return 1
+				fi
+			fi
+			# Check that the link has been created
+			if [ ! -f $LINK ]; then
+				PublishInfo ""
+				PublishInfo "Link Creation failed..."
+				PublishInfo "Investigate the reason in the Logs"		
+				return 1
+			fi
+		fi
+	fi
+	
+	return 0
+}
+
+# Unlink nginx config
+# Call this function with 'whoami' as parameter to remove the link via sudo. This user must have sudoer access
+# Otherwise, call this function with a login/password of an administrator and the port to be used to connect via SSH
+# May not be used in preinst or prereplace scripts
+#Call: LinkNginx 
+#Call: LinkNginx "Account" "Password" "Port"
+#Call: LinkNginx "Account" "" "Port" (to use the password saved by LinkNginx)
+#Return: 0 if successful
+function UnlinkNginx() {
+	ARG_ADMIN=$1
+	ARG_PASSWORD=$2
+	ARG_PORT=$3
+	
+	if [ $SYNOPKG_PKG_STATUS == "UNINSTALL" ]; then
+		LINK="/usr/syno/share/nginx/conf.d/dsm.$SYNOPKG_PKGNAME.conf"
+
+		if [ -f $LINK ]; then
+			WHOAMI=`whoami`
+			if [ $ARG_ADMIN == $WHOAMI ]; then
+				LogInfo "Trying sudo link as '$WHOAMI'"
+				sudo /bin/unlink "$LINK"
+			else		
+				# Retrieve previous credentials if no account received from Wizard
+				if [ -z $ARG_ADMIN ] && [ -f /var/packages/$SYNOPKG_PKGNAME/etc/backup ]; then			
+					if [ -f /var/packages/$SYNOPKG_PKGNAME/etc/parameters ]; then			
+						. /var/packages/$SYNOPKG_PKGNAME/etc/parameters
+					fi
+
+					if [ -z $ARG_PASSWORD ]; then
+						LogInfo "Retrieving previous SSH credentials"
+						ARG_PASSWORD=$(openssl rsautl -inkey /var/packages/$SYNOPKG_PKGNAME/etc/image -decrypt < /var/packages/$SYNOPKG_PKGNAME/etc/backup)			
+					fi
+				fi
+				
+				# Unlink nginx configuration
+				LogInfo "Removing nginx Link"
+				ExecSSH "$ARG_ADMIN" "$ARG_PASSWORD" "$ARG_PORT" "unlink $LINK"
+				ExitCode=$?
+				
+				if [ -f $LINK ]; then
+					PublishInfo
+					PublishInfo "Couldn't remove the link '$Link'."
+					PublishInfo "This is not a blocking issue but uninstallation is not clean."
+				fi
+			fi
+		else
+			LogInfo "Link to nginx config didn't exist."
+		fi
+		
+		# Delete parameters created for this package
+		LogInfo "Removing stored parameters"
+		rm -f "/var/packages/$SYNOPKG_PKGNAME/etc/backup"
+		rm -f "/var/packages/$SYNOPKG_PKGNAME/etc/image"
+		rm -f "/var/packages/$SYNOPKG_PKGNAME/etc/parameters"
+		rm -f "/var/packages/$SYNOPKG_PKGNAME/var/log/router.log"
+		rm -df "/var/packages/$SYNOPKG_PKGNAME/var/log"
+	fi
+}
+
+# Create a log file for the router.cgi
+# May not be used in preinst or prereplace scripts
+function EnableRouterLog() {
+	if [ -f $SYNOPKG_PKGDEST/ui/router.cgi ]; then
+		# create the Log dir if it does not exist
+		DIR="/var/packages/$SYNOPKG_PKGNAME/var/log"
+		if [ ! -d "$DIR" ]; then
+			mkdir -p "$DIR"
+		fi
+
+		# create the Log file if it does not exist
+		LGR="$DIR/router.log"
+		if [ ! -f $LGR ]; then
+			touch $LGR
+		fi
+	fi
+}
+
+# To log the content of a file do: LogInfo "$(< $FILE)"
+function LogInfo() {
+	TEXT="$*"
+	
+	if [ -f "$TEXT" ]; then
+		# Logging a file content
+		if [ -s "$TEXT" ]; then
+			TEXT="$(< $TEXT)"
+		fi
+	fi
+
+	# Logging a text (single or multiple lines)
+	while read line; do
+		if [ $WIZARD == 1 ]; then
+			INFO="$line"
+		else
+			INFO="$(date '+%Y/%m/%d %H:%M:%S')     ${SYNOPKG_PKG_STATUS,,} $SYNOPKG_PKGNAME $SYNOPKG_PKGVER $line"
+			if [ "$line" == "#" ]; then
+				INFO="$INFO$SEP"
+				INFO=${INFO:0:210}
+			fi
+		fi
+		echo "$INFO"
+	done <<< "$TEXT"
+}
+
+function PublishInfo() {
+	LogInfo $*
+	#if the file $SYNOPKG_TEMP_LOGFILE is not empty, the user will be prompted with its content.
+	# make the log pretty to be displayed (replace LF with html <br>)
+	echo "$*" | sed 's/$/<br>/g' >> $SYNOPKG_TEMP_LOGFILE
+}
+
+function StartScript() {
+	WIZARD=0
+	if [ $0 != "-sh" ]; then
+		# Save the streams stderr
+		exec 5<&2
+
+		# Redirect the stream stderr to its logs
+		exec 2>>$ERR
+	fi
+	
+	if [ -s $LOG ]; then
+		LogInfo "Loading Info Log"
+		cat $LOG
+		#echo "$(< $LOG)"
+		rm -f $LOG
+	fi
+	if [ -s $ERR ]; then
+		LogInfo "Loading Error Log:"
+		LogInfo "$ERR"
+		rm -f $ERR
+	fi
+	LogInfo "#"
+	LogInfo "Executing $0 $SYNOPKG_PKG_STATUS as `whoami`" 
+}
+
+function EndScript() {
+	if [ -s $ERR ]; then
+		LogInfo "Loading Error Log:"
+		LogInfo "$ERR"
+		rm -f $ERR
+	fi
+	if [ -z $0 ]; then
+		LogInfo "Ending Script Execution"
+	else
+		LogInfo "Ending `basename $0` $SYNOPKG_PKG_STATUS"
+	fi
+	
+	if [ $0 != "-sh" ]; then
+		# Restore the streams stderr
+		exec 2<&5
+	fi
+}
+
+function StartWizard() {
+	WIZARD=1
+	# Save the streams stdout and stderr
+	if [ $0 != "-sh" ]; then
+		exec 4<&1
+		exec 5<&2
+
+		# Redirect the stream stdout and stderr to their own logs
+		exec 2>>$ERR
+		exec 1>>$LOG
+	fi
+	
+	LogInfo "#"
+	LogInfo "Executing $0 $SYNOPKG_PKG_STATUS as `whoami`"
+}
+
+function EndWizard() {
+	# Restore the streams stdout and stderr
+	if [ $0 != "-sh" ]; then
+		exec 1<&4
+		exec 2<&5
+	fi
+}
+
+function ExecSSHScript() {
+	ARG_SCRIPT=$1
+	
+	StartScript
+	if [ $? != 0 ]; then
+		exit 150
+	fi
+
+	StoreState $ARG_SCRIPT
+	ExecSSH "admin" "DeusExMachina3" "22" "sudo sh `dirname $0`/runner $ARG_SCRIPT"
+	ExitCode=$?
+
+	EndScript
+	if [ $ExitCode == "0" ]; then
+		exit 0
+	else
+		exit 150
+	fi
+}
+
+if [ $0 != "-sh" ]; then
+	LogInfo "Request execution as `whoami`: $SCRIPTPATH/$SCRIPTNAME $SCRIPTPARAM"
+fi

@@ -1,0 +1,80 @@
+[
+  {
+    "step_title": "GateOne Configuration",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "singleselect",
+        "desc": "Select a Protocol",
+        "subitems": [
+          {
+            "key": "GateOne_Protocol_Https",
+            "defaultValue": "true",
+            "desc": "Https"
+          },
+          {
+            "key": "GateOne_Protocol_Http",
+            "defaultValue": "false",
+            "desc": "Http"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Select a Port",
+        "subitems": [
+          {
+            "validator": {
+              "vtype": "alphanum",
+              "maxLength": "5",
+              "allowBlank": false,
+              "regex": {
+                "errorText": "Enter a Numeric Value between 1 and 65535",
+                "expr": "/^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$/"
+              }
+            },
+            "maxLengthText": "Max value for a port is 65535",
+            "key": "GateOne_Port",
+            "defaultValue": "8271",
+            "desc": "Port",
+            "blankText": "You must enter a Port"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "step_title": "SSH Configuration",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "textfield",
+        "subitems": [
+          {
+            "key": "GateOne_SSH_User",
+            "defaultValue": "admin",
+            "desc": "Default user to connect via SSH",
+            "validator": {
+              "allowBlank": true
+            }
+          },
+          {
+            "validator": {
+              "vtype": "alphanum",
+              "maxLength": "5",
+              "allowBlank": false,
+              "regex": {
+                "errorText": "Enter a Numeric Value between 1 and 65535",
+                "expr": "/^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$/"
+              }
+            },
+            "key": "GateOne_SSH_Port",
+            "defaultValue": "22",
+            "desc": "Default port to connect via SSH",
+            "blankText": "You must enter a port"
+          }
+        ]
+      }
+    ]
+  }
+]

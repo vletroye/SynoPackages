@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-29645087-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>log.py - Gate One Logging Module &mdash; Gate One 1.2.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/ansi.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Gate One 1.2.0 documentation" href="../index.html"/>
+        <link rel="up" title="Developer Documentation" href="index.html"/>
+        <link rel="next" title="logviewer.py - Session Log Viewer" href="logviewer.html"/>
+        <link rel="prev" title="sso.py - A Tornado Kerberos Single Sign-On Module" href="sso.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Gate One
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../About/index.html">About Gate One</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Applications/index.html">Gate One Applications</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#python-code">Python Code</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="authentication.html"><code class="docutils literal"><span class="pre">authentication.py</span></code> - Authentication Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authorization.html"><code class="docutils literal"><span class="pre">authorization.py</span></code> - Authentication Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ctypes_pam.html"><code class="docutils literal"><span class="pre">ctypes_pam.py</span></code> - PAM Authentication Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pam.html"><code class="docutils literal"><span class="pre">pam.py</span></code> - A PAM Authentication Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sso.html"><code class="docutils literal"><span class="pre">sso.py</span></code> - A Tornado Kerberos Single Sign-On Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href=""><code class="docutils literal"><span class="pre">log.py</span></code> - Gate One Logging Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logging-module-for-gate-one">Logging Module for Gate One</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="logviewer.html"><code class="docutils literal"><span class="pre">logviewer.py</span></code> - Session Log Viewer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="server.html"><code class="docutils literal"><span class="pre">server.py</span></code> - Gate One's Core Script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="terminal.html"><code class="docutils literal"><span class="pre">terminal.py</span></code> - A Pure Python Terminal Emulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="termio.html"><code class="docutils literal"><span class="pre">termio.py</span></code> - Terminal Input/Output Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html"><code class="docutils literal"><span class="pre">utils.py</span></code> - Supporting Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#javascript-code">JavaScript Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#plugin-code">Plugin Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developing-plugins">Developing Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#embeddeding-gate-one-into-other-applications">Embeddeding Gate One Into Other Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ReleaseNotes/index.html">Release Notes / Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Gate One</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Developer Documentation</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">log.py</span></code> - Gate One Logging Module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/Developer/log.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-gateone.core.log">
+<span id="log-py-gate-one-logging-module"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">log.py</span></code> - Gate One Logging Module<a class="headerlink" href="#module-gateone.core.log" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="logging-module-for-gate-one">
+<span id="log-py"></span><h2>Logging Module for Gate One<a class="headerlink" href="#logging-module-for-gate-one" title="Permalink to this headline">¶</a></h2>
+<p>This module contains a number of pre-defined loggers for use within Gate One:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>go_log</td>
+<td>Used for logging internal Gate One events.</td>
+</tr>
+<tr class="row-odd"><td>auth_log</td>
+<td>Used for logging authentication and authorization events.</td>
+</tr>
+<tr class="row-even"><td>msg_log</td>
+<td>Used for logging messages sent to/from users.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Applications may also use their own loggers for differentiation purposes.  Such
+loggers should be prefixed with 'gateone.app.' like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;gateone.app.myapp&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Additional loggers may be defined within a <code class="xref py py-obj docutils literal"><span class="pre">GOApplication</span></code> with additional
+prefixing:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">xfer_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;gateone.app.myapp.xfer&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;gateone.app.myapp.lookup&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This module does not cover session logging within the Terminal application.
+That is a built-in feature of the <a class="reference internal" href="termio.html#module-termio" title="termio"><code class="xref py py-obj docutils literal"><span class="pre">termio</span></code></a> module.</p>
+</div>
+<dl class="exception">
+<dt id="gateone.core.log.UnknownFacility">
+<em class="property">exception </em><code class="descclassname">gateone.core.log.</code><code class="descname">UnknownFacility</code><a class="reference internal" href="../_modules/gateone/core/log.html#UnknownFacility"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gateone.core.log.UnknownFacility" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised if <a class="reference internal" href="#gateone.core.log.string_to_syslog_facility" title="gateone.core.log.string_to_syslog_facility"><code class="xref py py-obj docutils literal"><span class="pre">string_to_syslog_facility</span></code></a> is given a string that doesn't match
+a known syslog facility.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="gateone.core.log.JSONAdapter">
+<em class="property">class </em><code class="descclassname">gateone.core.log.</code><code class="descname">JSONAdapter</code><span class="sig-paren">(</span><em>logger</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gateone/core/log.html#JSONAdapter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gateone.core.log.JSONAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="xref py py-obj docutils literal"><span class="pre">logging.LoggerAdapter</span></code> that prepends keyword argument information to log
+entries.  Expects the passed in dict-like object which will be included.</p>
+<p>Initialize the adapter with a logger and a dict-like object which
+provides contextual information. This constructor signature allows
+easy stacking of LoggerAdapters, if so desired.</p>
+<p>You can effectively pass keyword arguments as shown in the
+following example:</p>
+<p>adapter = LoggerAdapter(someLogger, dict(p1=v1, p2=&quot;v2&quot;))</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gateone.core.log.string_to_syslog_facility">
+<code class="descclassname">gateone.core.log.</code><code class="descname">string_to_syslog_facility</code><span class="sig-paren">(</span><em>facility</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gateone/core/log.html#string_to_syslog_facility"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gateone.core.log.string_to_syslog_facility" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a string (<em>facility</em>) such as, &quot;daemon&quot; returns the numeric
+syslog.LOG_* equivalent.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gateone.core.log.go_logger">
+<code class="descclassname">gateone.core.log.</code><code class="descname">go_logger</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gateone/core/log.html#go_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gateone.core.log.go_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new <code class="xref py py-obj docutils literal"><span class="pre">logging.Logger</span></code> instance using the given <em>name</em>
+pre-configured to match Gate One's usual logging output.  The given <em>name</em>
+will automatically be prefixed with 'gateone.' if it is not already.  So if
+<em>name</em> is 'app.foo' the <code class="xref py py-obj docutils literal"><span class="pre">Logger</span></code> would end up named
+'gateone.app.foo'.  If the given <em>name</em> is already prefixed with 'gateone.'
+it will be left as-is.</p>
+<p>The log will be saved in the same location as Gate One's configured
+<code class="xref py py-obj docutils literal"><span class="pre">log_file_prefix</span></code> using the given <em>name</em> with the following convention:</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">gateone/logs/&lt;modified</span> <span class="pre">*name*&gt;.log</span></code></div></blockquote>
+<p>The file name will be modified like so:</p>
+<blockquote>
+<div><ul class="simple">
+<li>It will have the 'gateone' portion removed (since it's redundant).</li>
+<li>Dots will be replaced with dashes (-).</li>
+</ul>
+</div></blockquote>
+<p>Examples:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">auth_logger</span> <span class="o">=</span> <span class="n">go_logger</span><span class="p">(</span><span class="s1">&#39;gateone.auth.terminal&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">auth_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;test1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">app_logger</span> <span class="o">=</span> <span class="n">go_logger</span><span class="p">(</span><span class="s1">&#39;gateone.app.terminal&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">app_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">lisdir</span><span class="p">(</span><span class="s1">&#39;/opt/gateone/logs&#39;</span><span class="p">)</span>
+<span class="go">[&#39;auth.log&#39;, &#39;auth-terminal.log&#39;, &#39;app-terminal.log&#39; &#39;webserver.log&#39;]</span>
+</pre></div>
+</div>
+<p>If any <em>kwargs</em> are given they will be JSON-encoded and included in the log
+message after the date/metadata like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">auth_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;test3&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="s2">&quot;bob&quot;</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">:</span> <span class="s2">&quot;10.1.1.100&quot;</span><span class="p">})</span>
+<span class="go">[I 130828 15:00:56 app.py:10] {&quot;user&quot;: &quot;bob&quot;, &quot;ip&quot;: &quot;10.1.1.100&quot;} test3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="logviewer.html" class="btn btn-neutral float-right" title="logviewer.py - Session Log Viewer" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sso.html" class="btn btn-neutral" title="sso.py - A Tornado Kerberos Single Sign-On Module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Liftoff Software Corporation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+ 
+<script type="text/javascript">
+window.onload = function(e) {
+    // Make our collapseindex elements actually collapsible
+    $('<span class="collapsindextitle">Index</span> <a class="showhide">[show]</a>').insertBefore('.collapseindex');
+    $('.showhide').each(function(index, value){
+        var showHide = $(this);
+        showHide.click(function() {
+            if (this.innerHTML == "[hide]") {
+                this.innerHTML = "[show]";
+            } else {
+                this.innerHTML = "[hide]";
+            }
+            $(this).next('.collapseindex').toggle(1); // This should always be the next .collapseindex element
+        });
+    });
+    $('.collapseindex').each(function(index, value){
+        // Start them out hidden
+        $(this).hide();
+    });
+}
+</script>
+
+
+</body>
+</html>

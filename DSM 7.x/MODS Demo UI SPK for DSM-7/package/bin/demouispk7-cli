@@ -1,0 +1,2 @@
+#!/bin/sh
+/var/packages/MODS_DemoUiSpk7/scripts/start-stop-status "$@"

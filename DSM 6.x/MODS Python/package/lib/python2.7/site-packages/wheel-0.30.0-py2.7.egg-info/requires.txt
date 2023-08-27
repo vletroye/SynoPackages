@@ -1,0 +1,17 @@
+
+[faster-signatures]
+ed25519ll
+
+[signatures]
+keyring
+keyrings.alt
+
+[signatures:sys_platform!="win32"]
+pyxdg
+
+[test]
+jsonschema
+pytest>=3.0.0
+pytest-cov
+
+[tool]

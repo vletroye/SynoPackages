@@ -1,0 +1,20 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Package_Manager_DSM_7.Package_Manager": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Package Manager",
+      "desc": "Simple application to move packages from a volume to another  - or - to erase them.",
+      "icon": "images/Package_Manager_{0}.png",
+      "appWindow": null,
+      "url": "/webman/3rdparty/MODS_Package_Manager_DSM_7/mvpkg.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": false,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "",
+      "width": 0,
+      "height": 0
+    }
+  }
+}

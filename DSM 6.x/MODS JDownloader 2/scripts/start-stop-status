@@ -1,0 +1,32 @@
+#!/bin/sh
+
+INSTALL_DIR="$SYNOPKG_PKGDEST/app/"
+
+start()
+{
+    sh "$SYNOPKG_PKGDEST/app/start.sh"
+}
+
+stop()
+{
+    sh "$SYNOPKG_PKGDEST/app/stop.sh"
+}
+
+case $1 in
+	start)
+		start
+		exit 0
+	;;
+	stop)
+		stop
+		exit 0
+	;;
+	status)
+		exit 0
+	;;
+	log)
+		exit 0
+	;;
+esac
+
+exit 0

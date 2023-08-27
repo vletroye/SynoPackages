@@ -1,0 +1,56 @@
+{
+  "webservice": {
+    "services": [
+      {
+        "service": "MODS_Web_Package_7.x_Service",
+        "display_name": "MODS Web Package",
+        "support_alias": true,
+        "support_server": true,
+        "type": "nginx_php",
+        "root": "MODSWebPackage",
+        "icon": "ui/MyIcon_{0}.png",
+        "intercept_errors": false,
+        "php": {
+          "profile_name": "MODS Web Package Profile",
+          "profile_desc": "PHP Profile for MODS Web Package",
+          "backend": 8,
+          "open_basedir": "/var/services/web_packages/MODSWebPackage:/tmp:/var/services/tmp",
+          "user": "mods",
+          "group": "http"
+        }
+      }
+    ],
+    "portals": [
+      {
+        "service": "MODS_Web_Package_7.x_Service",
+        "type": "alias",
+        "name": "MODS_Web_Package_7.x_Service_alias",
+        "display_name": "MODS Web Package Alias",
+        "alias": "MODS_Web_Package_7-x",
+        "app": "com.mycompany.app"
+      },
+      {
+        "service": "MODS_Web_Package_7.x_Service",
+        "type": "server",
+        "name": "MODS_Web_Package_7.x_Service_server",
+        "display_name": "MODS Web Package Server",
+        "app": "com.mycompany.app",
+        "http_port": [
+          9000
+        ],
+        "https_port": [
+          9001
+        ]
+      }
+    ],
+    "pkg_dir_prepare": [
+      {
+        "source": "/var/packages/MODS_Web_Package_7.x/target/src",
+        "target": "MODSWebPackage",
+        "mode": "0755",
+        "group": "http",
+        "user": "mods"
+      }
+    ]
+  }
+}

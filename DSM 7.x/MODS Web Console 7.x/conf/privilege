@@ -1,0 +1,7 @@
+{
+  "defaults": {
+    "run-as": "package"
+  },
+  "join-groupname": "system",
+  "username": "ModsWebConsole_User"
+}

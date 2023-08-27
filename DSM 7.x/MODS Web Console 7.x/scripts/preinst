@@ -1,0 +1,8 @@
+#!/bin/sh
+# Copyright (C) 2000-2020 Synology Inc. All rights reserved.
+
+### This script will be execute when package installed and upgraded.
+### Actions before package installed.
+### ex. check environment.
+
+exit 0

@@ -1,0 +1,47 @@
+#!/bin/sh
+
+LOG_INFO=$1
+if [ $LOG_INFO == "-l" ] || [ $LOG_INFO == "-e" ]; then
+	RUN_SCRIPT=$2
+else
+	LOG_INFO="-e"
+	RUN_SCRIPT=$1
+fi
+
+RUN_ENV="`dirname $0`/$RUN_SCRIPT.env"
+
+# Load environment variables
+if [ ! -f $RUN_ENV ]; then
+	RUN_ENV="`dirname $0`/generic.env"
+fi
+if [ -f $RUN_ENV ]; then
+	. $RUN_ENV
+fi
+
+if [ $LOG_INFO == "-e" ]; then
+	echo ""
+	echo "Runner executing as `whoami`"
+	if [ -f $RUN_ENV ]; then
+		echo "Runner loading environment variables from $RUN_ENV"
+		cat  $RUN_ENV	
+	else
+		echo "Runner called by $RUN_SCRIPT without environment variables"
+	fi
+	declare -xp | sed "s/declare -x //"
+else
+	. `dirname $0`/common `basename $0` $*
+	
+	LogInfo ""
+	LogInfo "Runner exectuing as `whoami`"
+	if [ -f $RUN_ENV ]; then
+		LogInfo "Runner loading environment variables from $RUN_ENV"
+		LogInfo $RUN_ENV
+	else
+		LogInfo "Runner called by $RUN_SCRIPT without environment variables"
+	fi
+	VAR_ENV=$(declare -xp | sed "s/declare -x //")
+	LogInfo "$VAR_ENV"
+fi
+
+. `dirname $0`/installer
+$RUN_SCRIPT

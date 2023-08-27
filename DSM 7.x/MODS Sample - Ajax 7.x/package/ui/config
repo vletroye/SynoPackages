@@ -1,0 +1,21 @@
+{
+  ".url": {
+    "SYNO.SDS._ThirdParty.App.MODS_Sample_Ajax_7.x.Mods_Ajax_CGI": {
+      "itemType": 2,
+      "type": "legacy",
+      "allUsers": false,
+      "title": "Mods Ajax CGI",
+      "desc": "Sample illustrating an Ajax Client",
+      "icon": "images/Mods_Ajax_CGI_{0}.png",
+      "appWindow": null,
+      "url": "/webman/3rdparty/MODS_Sample_Ajax_7.x/index.php",
+      "allowMultiInstance": false,
+      "configablePrivilege": true,
+      "advanceGrantPrivilege": false,
+      "grantPrivilege": "all",
+      "width": 0,
+      "height": 0,
+      "preloadTexts": null
+    }
+  }
+}

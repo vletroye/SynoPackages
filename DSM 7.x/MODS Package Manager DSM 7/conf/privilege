@@ -1,0 +1,7 @@
+{
+  "defaults": {
+    "run-as": "package"
+  },
+  "username": "mods_package",
+  "groupname": "mods_package"
+}

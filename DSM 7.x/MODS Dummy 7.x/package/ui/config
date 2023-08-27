@@ -7,13 +7,17 @@
       "title": "MODS Dummy 7.x",
       "desc": "This is a dummy package created with MODS for illustration purpose. It does not contains any concrete application but was created to test MODS' features on DSM 7.x",
       "icon": "images/MODS_Dummy_7_x_{0}.png",
+      "appWindow": null,
+      "protocol": null,
       "url": "/webman/3rdparty/MODS_Dummy_7.x/info.php",
+      "port": 0,
       "allowMultiInstance": false,
       "configablePrivilege": false,
       "advanceGrantPrivilege": false,
       "grantPrivilege": "",
       "width": 0,
-      "height": 0
+      "height": 0,
+      "preloadTexts": null
     }
   }
 }

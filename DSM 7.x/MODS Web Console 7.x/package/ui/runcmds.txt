@@ -1,0 +1,7 @@
+#######################################
+# Commands for 'MODS_Web_Console_7.x Admin' 
+# format:
+# <full path to file>,<name to display>
+#######################################
+/usr/local/bin/modswebconsole-cli,modswebconsole-cli
+

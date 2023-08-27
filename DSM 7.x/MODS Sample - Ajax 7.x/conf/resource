@@ -1,0 +1,45 @@
+{
+  "webservice": {
+    "services": [
+      {
+        "service": "MODS_Sample_Ajax_7.x",
+        "display_name": "Mods Ajax",
+        "support_alias": true,
+        "support_server": false,
+        "type": "nginx_php",
+        "root": "Mods_Ajax",
+        "index": "index.php",
+        "icon": "ui/images/Mods_Ajax_CGI_{0}.png",
+        "intercept_errors": false,
+        "php": {
+          "profile_name": "Mods Ajax Profile",
+          "profile_desc": "Php Profile for Mods Ajax",
+          "backend": 7,
+          "open_basedir": "/var/services/web_packages/MODS_Sample_Ajax_7.x:/tmp:/var/services/tmp",
+          "extensions": [],
+          "php_settings": {},
+          "user": "mods",
+          "group": "mods"
+        },
+        "connect_timeout": 60,
+        "read_timeout": 3600,
+        "send_timeout": 60
+      }
+    ],
+    "portals": [
+      {
+        "service": "MODS_Sample_Ajax_CGI_7.x",
+        "type": "alias",
+        "name": "MODS_Sample_Ajax_CGI_7.x_alias"
+      }
+    ],
+    "pkg_dir_prepare": [
+      {
+        "target": "",
+        "mode": "00",
+        "group": "",
+        "user": ""
+      }
+    ]
+  }
+}

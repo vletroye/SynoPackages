@@ -1,0 +1,17 @@
+#######################################
+# Configfile for 'DemoUiSpk7 Admin' 
+# format:
+# <full path to file>,<name to display>
+#######################################
+/var/packages/MODS_DemoUiSpk7/INFO,SPK-INFO
+/var/packages/MODS_DemoUiSpk7/conf/privilege,SPK-Privilege
+/var/packages/MODS_DemoUiSpk7/conf/resource,SPK-Resource-Helper
+/var/packages/MODS_DemoUiSpk7/scripts/start-stop-status,CLI-Start-Stop-Status
+/var/packages/MODS_DemoUiSpk7/target/ui/index.cgi,UI-Index.cgi
+/var/packages/MODS_DemoUiSpk7/target/ui/syno_cgi.pl,CGI-Auth-Module
+/var/packages/MODS_DemoUiSpk7/target/ui/runcmd.cgi,CGI-RunCmd-Module
+/var/packages/MODS_DemoUiSpk7/target/ui/getfile.cgi,CGI-GetFile-Module
+/var/packages/MODS_DemoUiSpk7/target/ui/writefile.cgi,CGI-WriteFile-Module
+/var/packages/MODS_DemoUiSpk7/target/ui/page.html,UI-HTML-Page
+
+

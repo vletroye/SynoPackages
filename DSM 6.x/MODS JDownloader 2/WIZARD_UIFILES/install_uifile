@@ -1,0 +1,67 @@
+[
+  {
+    "step_title": "JDownloader Configuration",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "Name of the device to be displayed in myJDownloader",
+        "subitems": [
+          {
+            "validator": {
+              "vtype": "alpha",
+              "allowBlank": false
+            },
+            "key": "JD_devicename",
+            "defaultValue": "Synology",
+            "desc": "Name",
+            "blankText": "Please type a name"
+          }
+        ]
+      },
+      {
+        "type": "textfield",
+        "desc": "Download path on your Synology",
+        "subitems": [
+          {
+            "key": "JD_download",
+            "defaultValue": "\\\\localhost\\download",
+            "desc": "Path"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "step_title": "My JDownloader Connection",
+    "invalid_next_disabled": true,
+    "items": [
+      {
+        "type": "textfield",
+        "desc": "myJDownloader login",
+        "subitems": [
+          {
+            "blankText": "Please provide a login",
+            "validator": {
+              "vtype": "email",
+              "allowBlank": false
+            },
+            "key": "JD_email",
+            "desc": "eMail"
+          }
+        ]
+      },
+      {
+        "type": "password",
+        "desc": "myJDownloader password",
+        "subitems": [
+          {
+            "blankText": "Please provide a password",
+            "key": "JD_password",
+            "desc": "Password"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,68 @@
+{
+	"webservice": {
+		"services": [{
+			"service": "myapplication",
+			"display_name": "MyApplication",
+			"support_alias": true,
+			"support_server": true,
+			"type": "nginx_php",
+			"root": "myapplication",
+			"icon": "ui/MyIcon_{0}.png",
+			"intercept_errors": false,
+			"php": {
+				"profile_name": "MyApplication Profile",
+				"profile_desc": "PHP Profile for MyApplication",
+				"backend": 8,
+				"open_basedir": "/var/services/web_packages/myapplication:/tmp:/var/services/tmp",
+				"extensions": [
+					"curl",
+					"dom",
+					"exif",
+					"fileinfo",
+					"gd",
+					"hash",
+					"iconv",
+					"imagick",
+					"json",
+					"mbstring",
+					"mysql",
+					"mysqli",
+					"openssl",
+					"pcre",
+					"pdo_mysql",
+					"xml",
+					"zlib",
+					"zip"
+				],
+				"php_settings": {
+					"mysql.default_socket": "/run/mysqld/mysqld10.sock",
+					"mysqli.default_socket": "/run/mysqld/mysqld10.sock",
+					"pdo_mysql.default_socket": "/run/mysqld/mysqld10.sock"
+				},
+				"user": "MyApplication",
+				"group": "http"
+			},
+			"connect_timeout": 60,
+			"read_timeout": 3600,
+			"send_timeout": 60
+		}],
+		"portals": [{
+			"service": "myapplication",
+			"type": "alias",
+			"name": "myapplication1",
+			"display_name": "My Application 1",
+			"alias": "myapplication1",
+			"app": "com.mycompany.app"
+		}],
+		"pkg_dir_prepare": [{
+			"source": "/var/packages/MODS_DemoUiSpk7/target/src",
+			"target": "myapplication",
+			"mode": "0755",
+			"group": "http",
+			"user": "MyApplication"
+		}]
+	},
+	"usr-local-linker": {
+		"bin": ["bin/demouispk7-cli"]
+	}
+}

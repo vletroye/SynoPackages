@@ -1,0 +1,28 @@
+#!/bin/sh
+# Copyright (C) 2000-2020 Synology Inc. All rights reserved.
+
+case $1 in
+	start)
+		### Start this package.
+		# run start command
+		echo "the package has been started" > $SYNOPKG_TEMP_LOGFILE
+		exit 0
+	;;
+	stop)
+		### Stop this package.
+		# run stop command
+		echo "the package has been stopped" > $SYNOPKG_TEMP_LOGFILE
+		exit 0
+	;;
+	status)
+		### Check package alive.
+		# run status command
+		exit 0
+	;;
+	killall)
+        ;;
+	log)
+		exit 0
+	;;
+esac
+

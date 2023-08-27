@@ -1,0 +1,76 @@
+{
+  "webservice": {
+    "services": [
+      {
+        "service": "modswebconsole",
+        "display_name": "Mods Web Console Srvc",
+        "support_alias": true,
+        "support_server": true,
+        "type": "nginx_php",
+        "root": "modswebconsole",
+        "icon": "ui/images/Web_Console_{0}.png",
+        "intercept_errors": false,
+        "php": {
+          "profile_name": "ModsWebConsole Profile",
+          "profile_desc": "PHP Profile for MyApplication",
+          "backend": 8,
+          "open_basedir": "/var/services/web_packages/modswebconsole:/tmp:/var/services/tmp",
+          "extensions": [
+            "curl",
+            "dom",
+            "exif",
+            "fileinfo",
+            "gd",
+            "hash",
+            "iconv",
+            "imagick",
+            "json",
+            "mbstring",
+            "mysql",
+            "mysqli",
+            "openssl",
+            "pcre",
+            "pdo_mysql",
+            "xml",
+            "zip",
+            "zlib"
+          ],
+          "php_settings": {
+            "mysql.default_socket": "/run/mysqld/mysqld10.sock",
+            "mysqli.default_socket": "/run/mysqld/mysqld10.sock",
+            "pdo_mysql.default_socket": "/run/mysqld/mysqld10.sock"
+          },
+          "user": "ModsWebConsole_User",
+          "group": "http"
+        },
+        "connect_timeout": 60,
+        "read_timeout": 3600,
+        "send_timeout": 60
+      }
+    ],
+    "portals": [
+      {
+        "service": "modswebconsole",
+        "type": "alias",
+        "name": "modswebconsole",
+        "display_name": "Mods Web Console Portals",
+        "alias": "ModsWebConsole",
+        "app": "com.modswebconsole.app"
+      }
+    ],
+    "pkg_dir_prepare": [
+      {
+        "source": "/var/packages/MODS_Web_Console_7.x/target/src",
+        "target": "modswebconsole",
+        "mode": "0755",
+        "group": "http",
+        "user": "ModsWebConsole_User"
+      }
+    ]
+  },
+  "usr-local-linker": {
+    "bin": [
+      "bin/modswebconsole-cli"
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+#######################################
+# Commands for 'DemoUiSpk7 Admin' 
+# format:
+# <full path to file>,<name to display>
+#######################################
+/usr/local/bin/demouispk7-cli,demouispk7-cli
+

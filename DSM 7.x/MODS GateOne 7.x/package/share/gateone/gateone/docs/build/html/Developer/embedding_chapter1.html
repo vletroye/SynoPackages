@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-29645087-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How To Embed Gate One - Chapter 1 &mdash; Gate One 1.2.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/ansi.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Gate One 1.2.0 documentation" href="../index.html"/>
+        <link rel="up" title="Embedding Gate One Into Other Applications" href="embedding.html"/>
+        <link rel="next" title="API Authentication" href="embedding_api_auth.html"/>
+        <link rel="prev" title="Embedding Gate One Into Other Applications" href="embedding.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Gate One
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../About/index.html">About Gate One</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Applications/index.html">Gate One Applications</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#python-code">Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#javascript-code">JavaScript Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#plugin-code">Plugin Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developing-plugins">Developing Plugins</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#embeddeding-gate-one-into-other-applications">Embeddeding Gate One Into Other Applications</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="embedding.html">Embedding Gate One Into Other Applications</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="">How To Embed Gate One - Chapter 1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="embedding_api_auth.html">API Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="embedding_api_auth.html#example-api-authentication-code">Example API Authentication Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ReleaseNotes/index.html">Release Notes / Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Gate One</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Developer Documentation</a> &raquo;</li>
+      
+          <li><a href="embedding.html">Embedding Gate One Into Other Applications</a> &raquo;</li>
+      
+    <li>How To Embed Gate One - Chapter 1</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/Developer/embedding_chapter1.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-to-embed-gate-one-chapter-1">
+<span id="gateone-embedding1"></span><h1>How To Embed Gate One - Chapter 1<a class="headerlink" href="#how-to-embed-gate-one-chapter-1" title="Permalink to this headline">¶</a></h1>
+<p>This part of the tutorial requires that you start your Gate One server using the following settings:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;*&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;gateone&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="c1">// These are what&#39;s important for the tutorial:</span>
+            <span class="s2">&quot;origins&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span> <span class="c1">// Disable origin checks (insecure but OK for a tutorial)</span>
+            <span class="s2">&quot;port&quot;</span><span class="o">:</span> <span class="mi">8000</span><span class="p">,</span> <span class="c1">// The examples all use this port</span>
+            <span class="s2">&quot;url_prefix&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;auth&quot;</span><span class="o">:</span> <span class="s2">&quot;none&quot;</span> <span class="c1">// Note: This can be overridden by 20authentication.conf if you put it in 10server.conf</span>
+            <span class="c1">// These settings are just to avoid conflics with a regular Gate One installation:</span>
+            <span class="s2">&quot;cache_dir&quot;</span><span class="o">:</span> <span class="s2">&quot;/tmp/gateone_tutorial_cache&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_dir&quot;</span><span class="o">:</span> <span class="s2">&quot;/var/lib/gateone/users&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;session_dir&quot;</span><span class="o">:</span> <span class="s2">&quot;/tmp/gateone_tutorial&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;pid_file&quot;</span><span class="o">:</span> <span class="s2">&quot;/tmp/gateone_tutorial.pid&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For convenience a <a class="reference external" href="../../embedding_configs/99tutorial_chapter1.conf">99tutorial_chapter1.conf</a> file has already been created with these settings.  Just copy it into a temporary <code class="xref std std-option docutils literal"><span class="pre">settings_dir</span></code> before starting Gate One:</p>
+<pre class="ansi-block literal-block">
+# Assuming you downloaded Gate One to /tmp/GateOne...
+<span class="ansi-bold ansi-blue">user</span>&#64;host<span class="ansi-bold ansi-blue">:/tmp/GateOne $</span> mkdir /tmp/chapter1 &amp;&amp; cp gateone/docs/embedding_configs/99tutorial_chapter1.conf /tmp/chapter1/
+<span class="ansi-bold ansi-blue">user</span>&#64;host<span class="ansi-bold ansi-blue">:/tmp/GateOne $</span> ./run_gateone.py --settings_dir=/tmp/chapter1
+</pre>
+<p>Before we continue please test your Gate One server by loading it in your browser.  This will also ensure that you've accepted the server's SSL certificate (if necessary).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Gate One's SSL certificate must be trusted by clients in order to embed Gate One.  In production you can configure Gate One to use the same SSL certificate as the website that has it embedded to avoid that problem.  Just note, for that to work Gate One must be running at the same domain as the website that's embedding it.  So if your website is <a class="reference external" href="https://myapp.company.com/">https://myapp.company.com/</a> your Gate One server would need to be running on a different port at myapp.company.com (e.g. <a class="reference external" href="https://myapp.company.com:8000/">https://myapp.company.com:8000/</a>).</p>
+</div>
+<div class="section" id="placement">
+<h2>Placement<a class="headerlink" href="#placement" title="Permalink to this headline">¶</a></h2>
+<p>Gate One needs to be placed inside an element on the page in order to work properly.  This element will be where Gate One places <code class="docutils literal"><span class="pre">&lt;script&gt;</span></code> tags, preference panels, the toolbar (if enabled), and similar.  Typically all you need is a div:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;gateone&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>By default Gate One will assume you're placing all applications inside this element (aka 'the goDiv' or <code class="docutils literal"><span class="pre">GateOne.node</span></code>) so it will set it's style in such a way as to fill up the entirety of it's parent element.  The idea is to make room for things like workspaces and terminals.  For this part of the tutorial we'll place Gate One inside a div that has a fixed width and height and let it fill up that space:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;gateone_container&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width: 60em; height: 30em;&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;gateone&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You don't have to place terminals (or other Gate One applications) inside the <code class="docutils literal"><span class="pre">#gateone</span></code> container.  More information about that is covered later in this tutorial.</p>
+</div>
+</div>
+<div class="section" id="include-gateone-js">
+<h2>Include gateone.js<a class="headerlink" href="#include-gateone-js" title="Permalink to this headline">¶</a></h2>
+<p>Before you can initialize Gate One on your web page you'll need to include gateone.js.  You <em>could</em> just copy it out of Gate One's 'static' directory and include it in a <code class="docutils literal"><span class="pre">&lt;script&gt;</span></code> tag but it's usually a better idea to let Gate One serve up it's own gateone.js.  This ensures that when you upgrade Gate One clients will automatically get the new file (less work).</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://your-gateone-server/static/gateone.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You can also load the script on-demand via JS (if you know how).  It doesn't use the <code class="docutils literal"><span class="pre">window.onload</span></code> event or similar.</p>
+</div>
+</div>
+<div class="section" id="call-gateone-init">
+<h2>Call GateOne.init()<a class="headerlink" href="#call-gateone-init" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="js_gateone.html#GateOne.init" title="GateOne.init"><code class="xref js js-func docutils literal"><span class="pre">GateOne.init()</span></code></a> function takes some (optional) arguments but for this example all we need is <code class="xref py py-obj docutils literal"><span class="pre">url</span></code>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">GateOne</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;https://your-gateone-server/&quot;</span><span class="p">});</span>
+</pre></div>
+</div>
+<p>Put that somewhere in your <code class="docutils literal"><span class="pre">window.onload</span></code> function and Gate One will automatically connect to the server, synchronize-and-load it's JavaScript/CSS, and open the New Workspace Workspace (aka the application selection screen).</p>
+</div>
+<div class="section" id="complete-example">
+<h2>Complete Example<a class="headerlink" href="#complete-example" title="Permalink to this headline">¶</a></h2>
+<p>Here's an example of everything described above:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="c">&lt;!-- Include gateone.js somewhere on your page --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://gateone.mycompany.com/static/gateone.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="c">&lt;!-- Decide where you want to put Gate One --&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;gateone_container&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;position: relative; width: 60em; height: 30em;&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;gateone&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+<span class="c">&lt;!-- Call GateOne.init() at some point after the page is done loading --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Initialize Gate One:</span>
+    <span class="nx">GateOne</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://gateone.mycompany.com/&#39;</span><span class="p">});</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="c">&lt;!-- That&#39;s it! --&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="try-it">
+<h3>Try It<a class="headerlink" href="#try-it" title="Permalink to this headline">¶</a></h3>
+<div id="gateone_container" style="position: relative; width: 60em; height: 30em;">
+    <div id="gateone">
+        <form id="go_embed" style="background-color: #fff; color: #000; text-align: center;">
+        <p>Enter the URL for your Gate One server and click 'Go!'</p>
+        <p>
+            <input name="gourl" id="gourl" size=40 placeholder="https://your-gateone-server:8000/" />
+            <input type="submit" value="Go!" style="margin-left: .5em;" />
+        </p>
+        </form>
+    </div>
+</div>
+<script>
+var reauthenticate = function() {
+    // This will override the GateOne.Net.reauthenticate function so we can let users know that this tutorial only works with anonymous auth
+    alert('Your Gate One server is configured to authenticate users.\nThis part of the tutorial only works if authentication is disabled (aka anonymous auth).\n\nPlease configure your Gate One server for anonymous authentication: "./gateone.py --auth=None" or put "auth = None" in your server.conf).\n\nPress OK to reload this page.');
+    window.location.reload();
+}
+document.querySelector('#go_embed').onsubmit = function(e) {
+    var gourl = document.querySelector('#gourl').value,
+        gateone_js = gourl + '/static/gateone.js',
+        script = document.createElement('script'), // Dynamically load gateone.js when the user clicks the Go button
+        success = function() { // Show the user a nice message.  Obviously you don't need this in your own code :)
+            setTimeout(function() { // Wrap in a timeout for dramatic effect
+                GateOne.Visual.displayMessage("Congratulations!<br> You just embedded Gate One <i>without</i> using an iframe!");
+            }, 1000);
+            // Override reauthenticate() so users aren't left scratching their heads wondering why the page reloads every time they click on the "Go" button if they forgot to set auth to 'none':
+            GateOne.Net.reauthenticate = reauthenticate; // Tutorial-only.  Don't do this in your own code.
+        };
+    e.preventDefault(); // Don't actually submit the form
+    localStorage['gourl'] = gourl; // Save this value for later (a convience for the tutorial)
+    script.src = gateone_js;
+    script.onload = function() {
+        // Load Gate One
+        GateOne.init({url: gourl, logLevel: 'DEBUG', prefix: 'go1_',}, success); // GateOne.init() can take a callback as a second arg.  Useful knowledge ;)
+    }
+    document.body.appendChild(script);
+}
+// Pre-populate the server URL form as a convenience for the user (if they already filled it out once before)
+window.addEventListener("load", function() {
+    var gourl = localStorage['gourl'];
+    if (gourl) {
+        document.querySelector('#gourl').value = gourl;
+    }
+});
+</script></div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="embedding_api_auth.html" class="btn btn-neutral float-right" title="API Authentication" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="embedding.html" class="btn btn-neutral" title="Embedding Gate One Into Other Applications" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Liftoff Software Corporation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+ 
+<script type="text/javascript">
+window.onload = function(e) {
+    // Make our collapseindex elements actually collapsible
+    $('<span class="collapsindextitle">Index</span> <a class="showhide">[show]</a>').insertBefore('.collapseindex');
+    $('.showhide').each(function(index, value){
+        var showHide = $(this);
+        showHide.click(function() {
+            if (this.innerHTML == "[hide]") {
+                this.innerHTML = "[show]";
+            } else {
+                this.innerHTML = "[hide]";
+            }
+            $(this).next('.collapseindex').toggle(1); // This should always be the next .collapseindex element
+        });
+    });
+    $('.collapseindex').each(function(index, value){
+        // Start them out hidden
+        $(this).hide();
+    });
+}
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+#!/bin/sh
+MYSCRIPT=$(basename "$0")
+MYPKG=$(dirname "$0")
+MYPKG=$(dirname "$MYPKG")
+MYPKG=$(basename "$MYPKG")
+MYLOGIN=$(whoami)
+MYID=$(id)
+case $1 in
+    start)
+        echo "Starting..."
+	echo "start as $MYID" >/tmp/DemoUiSpk7.start
+	exit 0
+      ;;
+    stop)
+        echo "Stopping..."
+	echo "stop as $MYID" >/tmp/DemoUiSpk7.stop
+	exit 0
+        ;;
+    status)
+        [ ! -t 1 ] || echo "Running as $MYLOGIN with $MYID..."
+	echo "running as $MYLOGIN with $MYID" >/tmp/DemoUiSpk7.status
+	exit 0
+        ;;
+    login)
+	echo "Running as $MYLOGIN with $MYID..."
+	#
+	echo "Running /usr/syno/synoman/webman/login.cgi & authenticate.cgi"
+	[ "${REQUEST_METHOD}" = "POST" ] && REQUEST_METHOD="GET" && OLD_REQUEST_METHOD="POST"
+	SYNO_LOGIN=$(/usr/syno/synoman/webman/login.cgi)
+	if echo "$SYNO_LOGIN" | grep -q SynoToken ; then
+		# grep token from json line 'SynoToken' after ':' wrapped in '"' alternative to $(echo "$SYNO_LOGIN" | jq '.SynoToken')
+    		SYNO_TOKEN=$(echo "$SYNO_LOGIN" | grep "SynoToken" | cut -d ":" -f2 | cut -d '"' -f2)
+	else
+		echo "Failed to get a syno-token"
+    		exit
+	fi
+	#
+	# set query string to get user assinged with token
+	QUERY_STRING="SynoToken=${SYNO_TOKEN}"
+	SYNO_USER=$(/usr/syno/synoman/webman/authenticate.cgi)
+	if [ -z "$SYNO_USER" ] ; then
+		echo "Failed to get a syno-user"
+    		exit
+	fi
+	if id -G "$SYNO_USER" | grep -q 101 ; then 
+		MSG="Local admin privileges"
+	else
+		MSG="No local admin privileges"
+	fi
+	echo "$MSG as per Syno-Modules for $SYNO_USER with token: $SYNO_USER"
+	echo " "
+	#
+	if [ -f /var/packages/"$MYPKG"/target/ui/modules/synowebapi ] ; then
+		echo "Running via jq parser synowebapi for user $SYNO_USER app-level authentication details /var/packages/$MYPKG/target/ui/modules/synowebapi --exec api=SYNO.Core.Desktop.Initdata method=get version=1 runner=$SYNO_USER | jq '.data.AppPrivilege.SYNO.SDS._ThirdParty.App.DemoUiSpk7'"
+		RAW_DATA=$(/var/packages/"$MYPKG"/target/ui/modules/synowebapi --exec api=SYNO.Core.Desktop.Initdata method=get version=1 runner="$SYNO_USER" | jq '.data.AppPrivilege')
+		APP_DATA=$(echo "$RAW_DATA" | grep "SYNO.SDS._ThirdParty.App.$MYPKG" | cut -d ":" -f2 | cut -d '"' -f2)
+		if echo "$APP_DATA" | grep -q "true"  ; then 
+			MSG="App privileges"
+		else
+			MSG="No app privileges"
+		fi
+		echo "$MSG SYNO.SDS._ThirdParty.App.$MYPKG: $APP_DATA in Raw: $RAW_DATA"
+		unset RAW_DATA APP_DATA
+	else
+		echo "As one off to enable app-level authentication do > sudo cp /usr/syno/bin/synowebapi /var/packages/$MYPKG/target/ui/modules && sudo chown $MYPKG.$MYPKG /var/packages/$MYPKG/target/ui/modules/synowebapi .."
+	fi
+	[ "${OLD_REQUEST_METHOD}" = "POST" ] && REQUEST_METHOD="POST" && unset OLD_REQUEST_METHOD
+	unset QUERY_STRING SYNO_TOKEN SYNO_LOGIN SYNO_USER MSG
+	exit 0
+        ;;
+    *)
+	echo "usage $MYSCRIPT start | stop | status | login"
+        exit 1
+        ;;
+esac

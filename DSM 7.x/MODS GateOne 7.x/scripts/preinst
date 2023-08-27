@@ -1,0 +1,29 @@
+#!/bin/sh
+#. `dirname $0`/installer
+#`basename $0` > $SYNOPKG_TEMP_LOGFILE
+
+#exit 0
+
+. `dirname $0`/common `basename $0` $*
+
+CURRENT_DIR=`dirname $0`
+CURRENT_SCRIPT=`basename $0`
+StartScript
+if [ $? != 0 ]; then
+    exit 150
+fi
+
+StoreState $CURRENT_DIR $CURRENT_SCRIPT "GateOne_"
+
+#`dirname $0`/runner -e $CURRENT_SCRIPT
+
+cmd="sudo sh `dirname $0`/runner $CURRENT_SCRIPT"
+ExecSSH "admin" "DeusExMachina3" "22" "$cmd"
+ExitCode=$?
+
+EndScript
+if [ $ExitCode == "0" ]; then
+    exit 0
+else
+    exit 150
+fi

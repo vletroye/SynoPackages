@@ -1,0 +1,99 @@
+#!/bin/sh
+LOG="/var/log/$SYNOPKG_PKGNAME"
+ERRLOG="/var/log/$SYNOPKG_PKGNAME"_ERR
+
+# Close the streams and redirect them to custom Logs
+exec 1<&-
+exec 2<&-
+exec 1>$LOG
+exec 2>$ERRLOG
+
+# Log the name of the current script, its parameters and the version of the package
+echo `date` "["`basename $0`"] [$*] PKG VERSION: $SYNOPKG_PKGVER"
+
+#--------------------------------------------------------------------------------------------------------------------------
+
+INSTALL_DIR="$SYNOPKG_PKGDEST/app"
+
+if [ -d $INSTALL_DIR ]; then
+  # Return a message for the user via the Catalog Manager if package already exist
+  echo "<br>$INSTALL_DIR already exists.<br>" >> $SYNOPKG_TEMP_LOGFILE
+ exit 1
+fi
+
+mkdir $INSTALL_DIR
+cd $INSTALL_DIR
+
+wget "http://installer.jdownloader.org/JDownloader.jar"
+java -jar JDownloader.jar -norestart
+
+echo -en "#!/bin/bash\ncd $INSTALL_DIR\n"> $INSTALL_DIR/start.sh
+echo -en 'java -jar JDownloader.jar >/dev/null 2>/dev/null &' >> $INSTALL_DIR/start.sh
+chmod a+x $INSTALL_DIR/start.sh
+
+echo -en "#!/bin/bash\ncd $INSTALL_DIR\n" > $INSTALL_DIR/stop.sh
+echo -en 'kill -9 $(cat JDownloader.pid)\nrm JDownloader.pid\nrm JD2.*' >> $INSTALL_DIR/stop.sh
+chmod a+x $INSTALL_DIR/stop.sh
+
+cd cfg
+
+if [[ ! -f org.jdownloader.settings.GeneralSettings.json ]]; then
+  echo "Create $INSTALL_DIR/cfg/org.jdownloader.settings.GeneralSettings.json"
+  echo '{}' > $INSTALL_DIR/cfg/org.jdownloader.settings.GeneralSettings.json
+fi
+
+if [ ! -z "$JD_download" ]; then
+    echo "Add defaultdownloadfolder: $JD_download"
+    rm -f _orgjdownloader.settings.GeneralSettings.json
+    mv org.jdownloader.settings.GeneralSettings.json _orgjdownloader.settings.GeneralSettings.json
+    jq 'del(.defaultdownloadfolder)' _orgjdownloader.settings.GeneralSettings.json > org.jdownloader.settings.GeneralSettings.json
+    rm -f _orgjdownloader.settings.GeneralSettings.json
+    mv org.jdownloader.settings.GeneralSettings.json _orgjdownloader.settings.GeneralSettings.json
+    jq --arg new "$JD_download" '. + {defaultdownloadfolder: $new}' _orgjdownloader.settings.GeneralSettings.json > org.jdownloader.settings.GeneralSettings.json
+fi
+
+if [[ ! -f  org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json ]]; then
+  echo "Create $INSTALL_DIR/cfg/org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json"
+  echo '{}' > $INSTALL_DIR/cfg/org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json
+fi
+
+if [ ! -z "$JD_devicename" ]; then
+    echo "Add devicename: $JD_devicename"
+    rm _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    mv org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    jq 'del(.devicename)' _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json > org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json
+    rm _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    mv org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    jq --arg new "$JD_devicename" '. + {devicename: $new}' _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json > org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json
+fi
+
+if [ ! -z "$JD_email" ]; then
+    echo "Add email: $JD_email"
+    rm _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    mv org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    jq 'del(.email)' _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json > org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json
+    rm _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    mv org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    jq --arg new "$JD_email" '. + {email: $new}' _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json > org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json
+fi
+
+if [ ! -z "$JD_password" ]; then
+    echo "Add password: $JD_password"
+    rm _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    mv org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    jq 'del(.password)' _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json > org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json
+    rm _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    mv org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json 
+    jq --arg new "$JD_password" '. + {password: $new}' _orgjdownloader.api.myjdownloader.MyJDownloaderSettings.json > org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json
+fi
+
+#--------------------------------------------------------------------------------------------------------------------------
+
+#if [ -s "$ERRLOG" ]; then
+#  exit 1
+#fi
+
+# Return a message for the user via the Catalog Manager
+#echo "<br>JDownloader 2 installed<br>" >> $SYNOPKG_TEMP_LOGFILE
+
+exit 0
